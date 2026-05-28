@@ -1,45 +1,47 @@
 <!DOCTYPE html>
-<html lang="ko" class="h-full bg-[#f5f7e2] text-slate-800">
+<!-- compare-table-column-order: spend-clicks-db-contracts-cpa-cps-clickToDb-dbToContract -->
+
+<html class="h-full bg-[#F4F6FA] text-slate-800" lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>광고 소재 분석 대시보드</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- SheetJS -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>광고 소재 분석 대시보드</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- SheetJS -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        // Custom Color Palette extracted from the color chips image
+                        // Custom Color Palette: light gray + blue/purple + black-gray
                         brand: {
-                            50: '#f5f7e0',   /* Soft Olive Cream */
-                            100: '#e8e8d1',  /* Olive Beige border/bg */
-                            200: '#d7dd97',  /* Light Lime Accent */
-                            500: '#b3be3e',  /* Hero Olive/Lime Green */
-                            600: '#9fa835',  /* Deepened Lime Green */
-                            700: '#101d33',  /* Deep Navy Slate */
-                            800: '#0f1c32',  /* Shadow Navy */
-                            900: '#06132a',  /* Darkest Midnight Navy */
+                            50: '#EEF2FF',   /* Soft blue-lavender surface */
+                            100: '#E0E7FF',  /* Light indigo border/bg */
+                            200: '#C7D2FE',  /* Light blue-purple accent */
+                            500: '#6366F1',  /* Primary indigo */
+                            600: '#4F46E5',  /* Strong blue-purple */
+                            700: '#4338CA',  /* Deep indigo */
+                            800: '#312E81',  /* Dark purple-navy */
+                            900: '#111827',  /* Black-gray text */
                         },
-                        panelBg: '#f5f7e2',  /* Sophisticated Sand/Ivory Background */
-                        cardBg: '#ffffff',   /* Pure White for clean paper contrast */
+                        panelBg: '#F4F6FA',  /* Light gray app background */
+                        cardBg: '#ffffff',   /* Clean white card surface */
                     }
                 }
             }
         }
     </script>
-    <style>
+<style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap');
         body {
             font-family: 'Pretendard', sans-serif;
-            background-color: #f5f7e2;
+            background-color: #F4F6FA;
         }
 
         /* ── LOGIN OVERLAY ── */
@@ -47,7 +49,7 @@
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: #041d35;
+            background: #1F2937;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -77,7 +79,7 @@
             right: -10%;
             width: 55%;
             height: 140%;
-            background: linear-gradient(135deg, rgba(179,190,62,0.07) 0%, rgba(233,255,112,0.04) 100%);
+            background: linear-gradient(135deg, rgba(37,99,235,0.10) 0%, rgba(124,58,237,0.08) 100%);
             transform: skewX(-8deg);
             pointer-events: none;
         }
@@ -88,8 +90,8 @@
             width: 100%;
             max-width: 420px;
             padding: 48px 44px;
-            background: rgba(10, 41, 74, 0.6);
-            border: 1px solid rgba(233, 255, 112, 0.12);
+            background: rgba(31, 41, 55, 0.74);
+            border: 1px solid rgba(167, 139, 250, 0.18);
             border-radius: 20px;
             backdrop-filter: blur(20px);
             box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03) inset;
@@ -111,7 +113,7 @@
         .login-logo-icon {
             width: 44px;
             height: 44px;
-            background: #e9ff70;
+            background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -121,7 +123,7 @@
         .login-logo-icon svg {
             width: 22px;
             height: 22px;
-            color: #041d35;
+            color: #ffffff;
         }
 
         .login-title {
@@ -142,7 +144,7 @@
         .login-divider {
             width: 100%;
             height: 1px;
-            background: rgba(233, 255, 112, 0.1);
+            background: rgba(167, 139, 250, 0.14);
             margin-bottom: 28px;
         }
 
@@ -150,7 +152,7 @@
             display: block;
             font-size: 11px;
             font-weight: 700;
-            color: #e9ff70;
+            color: #A78BFA;
             letter-spacing: 0.06em;
             text-transform: uppercase;
             margin-bottom: 8px;
@@ -158,7 +160,7 @@
 
         .login-input {
             width: 100%;
-            background: rgba(4, 29, 53, 0.7);
+            background: rgba(17, 24, 39, 0.78);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 10px;
             padding: 12px 16px;
@@ -175,8 +177,8 @@
         }
 
         .login-input:focus {
-            border-color: rgba(233, 255, 112, 0.5);
-            box-shadow: 0 0 0 3px rgba(233, 255, 112, 0.08);
+            border-color: rgba(99, 102, 241, 0.55);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.14);
         }
 
         .login-input.error {
@@ -201,8 +203,8 @@
             width: 100%;
             margin-top: 8px;
             padding: 14px;
-            background: #e9ff70;
-            color: #041d35;
+            background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+            color: #ffffff;
             border: none;
             border-radius: 10px;
             font-size: 14px;
@@ -211,13 +213,13 @@
             cursor: pointer;
             letter-spacing: 0.02em;
             transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-            box-shadow: 0 4px 20px rgba(233, 255, 112, 0.25);
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.28);
         }
 
         .login-btn:hover {
-            background: #f0ff88;
+            background: linear-gradient(135deg, #1D4ED8 0%, #6D28D9 100%);
             transform: translateY(-1px);
-            box-shadow: 0 8px 28px rgba(233, 255, 112, 0.35);
+            box-shadow: 0 8px 28px rgba(79, 70, 229, 0.36);
         }
 
         .login-btn:active {
@@ -269,8 +271,8 @@
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background: #e9ff70;
-            opacity: 0.4;
+            background: #60A5FA;
+            opacity: 0.65;
         }
 
         /* password toggle button */
@@ -300,14 +302,14 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #f5f7e2;
+            background: #F4F6FA;
         }
         ::-webkit-scrollbar-thumb {
-            background: #c0c2c2;
+            background: #CBD5E1;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #a1a3a3;
+            background: #94A3B8;
         }
         
         /* Dropdown Scrollbar */
@@ -321,484 +323,553 @@
     </style>
 </head>
 <body class="h-full flex flex-col overflow-hidden text-slate-800">
-
-    <!-- LOGIN OVERLAY -->
-    <div id="loginOverlay">
-        <div class="login-card">
-            <div class="login-logo">
-                <div class="login-logo-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                </div>
-                <div>
-                    <div class="login-title">광고 소재 분석 대시보드</div>
-                    <div class="login-subtitle">퍼포먼스 마케팅팀 &middot; 내부 전용</div>
-                </div>
-            </div>
-            <div class="login-divider"></div>
-            <div class="login-field">
-                <label class="login-label" for="loginId">아이디</label>
-                <input id="loginId" type="text" class="login-input" placeholder="아이디를 입력하세요" autocomplete="username" onkeydown="if(event.key==='Enter') document.getElementById('loginPw').focus()"/>
-            </div>
-            <div class="login-field">
-                <label class="login-label" for="loginPw">비밀번호</label>
-                <div class="pw-wrapper">
-                    <input id="loginPw" type="password" class="login-input" placeholder="비밀번호를 입력하세요" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()" style="padding-right: 44px;"/>
-                    <button class="pw-toggle" type="button" onclick="togglePw()" title="비밀번호 표시/숨기기">
-                        <svg id="eyeIconOn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <svg id="eyeIconOff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                    </button>
-                </div>
-            </div>
-            <button class="login-btn" id="loginBtn" onclick="doLogin()">로그인</button>
-            <div class="login-error-msg" id="loginError">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay">
+<div class="login-card">
+<div class="login-logo">
+<div class="login-logo-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><line x1="18" x2="18" y1="20" y2="10"></line><line x1="12" x2="12" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="14"></line></svg>
+</div>
+<div>
+<div class="login-title">광고 소재 분석 대시보드</div>
+<div class="login-subtitle">퍼포먼스 마케팅팀 · 내부 전용</div>
+</div>
+</div>
+<div class="login-divider"></div>
+<div class="login-field">
+<label class="login-label" for="loginId">아이디</label>
+<input autocomplete="username" class="login-input" id="loginId" onkeydown="if(event.key==='Enter') document.getElementById('loginPw').focus()" placeholder="아이디를 입력하세요" type="text"/>
+</div>
+<div class="login-field">
+<label class="login-label" for="loginPw">비밀번호</label>
+<div class="pw-wrapper">
+<input autocomplete="current-password" class="login-input" id="loginPw" onkeydown="if(event.key==='Enter') doLogin()" placeholder="비밀번호를 입력하세요" style="padding-right: 44px;" type="password"/>
+<button class="pw-toggle" onclick="togglePw()" title="비밀번호 표시/숨기기" type="button">
+<svg fill="none" id="eyeIconOn" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+<svg fill="none" id="eyeIconOff" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="display:none;" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" x2="23" y1="1" y2="23"></line></svg>
+</button>
+</div>
+</div>
+<button class="login-btn" id="loginBtn" onclick="doLogin()">로그인</button>
+<div class="login-error-msg" id="loginError">
+<svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
                 아이디 또는 비밀번호가 올바르지 않습니다.
             </div>
-            <div class="login-footer">
-                <div class="login-footer-badge"><div class="login-footer-dot"></div>카빌리지 &middot; 내부 운영 시스템</div>
-                <div class="login-footer-badge">v1.0</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TOP HEADER -->
-    <header class="flex items-center justify-between px-6 py-4 bg-white border-b border-[#e8e8d1] shadow-sm">
-        <div class="flex items-center space-x-3">
-            <div class="p-2.5 bg-[#041d35] rounded-lg text-[#e9ff70]">
-                <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
-            </div>
-            <div>
-                <h1 class="text-xl font-bold tracking-tight text-brand-900 flex items-center gap-2">
+<div class="login-footer">
+<div class="login-footer-badge"><div class="login-footer-dot"></div>카빌리지 · 내부 운영 시스템</div>
+<div class="login-footer-badge">v1.0</div>
+</div>
+</div>
+</div>
+<!-- TOP HEADER -->
+<header class="flex items-center justify-between px-6 py-4 bg-white border-b border-[#E2E8F0] shadow-sm">
+<div class="flex items-center space-x-3">
+<div class="p-2.5 bg-[#1F2937] rounded-lg text-[#C4B5FD]">
+<i class="w-6 h-6" data-lucide="bar-chart-3"></i>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight text-brand-900 flex items-center gap-2">
                     광고 소재 분석 대시보드
                 </h1>
-                <p class="text-xs text-slate-500">어드민 DB 기준 & 매체별 광고비 매칭 집계 시스템</p>
-            </div>
-        </div>
-        
-        <!-- Connection Config Button & Syncer -->
-        <div class="flex items-center space-x-3">
-            <button onclick="toggleIntegrationModal()" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-[#f5f7e0] hover:bg-[#e8e8d1] text-brand-700 rounded-lg border border-brand-100 transition-all">
-                <i data-lucide="database" class="w-4 h-4 text-brand-600"></i>
+<p class="text-xs text-slate-500">어드민 DB 기준 &amp; 매체별 광고비 매칭 집계 시스템</p>
+</div>
+</div>
+<!-- Connection Config Button & Syncer -->
+<div class="flex items-center space-x-3">
+<button class="flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-[#EEF2FF] hover:bg-[#E2E8F0] text-brand-700 rounded-lg border border-brand-100 transition-all" onclick="toggleIntegrationModal()">
+<i class="w-4 h-4 text-brand-600" data-lucide="database"></i>
                 데이터 소스 연결
             </button>
-            <button onclick="resetDashboardData()" class="flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-white hover:bg-red-50 text-red-600 rounded-lg border border-red-100 transition-all">
-                <i data-lucide="rotate-ccw" class="w-4 h-4 text-red-500"></i>
+<button class="flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-white hover:bg-red-50 text-red-600 rounded-lg border border-red-100 transition-all" onclick="resetDashboardData()">
+<i class="w-4 h-4 text-red-500" data-lucide="rotate-ccw"></i>
                 데이터 초기화
             </button>
-            <button onclick="downloadExcelTemplate()" class="flex items-center gap-2 px-4 py-2 text-sm font-bold bg-brand-700 hover:bg-brand-900 text-white rounded-lg transition-all shadow-md shadow-brand-700/10">
-                <i data-lucide="download" class="w-4 h-4"></i>
+<button class="flex items-center gap-2 px-4 py-2 text-sm font-bold bg-brand-700 hover:bg-brand-900 text-white rounded-lg transition-all shadow-md shadow-brand-700/10" onclick="downloadExcelTemplate()">
+<i class="w-4 h-4" data-lucide="download"></i>
                 업로드 템플릿 다운로드
             </button>
-        </div>
-    </header>
-
-    <!-- MAIN BODY SECTION -->
-    <div class="flex-1 flex overflow-hidden">
-        
-        <!-- LEFT SIDEBAR: FILTERS -->
-        <aside class="w-72 bg-[#041d35] border-r border-[#113a63] p-6 flex flex-col space-y-6 overflow-y-auto">
-            <div>
-                <h2 class="text-xs font-bold uppercase tracking-wider text-[#e9ff70] mb-3 flex items-center gap-2">
-                    <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-[#e9ff70]"></i>
+</div>
+</header>
+<!-- MAIN BODY SECTION -->
+<div class="flex-1 flex overflow-hidden">
+<!-- LEFT SIDEBAR: FILTERS -->
+<aside class="w-72 bg-[#1F2937] border-r border-[#4B5563] p-6 flex flex-col space-y-6 overflow-y-auto">
+<div>
+<h2 class="text-xs font-bold uppercase tracking-wider text-[#C4B5FD] mb-3 flex items-center gap-2">
+<i class="w-3.5 h-3.5 text-[#C4B5FD]" data-lucide="sliders-horizontal"></i>
                     통합 필터 제어
                 </h2>
-                <div class="space-y-4">
-                    <!-- Month Filter (멀티셀렉트) -->
-                    <div>
-                        <label class="block text-xs font-semibold text-[#e9ff70] mb-1.5">조회 연월 <span class="text-[10px] text-slate-400 font-normal">(복수 선택 가능)</span></label>
-                        <div id="monthFilterContainer" class="space-y-1">
-                            <label class="flex items-center gap-2 cursor-pointer py-1 px-2 rounded hover:bg-[#0a294a] transition-colors">
-                                <input type="checkbox" value="ALL" class="month-filter-cb accent-[#e9ff70] w-3 h-3" onchange="handleMonthCheckAll(this)"> <span class="text-sm text-white">전체 보기</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Site Filter -->
-                    <div>
-                        <label class="block text-xs font-semibold text-[#e9ff70] mb-1.5">운영 사이트</label>
-                        <select id="filterSite" onchange="applyFilters()" class="w-full bg-[#0a294a] border border-[#113a63] text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#e9ff70] focus:ring-1 focus:ring-[#e9ff70] transition-colors">
-                            <option value="ALL" selected>전체 사이트 (카빌리지 + 차맵)</option>
-                            <option value="카빌리지">카빌리지</option>
-                            <option value="차맵">차맵</option>
-                        </select>
-                    </div>
-
-                    <!-- Agency Filter (멀티셀렉트) -->
-                    <div>
-                        <label class="block text-xs font-semibold text-[#e9ff70] mb-1.5">광고 매체사 <span class="text-[10px] text-slate-400 font-normal">(복수 선택 가능)</span></label>
-                        <div class="space-y-1">
-                            <label class="flex items-center gap-2 cursor-pointer py-1 px-2 rounded hover:bg-[#0a294a] transition-colors">
-                                <input type="checkbox" value="ALL" class="agency-filter-cb accent-[#e9ff70] w-3 h-3" checked onchange="handleAgencyCheckAll(this)"> <span class="text-sm text-white">전체 광고 매체사</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer py-1 px-2 rounded hover:bg-[#0a294a] transition-colors">
-                                <input type="checkbox" value="Meta" class="agency-filter-cb accent-[#e9ff70] w-3 h-3" onchange="handleAgencyCheck(this)"> <span class="text-sm text-slate-300">Meta (SNS-인스타그램)</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer py-1 px-2 rounded hover:bg-[#0a294a] transition-colors">
-                                <input type="checkbox" value="Tiktok" class="agency-filter-cb accent-[#e9ff70] w-3 h-3" onchange="handleAgencyCheck(this)"> <span class="text-sm text-slate-300">TikTok</span>
-                            </label>
-                            <label class="flex items-center gap-2 cursor-pointer py-1 px-2 rounded hover:bg-[#0a294a] transition-colors">
-                                <input type="checkbox" value="Google" class="agency-filter-cb accent-[#e9ff70] w-3 h-3" onchange="handleAgencyCheck(this)"> <span class="text-sm text-slate-300">Google GDN</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Team Profile info -->
-            <div class="mt-auto pt-6 border-t border-[#113a63]">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-[#e9ff70] flex items-center justify-center text-[#041d35] font-bold text-xs">
+<div class="space-y-4">
+<!-- Month Filter Dropdown -->
+<div class="relative" id="monthFilterWrapper">
+<label class="block text-xs font-semibold text-[#C4B5FD] mb-1.5">조회 연월</label>
+<button class="w-full flex items-center justify-between gap-2 bg-[#374151] border border-[#4B5563] text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#818CF8] focus:ring-1 focus:ring-[#818CF8] transition-colors text-left" onclick="toggleMonthDropdown()" type="button">
+<span class="truncate" id="monthFilterLabel">전체 보기</span>
+<i class="w-4 h-4 text-[#C4B5FD] shrink-0" data-lucide="chevron-down"></i>
+</button>
+<div class="hidden absolute left-0 right-0 mt-1.5 bg-[#374151] border border-[#4B5563] rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[260px] z-30" id="monthDropdown">
+<div class="p-2 border-b border-[#4B5563] bg-[#1F2937]">
+<label class="flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-[#4B5563] transition-colors">
+<input checked="" class="month-filter-cb accent-[#8B5CF6] w-3.5 h-3.5" onchange="handleMonthCheckAll(this)" type="checkbox" value="ALL"/>
+<span class="text-xs font-bold text-white">전체 보기</span>
+</label>
+</div>
+<div class="p-2 overflow-y-auto space-y-0.5" id="monthList">
+<!-- Month checkboxes will be injected dynamically -->
+</div>
+</div>
+</div>
+<!-- Site Filter -->
+<div>
+<label class="block text-xs font-semibold text-[#C4B5FD] mb-1.5">운영 사이트</label>
+<select class="w-full bg-[#374151] border border-[#4B5563] text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#818CF8] focus:ring-1 focus:ring-[#818CF8] transition-colors" id="filterSite" onchange="applyFilters()">
+<option selected="" value="ALL">전체 사이트 (카빌리지 + 차맵)</option>
+<option value="카빌리지">카빌리지</option>
+<option value="차맵">차맵</option>
+</select>
+</div>
+<!-- Agency Filter (멀티셀렉트) -->
+<div>
+<label class="block text-xs font-semibold text-[#C4B5FD] mb-1.5">광고 매체사 <span class="text-[10px] text-slate-400 font-normal">(복수 선택 가능)</span></label>
+<div class="space-y-1">
+<label class="flex items-center gap-2 cursor-pointer py-1 px-2 rounded hover:bg-[#374151] transition-colors">
+<input checked="" class="agency-filter-cb accent-[#8B5CF6] w-3 h-3" onchange="handleAgencyCheckAll(this)" type="checkbox" value="ALL"/> <span class="text-sm text-white">전체 광고 매체사</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer py-1 px-2 rounded hover:bg-[#374151] transition-colors">
+<input class="agency-filter-cb accent-[#8B5CF6] w-3 h-3" onchange="handleAgencyCheck(this)" type="checkbox" value="Meta"/> <span class="text-sm text-slate-300">Meta (SNS-인스타그램)</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer py-1 px-2 rounded hover:bg-[#374151] transition-colors">
+<input class="agency-filter-cb accent-[#8B5CF6] w-3 h-3" onchange="handleAgencyCheck(this)" type="checkbox" value="Tiktok"/> <span class="text-sm text-slate-300">TikTok</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer py-1 px-2 rounded hover:bg-[#374151] transition-colors">
+<input class="agency-filter-cb accent-[#8B5CF6] w-3 h-3" onchange="handleAgencyCheck(this)" type="checkbox" value="Google"/> <span class="text-sm text-slate-300">Google GDN</span>
+</label>
+</div>
+</div>
+<!-- Compare Month Menu -->
+<div class="pt-5 mt-5 border-t border-[#4B5563]">
+<h2 class="text-xs font-bold uppercase tracking-wider text-[#C4B5FD] mb-3 flex items-center gap-2">
+<i class="w-3.5 h-3.5 text-[#C4B5FD]" data-lucide="git-compare"></i>
+                            비교 연월
+                        </h2>
+<div class="space-y-3">
+<div>
+<label class="block text-[11px] font-semibold text-slate-300 mb-1.5">기준 월</label>
+<div class="flex gap-2">
+<select class="w-24 bg-[#374151] border border-[#4B5563] text-white rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-[#A78BFA]" onchange="updateCompareDashboard()">
+<option>직접 설정</option>
+</select>
+<select class="flex-1 bg-[#374151] border border-[#4B5563] text-white rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-[#A78BFA]" id="compareMonthA" onchange="handleCompareMonthChange()"></select>
+</div>
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-300 mb-1.5">비교 월</label>
+<div class="flex gap-2">
+<select class="w-24 bg-[#374151] border border-[#4B5563] text-white rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-[#A78BFA]" onchange="updateCompareDashboard()">
+<option>직접 설정</option>
+</select>
+<select class="flex-1 bg-[#374151] border border-[#4B5563] text-white rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-[#A78BFA]" id="compareMonthB" onchange="handleCompareMonthChange()"></select>
+</div>
+</div>
+<button class="w-full mt-1 py-2 text-xs font-bold bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-lg transition-all" onclick="document.getElementById('comparisonSection')?.scrollIntoView({behavior:'smooth', block:'start'})">
+                                비교표 바로 보기
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Team Profile info -->
+<div class="mt-auto pt-6 border-t border-[#4B5563]">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#4F46E5] flex items-center justify-center text-white font-bold text-xs">
                         PM
                     </div>
-                    <div>
-                        <p class="text-xs font-bold text-[#e9ff70]">퍼포먼스 마케팅팀</p>
-                        <p class="text-[10px] text-slate-300">대시보드 관리자 계정</p>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- CENTER CONTENTS & SCROLLABLE CONTENT SECTION -->
-        <main class="flex-1 bg-[#f5f7e2] p-6 overflow-y-auto space-y-6">
-
-            <!-- KPI SCORECARDS GRID (ONLY TITLE / NUMBER) -->
-            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                <!-- Card 1: Total Spend -->
-                <div class="bg-white p-5 rounded-xl border border-[#e8e8d1] shadow-sm flex flex-col justify-between relative overflow-hidden group">
-                    <div class="flex items-center justify-between text-slate-500 text-xs font-bold">
-                        <span>총 광고 지출액</span>
-                        <i data-lucide="credit-card" class="w-4 h-4 text-brand-700"></i>
-                    </div>
-                    <div class="mt-4">
-                        <span class="text-2xl font-bold tracking-tight text-brand-900" id="kpiSpend">0</span> <span class="text-xs text-slate-500">원</span>
-                    </div>
-                </div>
-
-                <!-- Card 2: Total DB -->
-                <div class="bg-white p-5 rounded-xl border border-[#e8e8d1] shadow-sm flex flex-col justify-between relative overflow-hidden group">
-                    <div class="flex items-center justify-between text-slate-500 text-xs font-bold">
-                        <span>유효 DB 수량</span>
-                        <i data-lucide="user-check" class="w-4 h-4 text-brand-500"></i>
-                    </div>
-                    <div class="mt-4">
-                        <span class="text-2xl font-bold tracking-tight text-brand-900" id="kpiDB">0</span> <span class="text-xs text-slate-500">건</span>
-                    </div>
-                </div>
-
-                <!-- Card 3: Total Contracts -->
-                <div class="bg-white p-5 rounded-xl border border-[#e8e8d1] shadow-sm flex flex-col justify-between relative overflow-hidden group">
-                    <div class="flex items-center justify-between text-slate-500 text-xs font-bold">
-                        <span>최종 계약 수량</span>
-                        <i data-lucide="award" class="w-4 h-4 text-brand-600"></i>
-                    </div>
-                    <div class="mt-4">
-                        <span class="text-2xl font-bold tracking-tight text-brand-900" id="kpiContracts">0</span> <span class="text-xs text-slate-500">건</span>
-                    </div>
-                </div>
-
-                <!-- Card 4: CPA -->
-                <div class="bg-white p-5 rounded-xl border border-[#e8e8d1] shadow-sm flex flex-col justify-between relative overflow-hidden group">
-                    <div class="flex items-center justify-between text-slate-500 text-xs font-bold">
-                        <span>종합 CPA (DB 단가)</span>
-                        <i data-lucide="target" class="w-4 h-4 text-brand-500"></i>
-                    </div>
-                    <div class="mt-4">
-                        <span class="text-2xl font-bold tracking-tight text-brand-900" id="kpiCPA">0</span> <span class="text-xs text-slate-500">원</span>
-                    </div>
-                </div>
-
-                <!-- Card 5: CPS -->
-                <div class="bg-white p-5 rounded-xl border border-[#e8e8d1] shadow-sm flex flex-col justify-between relative overflow-hidden group">
-                    <div class="flex items-center justify-between text-slate-500 text-xs font-bold">
-                        <span>종합 CPS (계약 단가)</span>
-                        <i data-lucide="dollar-sign" class="w-4 h-4 text-brand-700"></i>
-                    </div>
-                    <div class="mt-4">
-                        <span class="text-2xl font-bold tracking-tight text-brand-900" id="kpiCPS">0</span> <span class="text-xs text-slate-500">원</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CHARTS SECTION GRID -->
-            <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Chart 1: Site/Channel Performance Comparison (TOP 5) -->
-                <div class="bg-white p-6 rounded-xl border border-[#e8e8d1] shadow-sm flex flex-col h-96">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <h3 class="text-base font-bold text-brand-900">우수 소재 성과 TOP 5</h3>
-                            <p class="text-xs text-slate-400">DB 수량(↑), DB 단가(↓), 계약 단가(↓) 순위별 상위 소재</p>
+<div>
+<p class="text-xs font-bold text-[#C4B5FD]">퍼포먼스 마케팅팀</p>
+<p class="text-[10px] text-slate-300">대시보드 관리자 계정</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- CENTER CONTENTS & SCROLLABLE CONTENT SECTION -->
+<main class="flex-1 bg-[#F4F6FA] p-6 overflow-y-auto space-y-6">
+<!-- KPI SCORECARDS GRID (ONLY TITLE / NUMBER) -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+<!-- Card 1: Total Spend -->
+<div class="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between text-slate-500 text-xs font-bold">
+<span>총 광고 지출액</span>
+<i class="w-4 h-4 text-brand-700" data-lucide="credit-card"></i>
+</div>
+<div class="mt-4">
+<span class="text-2xl font-bold tracking-tight text-brand-900" id="kpiSpend">0</span> <span class="text-xs text-slate-500">원</span>
+</div>
+</div>
+<!-- Card 2: Total DB -->
+<div class="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between text-slate-500 text-xs font-bold">
+<span>유효 DB 수량</span>
+<i class="w-4 h-4 text-brand-500" data-lucide="user-check"></i>
+</div>
+<div class="mt-4">
+<span class="text-2xl font-bold tracking-tight text-brand-900" id="kpiDB">0</span> <span class="text-xs text-slate-500">건</span>
+</div>
+</div>
+<!-- Card 3: Total Contracts -->
+<div class="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between text-slate-500 text-xs font-bold">
+<span>최종 계약 수량</span>
+<i class="w-4 h-4 text-brand-600" data-lucide="award"></i>
+</div>
+<div class="mt-4">
+<span class="text-2xl font-bold tracking-tight text-brand-900" id="kpiContracts">0</span> <span class="text-xs text-slate-500">건</span>
+</div>
+</div>
+<!-- Card 4: CPA -->
+<div class="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between text-slate-500 text-xs font-bold">
+<span>종합 CPA (DB 단가)</span>
+<i class="w-4 h-4 text-brand-500" data-lucide="target"></i>
+</div>
+<div class="mt-4">
+<span class="text-2xl font-bold tracking-tight text-brand-900" id="kpiCPA">0</span> <span class="text-xs text-slate-500">원</span>
+</div>
+</div>
+<!-- Card 5: CPS -->
+<div class="bg-white p-5 rounded-xl border border-[#E2E8F0] shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between text-slate-500 text-xs font-bold">
+<span>종합 CPS (계약 단가)</span>
+<i class="w-4 h-4 text-brand-700" data-lucide="dollar-sign"></i>
+</div>
+<div class="mt-4">
+<span class="text-2xl font-bold tracking-tight text-brand-900" id="kpiCPS">0</span> <span class="text-xs text-slate-500">원</span>
+</div>
+</div>
+</section>
+<!-- MONTHLY COMPARISON SECTION -->
+<section class="bg-white rounded-xl border border-[#E2E8F0] shadow-sm overflow-hidden" id="comparisonSection">
+<div class="px-6 py-5 border-b border-[#E2E8F0] bg-white flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+<div>
+<h3 class="text-base font-bold text-brand-900 flex items-center gap-2">
+<i class="w-4 h-4 text-brand-600" data-lucide="git-compare"></i>
+                            월별 성과 비교
+                        </h3>
+<p class="text-xs text-slate-400 mt-1">선택한 두 달을 기준으로 타입별 월별 성과를 차트로 비교하고, 표에서는 매체/사이트별 세부 성과를 확인합니다.</p>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center gap-2">
+<div class="text-[11px] px-3 py-2 rounded-lg bg-brand-50 text-brand-700 font-semibold border border-brand-100" id="compareTypeSummary">
+                            타입: 데이터 연동 후 자동 반영
                         </div>
-                        <span class="text-[11px] px-2 py-1 rounded bg-brand-50 text-brand-700 font-semibold border border-brand-100">막대 차트</span>
-                    </div>
-                    <div class="flex-1 relative">
-                        <canvas id="performanceChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Chart 2: CPA & CPS Monthly Trend -->
-                <div class="bg-white p-6 rounded-xl border border-[#e8e8d1] shadow-sm flex flex-col h-96">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <h3 class="text-base font-bold text-brand-900">월별 광고 효율 추이 (CPA & CPS)</h3>
-                            <p class="text-xs text-slate-400">월 고정 단위 기준의 평균 획득 단가 실시간 변동 폭</p>
-                        </div>
-                        <span class="text-[11px] px-2 py-1 rounded bg-brand-50 text-brand-700 font-semibold border border-brand-100">이중 축 라인</span>
-                    </div>
-                    <div class="flex-1 relative">
-                        <canvas id="trendChart"></canvas>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PERFORMANCE DETAILED LIST TABLE -->
-            <section class="bg-white rounded-xl border border-[#e8e8d1] shadow-sm overflow-hidden mb-12">
-                <div class="px-6 py-5 border-b border-[#e8e8d1] bg-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div>
-                        <h3 class="text-base font-bold text-brand-900">소재명(키워드) 매칭별 종합 성과 목록</h3>
-                        <p class="text-xs text-slate-400">어드민 키워드 ↔ 매체사 보고서 1:1 결합 및 효율 지표 연산 테이블</p>
-                    </div>
-                    <div class="flex items-center gap-2.5 w-full sm:w-auto flex-wrap sm:flex-nowrap">
-                        
-                        <!-- Table Specific Month Filter Dropdown -->
-                        <div class="relative w-full sm:w-auto z-10" id="tableMonthFilterWrapper">
-                            <button onclick="toggleTableMonthDropdown()" class="w-full sm:w-36 flex items-center justify-between gap-2 px-3 py-2 text-xs font-semibold bg-white text-slate-700 rounded-lg border border-[#e8e8d1] shadow-sm hover:bg-slate-50 transition-all text-left">
-                                <div class="flex items-center gap-1.5 truncate">
-                                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-brand-600 shrink-0"></i>
-                                    <span id="tableMonthFilterLabel" class="truncate">연월 선택 (전체)</span>
-                                </div>
-                                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                            </button>
-                            
-                            <!-- Dropdown Panel -->
-                            <div id="tableMonthDropdown" class="hidden absolute right-0 sm:left-auto sm:right-0 mt-1.5 w-48 bg-white border border-[#e8e8d1] rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[300px]">
-                                <div class="p-2 border-b border-[#e8e8d1] bg-brand-50/50">
-                                    <label class="flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-brand-50 transition-colors">
-                                        <input type="checkbox" value="ALL" class="table-month-cb accent-brand-600 w-3.5 h-3.5" checked onchange="handleTableMonthCheckAll(this)"> 
-                                        <span class="text-xs font-bold text-brand-900">전체 선택</span>
-                                    </label>
-                                </div>
-                                <div id="tableMonthList" class="p-2 overflow-y-auto space-y-0.5">
-                                    <!-- Checkboxes will be injected dynamically -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Search Bar -->
-                        <div class="relative w-full sm:w-56 shrink-0">
-                            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-[9px]"></i>
-                            <input type="text" id="tableSearch" onkeyup="searchTable()" placeholder="소재명/키워드 검색..." class="w-full bg-white border border-[#e8e8d1] rounded-lg pl-9 pr-3 py-2 text-xs focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors text-slate-800 shadow-sm">
-                        </div>
-                        
-                        <!-- Download CSV -->
-                        <button onclick="downloadTableCSV()" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-[#e8e8d1] shadow-sm transition-all shrink-0">
-                            <i data-lucide="download" class="w-3.5 h-3.5 text-slate-500"></i>
-                            <span class="hidden sm:inline">엑셀</span> 다운로드
+<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-[#E2E8F0] shadow-sm">
+<label class="text-[11px] font-bold text-brand-900 whitespace-nowrap" for="compareMetric">비교 기준</label>
+<select class="bg-[#F4F6FA] border border-[#E2E8F0] text-brand-900 rounded-lg px-2.5 py-1.5 text-xs font-semibold focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500" id="compareMetric" onchange="handleCompareMetricChange()">
+<option selected="" value="dbCount">DB수량</option>
+<option value="cpa">DB단가</option>
+<option value="contracts">계약수량</option>
+<option value="cps">계약단가</option>
+<option value="clickToDb">DB전환율</option>
+<option value="dbToContract">계약전환율</option>
+</select>
+</div>
+<button class="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-[#E2E8F0] shadow-sm transition-all shrink-0" onclick="downloadCompareTableExcel()">
+<i class="w-3.5 h-3.5 text-slate-500" data-lucide="download"></i>
+<span class="hidden sm:inline">비교표 엑셀</span> 다운로드
+</button>
+</div>
+</div>
+<div class="p-6 space-y-6">
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6 items-stretch">
+<div class="xl:col-span-1 rounded-xl border border-[#E2E8F0] p-5 bg-white min-h-[520px]">
+<div class="relative h-[480px]">
+<canvas id="compareChart"></canvas>
+</div>
+</div>
+<div class="xl:col-span-2 overflow-x-auto rounded-xl border border-[#E2E8F0] bg-white min-h-[520px]">
+<table class="w-full min-w-[1080px] table-fixed text-left text-[11px] text-slate-700">
+<colgroup>
+<col style="width: 11%;"/>
+<col style="width: 9%;"/>
+<col style="width: 9%;"/>
+<col style="width: 13%;"/>
+<col style="width: 8%;"/>
+<col style="width: 8%;"/>
+<col style="width: 8%;"/>
+<col style="width: 9%;"/>
+<col style="width: 9%;"/>
+<col style="width: 8%;"/>
+<col style="width: 8%;"/>
+</colgroup>
+<thead class="bg-brand-50 text-brand-700 font-bold border-b border-[#E2E8F0] sticky top-0 z-10">
+<tr>
+<th class="px-3 py-3">광고 매체사</th>
+<th class="px-3 py-3">사이트</th>
+<th class="px-2 py-3 text-center">타입</th>
+<th class="px-3 py-3 text-right">총 광고비</th>
+<th class="px-3 py-3 text-right">클릭수</th>
+<th class="px-3 py-3 text-right">DB수</th>
+<th class="px-3 py-3 text-right">계약수</th>
+<th class="px-3 py-3 text-right">DB단가</th>
+<th class="px-3 py-3 text-right">계약단가</th>
+<th class="px-3 py-3 text-right">DB전환율</th>
+<th class="px-3 py-3 text-right">계약전환율</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#E2E8F0]/60" id="compareTableBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<!-- CHARTS SECTION GRID -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Chart 1: Site/Channel Performance Comparison (TOP 5) -->
+<div class="bg-white p-6 rounded-xl border border-[#E2E8F0] shadow-sm flex flex-col h-96">
+<div class="flex items-center justify-between mb-4">
+<div>
+<h3 class="text-base font-bold text-brand-900">우수 소재 성과 TOP 5</h3>
+<p class="text-xs text-slate-400">DB 수량(↑), DB 단가(↓), 계약 단가(↓) 순위별 상위 소재</p>
+</div>
+<span class="text-[11px] px-2 py-1 rounded bg-brand-50 text-brand-700 font-semibold border border-brand-100">막대 차트</span>
+</div>
+<div class="flex-1 relative">
+<canvas id="performanceChart"></canvas>
+</div>
+</div>
+<!-- Chart 2: CPA & CPS Monthly Trend -->
+<div class="bg-white p-6 rounded-xl border border-[#E2E8F0] shadow-sm flex flex-col h-96">
+<div class="flex items-center justify-between mb-4">
+<div>
+<h3 class="text-base font-bold text-brand-900">월별 광고 효율 추이 (CPA &amp; CPS)</h3>
+<p class="text-xs text-slate-400">월 고정 단위 기준의 평균 획득 단가 실시간 변동 폭</p>
+</div>
+<span class="text-[11px] px-2 py-1 rounded bg-brand-50 text-brand-700 font-semibold border border-brand-100">이중 축 라인</span>
+</div>
+<div class="flex-1 relative">
+<canvas id="trendChart"></canvas>
+</div>
+</div>
+</section>
+<!-- PERFORMANCE DETAILED LIST TABLE -->
+<section class="bg-white rounded-xl border border-[#E2E8F0] shadow-sm overflow-hidden mb-12">
+<div class="px-6 py-5 border-b border-[#E2E8F0] bg-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div>
+<h3 class="text-base font-bold text-brand-900">소재명(키워드) 매칭별 종합 성과 목록</h3>
+<p class="text-xs text-slate-400">어드민 키워드 ↔ 매체사 보고서 1:1 결합 및 효율 지표 연산 테이블</p>
+</div>
+<div class="flex items-center gap-2.5 w-full sm:w-auto flex-wrap sm:flex-nowrap">
+<!-- Table Specific Month Filter Dropdown -->
+<div class="relative w-full sm:w-auto z-10" id="tableMonthFilterWrapper">
+<button class="w-full sm:w-36 flex items-center justify-between gap-2 px-3 py-2 text-xs font-semibold bg-white text-slate-700 rounded-lg border border-[#E2E8F0] shadow-sm hover:bg-slate-50 transition-all text-left" onclick="toggleTableMonthDropdown()">
+<div class="flex items-center gap-1.5 truncate">
+<i class="w-3.5 h-3.5 text-brand-600 shrink-0" data-lucide="calendar"></i>
+<span class="truncate" id="tableMonthFilterLabel">연월 선택 (전체)</span>
+</div>
+<i class="w-3.5 h-3.5 text-slate-400 shrink-0" data-lucide="chevron-down"></i>
+</button>
+<!-- Dropdown Panel -->
+<div class="hidden absolute right-0 sm:left-auto sm:right-0 mt-1.5 w-48 bg-white border border-[#E2E8F0] rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[300px]" id="tableMonthDropdown">
+<div class="p-2 border-b border-[#E2E8F0] bg-brand-50/50">
+<label class="flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-brand-50 transition-colors">
+<input checked="" class="table-month-cb accent-brand-600 w-3.5 h-3.5" onchange="handleTableMonthCheckAll(this)" type="checkbox" value="ALL"/>
+<span class="text-xs font-bold text-brand-900">전체 선택</span>
+</label>
+</div>
+<div class="p-2 overflow-y-auto space-y-0.5" id="tableMonthList">
+<!-- Checkboxes will be injected dynamically -->
+</div>
+</div>
+</div>
+<!-- Search Bar -->
+<div class="relative w-full sm:w-56 shrink-0">
+<i class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-[9px]" data-lucide="search"></i>
+<input class="w-full bg-white border border-[#E2E8F0] rounded-lg pl-9 pr-3 py-2 text-xs focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors text-slate-800 shadow-sm" id="tableSearch" onkeyup="searchTable()" placeholder="소재명/키워드 검색..." type="text"/>
+</div>
+<!-- Download CSV -->
+<button class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold bg-white hover:bg-slate-50 text-slate-700 rounded-lg border border-[#E2E8F0] shadow-sm transition-all shrink-0" onclick="downloadTableCSV()">
+<i class="w-3.5 h-3.5 text-slate-500" data-lucide="download"></i>
+<span class="hidden sm:inline">엑셀</span> 다운로드
                         </button>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs text-slate-700">
-                        <thead class="bg-brand-50 text-brand-700 font-bold border-b border-[#e8e8d1]">
-                            <tr>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('month')">날짜 (연월) <span class="text-[9px] text-brand-500">▼</span></th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('agency')">광고 매체사 <span class="text-[9px] text-brand-500">▼</span></th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('site')">사이트 <span class="text-[9px] text-brand-500">▼</span></th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('adName')">매체 소재명 (광고 이름) <span class="text-[9px] text-brand-500">▼</span></th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right" onclick="sortData('spend')">총 광고비 <span class="text-[9px] text-brand-500">▼</span></th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right" onclick="sortData('clicks')">클릭수 <span class="text-[9px] text-brand-500">▼</span></th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right" onclick="sortData('dbCount')">유효 DB수 <span class="text-[9px] text-brand-500">▼</span></th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right" onclick="sortData('contracts')">계약 수량 <span class="text-[9px] text-brand-500">▼</span></th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right font-bold text-brand-700" onclick="sortData('cpa')">DB 단가 (CPA) <span class="text-[9px] text-brand-600">▼</span></th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right font-bold text-brand-900" onclick="sortData('cps')">계약 단가 (CPS) <span class="text-[9px] text-brand-600">▼</span></th>
-                            </tr>
-                        </thead>
-                        <tbody id="performanceTableBody" class="divide-y divide-[#e8e8d1]/60">
-                            <!-- Rows will be injected dynamically via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- DATA SOURCE MODAL -->
-    <div id="integrationModal" class="fixed inset-0 bg-brand-900/40 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white border border-[#e8e8d1] rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col text-slate-800">
-            <!-- Modal Header -->
-            <div class="p-6 border-b border-[#e8e8d1] flex items-center justify-between flex-shrink-0">
-                <div class="flex items-center gap-3">
-                    <div class="p-2 bg-brand-50 text-brand-700 rounded-lg">
-                        <i data-lucide="database" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold text-brand-900">데이터 소스 연결</h3>
-                        <p class="text-xs text-slate-500">엑셀 파일 업로드 또는 구글 스프레드시트 URL 연동 중 선택하세요.</p>
-                    </div>
-                </div>
-                <button onclick="toggleIntegrationModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <!-- Modal Tabs -->
-            <div class="flex border-b border-[#e8e8d1] flex-shrink-0 bg-[#f5f7e2]">
-                <button id="modalTabBtn_excel" onclick="switchModalTab('excel')"
-                    class="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-bold transition-all border-b-2 border-brand-500 text-brand-700 bg-white">
-                    <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs text-slate-700">
+<thead class="bg-brand-50 text-brand-700 font-bold border-b border-[#E2E8F0]">
+<tr>
+<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('month')">날짜 (연월) <span class="text-[9px] text-brand-500">▼</span></th>
+<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('agency')">광고 매체사 <span class="text-[9px] text-brand-500">▼</span></th>
+<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('site')">사이트 <span class="text-[9px] text-brand-500">▼</span></th>
+<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('adName')">매체 소재명 (광고 이름) <span class="text-[9px] text-brand-500">▼</span></th>
+<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('creativeGroup')">타입 <span class="text-[9px] text-brand-500">▼</span></th>
+<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right" onclick="sortData('spend')">총 광고비 <span class="text-[9px] text-brand-500">▼</span></th>
+<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right" onclick="sortData('clicks')">클릭수 <span class="text-[9px] text-brand-500">▼</span></th>
+<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right" onclick="sortData('dbCount')">유효 DB수 <span class="text-[9px] text-brand-500">▼</span></th>
+<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right" onclick="sortData('contracts')">계약 수량 <span class="text-[9px] text-brand-500">▼</span></th>
+<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right font-bold text-brand-700" onclick="sortData('cpa')">DB 단가 (CPA) <span class="text-[9px] text-brand-600">▼</span></th>
+<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right font-bold text-brand-900" onclick="sortData('cps')">계약 단가 (CPS) <span class="text-[9px] text-brand-600">▼</span></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#E2E8F0]/60" id="performanceTableBody">
+<!-- Rows will be injected dynamically via JS -->
+</tbody>
+</table>
+</div>
+</section>
+</main>
+</div>
+<!-- DATA SOURCE MODAL -->
+<div class="fixed inset-0 bg-brand-900/40 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4" id="integrationModal">
+<div class="bg-white border border-[#E2E8F0] rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col text-slate-800">
+<!-- Modal Header -->
+<div class="p-6 border-b border-[#E2E8F0] flex items-center justify-between flex-shrink-0">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-brand-50 text-brand-700 rounded-lg">
+<i class="w-5 h-5" data-lucide="database"></i>
+</div>
+<div>
+<h3 class="text-lg font-bold text-brand-900">데이터 소스 연결</h3>
+<p class="text-xs text-slate-500">엑셀 파일 업로드 또는 구글 스프레드시트 URL 연동 중 선택하세요.</p>
+</div>
+</div>
+<button class="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors" onclick="toggleIntegrationModal()">
+<i class="w-5 h-5" data-lucide="x"></i>
+</button>
+</div>
+<!-- Modal Tabs -->
+<div class="flex border-b border-[#E2E8F0] flex-shrink-0 bg-[#F4F6FA]">
+<button class="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-bold transition-all border-b-2 border-brand-500 text-brand-700 bg-white" id="modalTabBtn_excel" onclick="switchModalTab('excel')">
+<i class="w-3.5 h-3.5" data-lucide="file-spreadsheet"></i>
                     엑셀 파일 업로드
                 </button>
-                <button id="modalTabBtn_gsheet" onclick="switchModalTab('gsheet')"
-                    class="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-bold transition-all border-b-2 border-transparent text-slate-500 hover:text-brand-700">
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3zM7 17H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V7h2v2zm10 8H9v-2h8v2zm0-4H9v-2h8v2zm0-4H9V7h8v2z"/></svg>
+<button class="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-bold transition-all border-b-2 border-transparent text-slate-500 hover:text-brand-700" id="modalTabBtn_gsheet" onclick="switchModalTab('gsheet')">
+<svg class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 24 24"><path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3zM7 17H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V7h2v2zm10 8H9v-2h8v2zm0-4H9v-2h8v2zm0-4H9V7h8v2z"></path></svg>
                     구글 스프레드시트 연동
                 </button>
-            </div>
-
-            <!-- Tab Panel: 엑셀 업로드 -->
-            <div id="modalTabPanel_excel" class="p-6 space-y-5 flex-1 overflow-y-auto">
-                <!-- 가이드 -->
-                <div class="p-4 bg-brand-50 border border-brand-100 rounded-xl space-y-1">
-                    <h4 class="text-xs font-bold text-brand-900 flex items-center gap-1">
-                        <i data-lucide="info" class="w-4 h-4 text-brand-600"></i>
+</div>
+<!-- Tab Panel: 엑셀 업로드 -->
+<div class="p-6 space-y-5 flex-1 overflow-y-auto" id="modalTabPanel_excel">
+<!-- 가이드 -->
+<div class="p-4 bg-brand-50 border border-brand-100 rounded-xl space-y-1">
+<h4 class="text-xs font-bold text-brand-900 flex items-center gap-1">
+<i class="w-4 h-4 text-brand-600" data-lucide="info"></i>
                         엑셀 파일 준비 가이드
                     </h4>
-                    <ol class="list-decimal list-inside text-[11px] text-brand-700/80 space-y-1 leading-relaxed">
-                        <li>아래 <span class="font-semibold text-slate-900">업로드 템플릿 다운로드</span> 버튼으로 양식을 받습니다.</li>
-                        <li>시트탭 이름이 정확히 <span class="font-semibold text-slate-900">Meta_DB / Tiktok_DB / 키워드매칭 / Meta / Tiktok</span> 이어야 합니다.</li>
-                        <li>카빌리지 / 차맵 파일을 각각 업로드하세요.</li>
-                    </ol>
-                </div>
-
-                <!-- 사이트 탭 선택 -->
-                <div class="flex gap-2">
-                    <button id="siteCfgBtn_카빌리지" onclick="switchSiteConfig('카빌리지')"
-                        class="flex-1 py-2.5 text-xs font-bold rounded-xl border-2 border-brand-500 bg-brand-700 text-white transition-all">
+<ol class="list-decimal list-inside text-[11px] text-brand-700/80 space-y-1 leading-relaxed">
+<li>아래 <span class="font-semibold text-slate-900">업로드 템플릿 다운로드</span> 버튼으로 양식을 받습니다.</li>
+<li>시트탭 이름이 정확히 <span class="font-semibold text-slate-900">Meta_DB / Tiktok_DB / Google_DB / 키워드매칭 / Meta / Tiktok / Google</span> 이어야 합니다. 유효 DB수는 Meta_DB/Tiktok_DB의 첫 행과 빈 행을 제외한 모든 행으로 집계합니다.</li>
+<li><span class="font-semibold text-slate-900">키워드매칭</span> 시트의 <span class="font-semibold text-slate-900">타입</span> 열에 브라이언 / AI기타채널 / 신규포맷 / 유튜브 중 하나를 입력하면 비교표에 반영됩니다.</li>
+<li>카빌리지 / 차맵 파일을 각각 업로드하세요.</li>
+</ol>
+</div>
+<!-- 사이트 탭 선택 -->
+<div class="flex gap-2">
+<button class="flex-1 py-2.5 text-xs font-bold rounded-xl border-2 border-brand-500 bg-brand-700 text-white transition-all" id="siteCfgBtn_카빌리지" onclick="switchSiteConfig('카빌리지')">
                         카빌리지
                     </button>
-                    <button id="siteCfgBtn_차맵" onclick="switchSiteConfig('차맵')"
-                        class="flex-1 py-2.5 text-xs font-bold rounded-xl border-2 border-[#e8e8d1] bg-white text-slate-500 hover:border-brand-300 transition-all">
+<button class="flex-1 py-2.5 text-xs font-bold rounded-xl border-2 border-[#E2E8F0] bg-white text-slate-500 hover:border-brand-300 transition-all" id="siteCfgBtn_차맵" onclick="switchSiteConfig('차맵')">
                         차맵
                     </button>
-                </div>
-
-                <!-- 카빌리지 업로드 -->
-                <div id="siteCfgPanel_카빌리지" class="space-y-3">
-                    <label class="block text-xs font-bold text-slate-700">카빌리지 엑셀 파일</label>
-                    <label id="dropZone_카빌리지"
-                        class="flex flex-col items-center justify-center gap-2 w-full h-28 border-2 border-dashed border-brand-200 rounded-xl bg-brand-50 hover:border-brand-500 hover:bg-brand-100 cursor-pointer transition-all"
-                        ondragover="event.preventDefault()" ondrop="handleDrop(event,'카빌리지')">
-                        <i data-lucide="upload-cloud" class="w-7 h-7 text-brand-400"></i>
-                        <span id="dropLabel_카빌리지" class="text-[11px] text-slate-500">클릭하거나 파일을 여기에 드래그하세요</span>
-                        <input type="file" accept=".xlsx,.xls" class="hidden" onchange="handleFileUpload(event,'카빌리지')">
-                    </label>
-                    <div id="fileStatus_카빌리지" class="hidden grid grid-cols-4 gap-2">
-                        <div class="text-center"><div id="tabStatus_카빌리지_admin" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400">어드민 DB</div></div>
-                        <div class="text-center"><div id="tabStatus_카빌리지_matching" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400">키워드매칭</div></div>
-                        <div class="text-center"><div id="tabStatus_카빌리지_meta" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400">Meta</div></div>
-                        <div class="text-center"><div id="tabStatus_카빌리지_tiktok" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400">Tiktok</div></div>
-                    </div>
-                </div>
-
-                <!-- 차맵 업로드 -->
-                <div id="siteCfgPanel_차맵" class="space-y-3 hidden">
-                    <label class="block text-xs font-bold text-slate-700">차맵 엑셀 파일</label>
-                    <label id="dropZone_차맵"
-                        class="flex flex-col items-center justify-center gap-2 w-full h-28 border-2 border-dashed border-brand-200 rounded-xl bg-brand-50 hover:border-brand-500 hover:bg-brand-100 cursor-pointer transition-all"
-                        ondragover="event.preventDefault()" ondrop="handleDrop(event,'차맵')">
-                        <i data-lucide="upload-cloud" class="w-7 h-7 text-brand-400"></i>
-                        <span id="dropLabel_차맵" class="text-[11px] text-slate-500">클릭하거나 파일을 여기에 드래그하세요</span>
-                        <input type="file" accept=".xlsx,.xls" class="hidden" onchange="handleFileUpload(event,'차맵')">
-                    </label>
-                    <div id="fileStatus_차맵" class="hidden grid grid-cols-4 gap-2">
-                        <div class="text-center"><div id="tabStatus_차맵_admin" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400">어드민 DB</div></div>
-                        <div class="text-center"><div id="tabStatus_차맵_matching" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400">키워드매칭</div></div>
-                        <div class="text-center"><div id="tabStatus_차맵_meta" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400">Meta</div></div>
-                        <div class="text-center"><div id="tabStatus_차맵_tiktok" class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400">Tiktok</div></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab Panel: 구글 스프레드시트 연동 -->
-            <div id="modalTabPanel_gsheet" class="p-6 space-y-5 flex-1 overflow-y-auto hidden">
-                <!-- 가이드 -->
-                <div class="p-4 bg-blue-50 border border-blue-100 rounded-xl space-y-2">
-                    <h4 class="text-xs font-bold text-blue-900 flex items-center gap-1.5">
-                        <i data-lucide="info" class="w-4 h-4 text-blue-600"></i>
+</div>
+<!-- 카빌리지 업로드 -->
+<div class="space-y-3" id="siteCfgPanel_카빌리지">
+<label class="block text-xs font-bold text-slate-700">카빌리지 엑셀 파일</label>
+<label class="flex flex-col items-center justify-center gap-2 w-full h-28 border-2 border-dashed border-brand-200 rounded-xl bg-brand-50 hover:border-brand-500 hover:bg-brand-100 cursor-pointer transition-all" id="dropZone_카빌리지" ondragover="event.preventDefault()" ondrop="handleDrop(event,'카빌리지')">
+<i class="w-7 h-7 text-brand-400" data-lucide="upload-cloud"></i>
+<span class="text-[11px] text-slate-500" id="dropLabel_카빌리지">클릭하거나 파일을 여기에 드래그하세요</span>
+<input accept=".xlsx,.xls" class="hidden" onchange="handleFileUpload(event,'카빌리지')" type="file"/>
+</label>
+<div class="hidden grid grid-cols-5 gap-2" id="fileStatus_카빌리지">
+<div class="text-center"><div class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400" id="tabStatus_카빌리지_admin">어드민 DB</div></div>
+<div class="text-center"><div class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400" id="tabStatus_카빌리지_matching">키워드매칭</div></div>
+<div class="text-center"><div class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400" id="tabStatus_카빌리지_meta">Meta</div></div>
+<div class="text-center"><div class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400" id="tabStatus_카빌리지_tiktok">Tiktok</div></div>
+<div class="text-center"><div class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400" id="tabStatus_카빌리지_google">Google</div></div>
+</div>
+</div>
+<!-- 차맵 업로드 -->
+<div class="space-y-3 hidden" id="siteCfgPanel_차맵">
+<label class="block text-xs font-bold text-slate-700">차맵 엑셀 파일</label>
+<label class="flex flex-col items-center justify-center gap-2 w-full h-28 border-2 border-dashed border-brand-200 rounded-xl bg-brand-50 hover:border-brand-500 hover:bg-brand-100 cursor-pointer transition-all" id="dropZone_차맵" ondragover="event.preventDefault()" ondrop="handleDrop(event,'차맵')">
+<i class="w-7 h-7 text-brand-400" data-lucide="upload-cloud"></i>
+<span class="text-[11px] text-slate-500" id="dropLabel_차맵">클릭하거나 파일을 여기에 드래그하세요</span>
+<input accept=".xlsx,.xls" class="hidden" onchange="handleFileUpload(event,'차맵')" type="file"/>
+</label>
+<div class="hidden grid grid-cols-5 gap-2" id="fileStatus_차맵">
+<div class="text-center"><div class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400" id="tabStatus_차맵_admin">어드민 DB</div></div>
+<div class="text-center"><div class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400" id="tabStatus_차맵_matching">키워드매칭</div></div>
+<div class="text-center"><div class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400" id="tabStatus_차맵_meta">Meta</div></div>
+<div class="text-center"><div class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400" id="tabStatus_차맵_tiktok">Tiktok</div></div>
+<div class="text-center"><div class="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400" id="tabStatus_차맵_google">Google</div></div>
+</div>
+</div>
+</div>
+<!-- Tab Panel: 구글 스프레드시트 연동 -->
+<div class="p-6 space-y-5 flex-1 overflow-y-auto hidden" id="modalTabPanel_gsheet">
+<!-- 가이드 -->
+<div class="p-4 bg-blue-50 border border-blue-100 rounded-xl space-y-2">
+<h4 class="text-xs font-bold text-blue-900 flex items-center gap-1.5">
+<i class="w-4 h-4 text-blue-600" data-lucide="info"></i>
                         구글 스프레드시트 연동 가이드
                     </h4>
-                    <ol class="list-decimal list-inside text-[11px] text-blue-800/80 space-y-1.5 leading-relaxed">
-                        <li>엑셀 업로드 탭의 <span class="font-semibold text-slate-900">업로드 템플릿</span>과 동일한 시트 구조(Meta_DB / Tiktok_DB / 키워드매칭 / Meta / Tiktok)로 구글 스프레드시트를 작성합니다.</li>
-                        <li>구글 스프레드시트를 <span class="font-semibold text-slate-900">공유 → 링크가 있는 모든 사용자 (뷰어)</span>로 설정합니다.</li>
-                        <li>스프레드시트 URL을 아래에 붙여넣고 <span class="font-semibold text-slate-900">연동 적용</span>을 클릭합니다.</li>
-                        <li>데이터를 업데이트한 후에는 <span class="font-semibold text-slate-900">다시 연동 적용</span>을 눌러 새로고침하세요.</li>
-                    </ol>
-                </div>
-
-                <!-- 카빌리지 구글 시트 URL -->
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-brand-500 inline-block"></span>
+<ol class="list-decimal list-inside text-[11px] text-blue-800/80 space-y-1.5 leading-relaxed">
+<li>엑셀 업로드 탭의 <span class="font-semibold text-slate-900">업로드 템플릿</span>과 동일한 시트 구조(Meta_DB / Tiktok_DB / Google_DB / 키워드매칭 / Meta / Tiktok / Google)로 구글 스프레드시트를 작성합니다. 유효 DB수는 Meta_DB/Tiktok_DB의 첫 행과 빈 행을 제외한 모든 행으로 집계하며, 키워드매칭 시트에는 타입 열을 추가할 수 있습니다.</li>
+<li>구글 스프레드시트를 <span class="font-semibold text-slate-900">공유 → 링크가 있는 모든 사용자 (뷰어)</span>로 설정합니다.</li>
+<li>스프레드시트 URL을 아래에 붙여넣고 <span class="font-semibold text-slate-900">연동 적용</span>을 클릭합니다.</li>
+<li>데이터를 업데이트한 후에는 <span class="font-semibold text-slate-900">다시 연동 적용</span>을 눌러 새로고침하세요.</li>
+</ol>
+</div>
+<!-- 카빌리지 구글 시트 URL -->
+<div class="space-y-2">
+<label class="block text-xs font-bold text-slate-700 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-brand-500 inline-block"></span>
                         카빌리지 스프레드시트 URL
                     </label>
-                    <div class="relative">
-                        <input type="url" id="gsUrlCavillage" placeholder="https://docs.google.com/spreadsheets/d/..." 
-                            value="https://docs.google.com/spreadsheets/d/1R3jXpSOhvZHh3J1QJrOjTBNAzhQe_7rXT3Bzw6w3gYo/edit?usp=sharing"
-                            class="w-full border border-[#e8e8d1] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all text-slate-800 bg-white"
-                            oninput="updateGsStatus('카빌리지')">
-                    </div>
-                    <div id="gsStatus_카빌리지" class="text-[11px] text-slate-400 pl-1">URL을 입력하세요.</div>
-                </div>
-
-                <!-- 차맵 구글 시트 URL -->
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
+<div class="relative">
+<input class="w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all text-slate-800 bg-white" id="gsUrlCavillage" oninput="updateGsStatus('카빌리지')" placeholder="https://docs.google.com/spreadsheets/d/..." type="url" value="https://docs.google.com/spreadsheets/d/1R3jXpSOhvZHh3J1QJrOjTBNAzhQe_7rXT3Bzw6w3gYo/edit?usp=sharing"/>
+</div>
+<div class="text-[11px] text-slate-400 pl-1" id="gsStatus_카빌리지">URL을 입력하세요.</div>
+</div>
+<!-- 차맵 구글 시트 URL -->
+<div class="space-y-2">
+<label class="block text-xs font-bold text-slate-700 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
                         차맵 스프레드시트 URL <span class="text-[10px] text-slate-400 font-normal">(선택)</span>
-                    </label>
-                    <div class="relative">
-                        <input type="url" id="gsUrlChamap" placeholder="https://docs.google.com/spreadsheets/d/..." 
-                            class="w-full border border-[#e8e8d1] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all text-slate-800 bg-white"
-                            oninput="updateGsStatus('차맵')">
-                    </div>
-                    <div id="gsStatus_차맵" class="text-[11px] text-slate-400 pl-1">URL을 입력하세요.</div>
-                </div>
-
-                <!-- 연동 상태 표시 -->
-                <div id="gsLoadStatus" class="hidden p-3 rounded-xl text-xs font-semibold flex items-center gap-2"></div>
-
-                <!-- 주의사항 -->
-                <div class="p-3 bg-amber-50 border border-amber-100 rounded-xl text-[11px] text-amber-800 leading-relaxed">
+</label>
+<div class="relative">
+<input class="w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all text-slate-800 bg-white" id="gsUrlChamap" oninput="updateGsStatus('차맵')" placeholder="https://docs.google.com/spreadsheets/d/..." type="url"/>
+</div>
+<div class="text-[11px] text-slate-400 pl-1" id="gsStatus_차맵">URL을 입력하세요.</div>
+</div>
+<!-- 연동 상태 표시 -->
+<div class="hidden p-3 rounded-xl text-xs font-semibold flex items-center gap-2" id="gsLoadStatus"></div>
+<!-- 주의사항 -->
+<div class="p-3 bg-amber-50 border border-amber-100 rounded-xl text-[11px] text-amber-800 leading-relaxed">
                     ⚠️ 구글 스프레드시트는 <span class="font-semibold">CSV 내보내기 방식</span>으로 데이터를 읽습니다. 시트 공유 설정이 <span class="font-semibold">링크 공개(뷰어)</span>로 되어 있어야 합니다. 사내 전용 시트는 공유 설정 확인 후 사용하세요.
                 </div>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="p-5 border-t border-[#e8e8d1] flex items-center justify-between bg-brand-50 flex-shrink-0">
-                <button onclick="downloadExcelTemplate()" class="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-brand-700 hover:text-brand-900 bg-brand-50 hover:bg-brand-100 border border-brand-200 rounded-lg transition-all">
-                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+</div>
+<!-- Modal Footer -->
+<div class="p-5 border-t border-[#E2E8F0] flex items-center justify-between bg-brand-50 flex-shrink-0">
+<button class="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-brand-700 hover:text-brand-900 bg-brand-50 hover:bg-brand-100 border border-brand-200 rounded-lg transition-all" onclick="downloadExcelTemplate()">
+<i class="w-3.5 h-3.5" data-lucide="download"></i>
                     업로드 템플릿 다운로드
                 </button>
-                <div class="flex items-center gap-3">
-                    <button onclick="toggleIntegrationModal()" class="px-4 py-2 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors">
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors" onclick="toggleIntegrationModal()">
                         닫기
                     </button>
-                    <button id="modalApplyBtn" onclick="handleModalApply()" class="px-5 py-2 text-xs font-bold bg-brand-700 hover:bg-brand-900 text-white rounded-lg shadow-md transition-colors">
+<button class="px-5 py-2 text-xs font-bold bg-brand-700 hover:bg-brand-900 text-white rounded-lg shadow-md transition-colors" id="modalApplyBtn" onclick="handleModalApply()">
                         적용 및 새로고침
                     </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- LOADING SPINNER BANNER -->
-    <div id="loadingBanner" class="fixed bottom-6 right-6 px-4 py-3 bg-white border border-[#e8e8d1] text-slate-800 rounded-xl shadow-xl flex items-center space-x-3 z-50 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-2">
-        <div class="animate-spin rounded-full h-4 w-4 border-2 border-brand-500 border-t-transparent"></div>
-        <span class="text-xs font-semibold" id="loadingText">데이터 연동 갱신 중...</span>
-    </div>
-
-    <!-- LOGIN SCRIPT -->
-    <script>
+</div>
+</div>
+</div>
+</div>
+<!-- LOADING SPINNER BANNER -->
+<div class="fixed bottom-6 right-6 px-4 py-3 bg-white border border-[#E2E8F0] text-slate-800 rounded-xl shadow-xl flex items-center space-x-3 z-50 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-2" id="loadingBanner">
+<div class="animate-spin rounded-full h-4 w-4 border-2 border-brand-500 border-t-transparent"></div>
+<span class="text-xs font-semibold" id="loadingText">데이터 연동 갱신 중...</span>
+</div>
+<!-- LOGIN SCRIPT -->
+<script>
         // ── 계정 설정 (아이디 / 비밀번호 여기서 변경) ──
         const AUTH = {
             id: 'sihyunpm',
@@ -863,21 +934,28 @@
             }
         }
     </script>
+<!-- JAVASCRIPT: DATA PROCESSING AND VISUALIZATION -->
+<script>
 
-    <!-- JAVASCRIPT: DATA PROCESSING AND VISUALIZATION -->
-    <script>
+        'use strict';
+
         lucide.createIcons();
 
         const SITES = ['카빌리지', '차맵'];
         const AGENCIES = ['Meta', 'Tiktok', 'Google'];
-        const LS_KEY = 'cavillage_dashboard_data_v6';
+        const DATA_KEYS = ['admin', 'matching', 'meta', 'tiktok', 'google'];
+        const VALID_DB_ADMIN_SOURCES = new Set(['admin_meta', 'admin_tiktok']);
+        const CREATIVE_GROUPS = ['브라이언', 'AI기타채널', '신규포맷', '유튜브'];
+        const LS_KEY = 'cavillage_dashboard_data_v7_type_column';
         const MONTH_LABELS = { '01':'01월','02':'02월','03':'03월','04':'04월','05':'05월','06':'06월','07':'07월','08':'08월','09':'09월','10':'10월','11':'11월','12':'12월' };
         const SHEET_ALIASES = {
-            admin_meta:   ['Meta_DB', '어드민 DB', 'Meta DB', 'meta_db'],
-            admin_tiktok: ['Tiktok_DB', '틱톡 DB', 'tiktok_db'],
-            matching:     ['키워드매칭', '키워드 매칭'],
-            meta:         ['Meta', 'meta'],
-            tiktok:       ['Tiktok', 'tiktok', '틱톡']
+            admin_meta:   ['Meta_DB', 'META_DB', '메타_DB', '메타 DB', '어드민_Meta', '어드민 DB', 'Meta DB', 'meta_db'],
+            admin_tiktok: ['Tiktok_DB', 'TikTok_DB', '틱톡_DB', '틱톡 DB', 'TikTok DB', 'tiktok_db'],
+            admin_google: ['Google_DB', '구글_DB', '구글 DB', 'Google DB', 'google_db'],
+            matching:     ['키워드매칭', '키워드 매칭', '키워드_매칭', '매칭', 'KeywordMatching', 'keyword_matching'],
+            meta:         ['Meta보고서', 'Meta 보고서', '메타보고서', '메타 보고서', 'Meta', 'meta', '메타', 'SNS-인스타그램'],
+            tiktok:       ['Tiktok보고서', 'TikTok보고서', 'Tiktok 보고서', 'TikTok 보고서', '틱톡보고서', '틱톡 보고서', 'Tiktok', 'TikTok', 'tiktok', '틱톡'],
+            google:       ['Google', 'google', '구글', 'Google GDN', 'GDN']
         };
 
         const DEMO_DATA = {
@@ -887,8 +965,8 @@
                 { no: '495(6)', duplicate: '', date: '2026-05-23 11:20:52', site: '카빌리지', sourceSite: '카빌리지', agency: 'Tiktok', keyword: 'grandeur42', status: '상담중' }
             ],
             matching: [
-                { sourceSite: '카빌리지', adminKeyword: 'bryan_honey', agency: 'Meta', adName: '브라이언B260305 (꿀팁)' },
-                { sourceSite: '카빌리지', adminKeyword: 'grandeur42', agency: 'Tiktok', adName: '셀토스 260417' }
+                { sourceSite: '카빌리지', adminKeyword: 'bryan_honey', agency: 'Meta', adName: '브라이언B260305 (꿀팁)', creativeGroup: '브라이언' },
+                { sourceSite: '카빌리지', adminKeyword: 'grandeur42', agency: 'Tiktok', adName: '셀토스 260417', creativeGroup: '신규포맷' }
             ],
             meta: [{ sourceSite: '카빌리지', adName: '브라이언B260305 (꿀팁)', spend: 2169750, clicks: 1082, date: '2026-05' }],
             tiktok: [{ sourceSite: '카빌리지', adName: '셀토스 260417', spend: 180500, clicks: 74, date: '2026-05' }]
@@ -899,19 +977,27 @@
             active: cloneActiveData(DEMO_DATA),
             currentSortColumn: 'spend',
             currentSortDirection: 'desc',
+            selectedMonths: ['ALL'],
             tableSelectedMonths: ['ALL'],
             currentModalTab: 'excel',
             tableRowsCache: [],
             filteredLeadsCache: [],
+            tableRenderFrame: null,
             performanceChart: null,
-            trendChart: null
+            trendChart: null,
+            compareChart: null,
+            compareMonthA: '',
+            compareMonthB: '',
+            compareMetric: 'dbCount',
+            compareRowsCache: [],
+            compareMonthsCache: []
         };
 
         const $ = (id) => document.getElementById(id);
         const $$ = (selector) => Array.from(document.querySelectorAll(selector));
 
         function emptySiteData() {
-            return { admin: [], matching: [], meta: [], tiktok: [] };
+            return { admin: [], matching: [], meta: [], tiktok: [], google: [] };
         }
 
         function cloneActiveData(data) {
@@ -919,7 +1005,8 @@
                 admin: [...(data.admin || [])],
                 matching: [...(data.matching || [])],
                 meta: [...(data.meta || [])],
-                tiktok: [...(data.tiktok || [])]
+                tiktok: [...(data.tiktok || [])],
+                google: [...(data.google || [])]
             };
         }
 
@@ -964,6 +1051,28 @@
             if (s.includes('카빌리지')) return '카빌리지';
             if (s.includes('차맵')) return '차맵';
             return fallback;
+        }
+
+        function normalizeCreativeGroup(value, adName = '') {
+            const raw = text(value);
+            const compactRaw = raw.replace(/\s+/g, '').toLowerCase();
+            const source = `${raw} ${text(adName)}`.toLowerCase();
+            const compactSource = source.replace(/\s+/g, '');
+
+            // 타입 열에 직접 입력된 값은 우선 반영합니다. 기존 4개 타입의 영문/공백 변형만 표준명으로 정리합니다.
+            if (compactRaw === '브라이언' || compactRaw === 'brian' || compactRaw === 'bryan') return '브라이언';
+            if (compactRaw === 'ai기타채널' || compactRaw === 'ai기타' || compactRaw === '기타채널') return 'AI기타채널';
+            if (compactRaw === '신규포맷' || compactRaw === 'newformat') return '신규포맷';
+            if (compactRaw === '유튜브' || compactRaw === 'youtube' || compactRaw === 'yt') return '유튜브';
+            if (raw) return raw;
+
+            if (compactSource.includes('브라이언') || compactSource.includes('brian') || compactSource.includes('bryan')) return '브라이언';
+            if (compactSource.includes('신규포맷') || compactSource.includes('newformat')) return '신규포맷';
+            if (compactSource.includes('유튜브') || compactSource.includes('youtube') || compactSource.includes('우파') || compactSource.includes('카비니') || compactSource.includes('딴비')) return '유튜브';
+            if (compactSource.includes('ai') || compactSource.includes('gpt') || compactSource.includes('챗gpt') || compactSource.includes('기타채널')) return 'AI기타채널';
+
+            // 타입 열이 비어 있으면 광고 이름으로 추정하고, 그래도 없으면 AI기타채널로 묶습니다.
+            return 'AI기타채널';
         }
 
         function extractMonth(value) {
@@ -1038,7 +1147,7 @@
                 const selected = name === site;
                 btn.className = selected
                     ? 'flex-1 py-2.5 text-xs font-bold rounded-xl border-2 border-brand-500 bg-brand-700 text-white transition-all'
-                    : 'flex-1 py-2.5 text-xs font-bold rounded-xl border-2 border-[#e8e8d1] bg-white text-slate-500 hover:border-brand-300 transition-all';
+                    : 'flex-1 py-2.5 text-xs font-bold rounded-xl border-2 border-[#E2E8F0] bg-white text-slate-500 hover:border-brand-300 transition-all';
                 panel.classList.toggle('hidden', !selected);
             });
         }
@@ -1076,6 +1185,10 @@
             const wrapper = $('tableMonthFilterWrapper');
             const dropdown = $('tableMonthDropdown');
             if (wrapper && dropdown && !wrapper.contains(event.target)) dropdown.classList.add('hidden');
+
+            const monthWrapper = $('monthFilterWrapper');
+            const monthDropdown = $('monthDropdown');
+            if (monthWrapper && monthDropdown && !monthWrapper.contains(event.target)) monthDropdown.classList.add('hidden');
         });
 
         // ─────────────────────────────────────────────
@@ -1129,13 +1242,13 @@
                     const wb = XLSX.read(event.target.result, { type: 'array', cellDates: true });
                     const siteData = emptySiteData();
 
-                    ['admin_meta', 'admin_tiktok'].forEach((key) => {
+                    ['admin_meta', 'admin_tiktok', 'admin_google'].forEach((key) => {
                         const ws = getSheetByAliases(wb, SHEET_ALIASES[key]);
-                        if (ws) siteData.admin.push(...parseSheetSafe(ws));
+                        if (ws) siteData.admin.push(...parseSheetSafe(ws).map((row) => ({ ...row, __adminSource: key })));
                         updateTabStatus(site, 'admin', siteData.admin.length > 0);
                     });
 
-                    ['matching', 'meta', 'tiktok'].forEach((key) => {
+                    ['matching', 'meta', 'tiktok', 'google'].forEach((key) => {
                         const ws = getSheetByAliases(wb, SHEET_ALIASES[key]);
                         siteData[key] = ws ? parseSheetSafe(ws) : [];
                         updateTabStatus(site, key, Boolean(ws));
@@ -1177,7 +1290,113 @@
         }
 
         function buildCsvUrl(sheetId, sheetName) {
-            return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+            const params = new URLSearchParams();
+            params.set('tqx', 'out:csv');
+            params.set('sheet', sheetName);
+            params.set('headers', '1');
+            return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?${params.toString()}`;
+        }
+
+        function buildGvizJsonUrl(sheetId, sheetName, callbackName) {
+            const params = new URLSearchParams();
+            params.set('sheet', sheetName);
+            params.set('headers', '1');
+            params.set('tq', 'select *');
+            params.set('tqx', `out:json;responseHandler:${callbackName}`);
+            return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?${params.toString()}`;
+        }
+
+        function gvizValueToText(value, formatted) {
+            if (formatted !== undefined && formatted !== null && text(formatted) !== '') return text(formatted);
+            if (value === null || value === undefined) return '';
+            if (typeof value === 'string') {
+                const match = value.match(/^Date\((\d+),(\d+),(\d+)/);
+                if (match) return `${match[1]}-${String(Number(match[2]) + 1).padStart(2, '0')}-${String(match[3]).padStart(2, '0')}`;
+                return text(value);
+            }
+            return text(value);
+        }
+
+        function isGenericGvizHeader(header, index) {
+            const h = text(header);
+            if (!h) return true;
+            if (h === `컬럼${index + 1}`) return true;
+            if (/^col\d+$/i.test(h)) return true;
+            if (/^[A-Z]+$/.test(h)) return true;
+            return false;
+        }
+
+        function gvizResponseToRows(payload) {
+            if (!payload || payload.status === 'error') {
+                const reason = payload?.errors?.[0]?.detailed_message || payload?.errors?.[0]?.message || '시트 응답 오류';
+                throw new Error(reason);
+            }
+
+            const table = payload.table;
+            if (!table || !Array.isArray(table.cols) || !Array.isArray(table.rows)) return [];
+
+            let headers = table.cols.map((col, idx) => text(col.label || col.id || `컬럼${idx + 1}`));
+            const matrix = table.rows.map((r) => {
+                return headers.map((_, idx) => {
+                    const cell = r.c?.[idx];
+                    return cell ? gvizValueToText(cell.v, cell.f) : '';
+                });
+            }).filter((row) => row.some((v) => text(v) !== ''));
+
+            // Google Visualization API가 첫 행을 헤더로 인식하지 못하면 A/B/C 또는 col1 형태로 내려오는 경우가 있습니다.
+            // 이 경우 첫 번째 행을 헤더로 한 번 더 해석해 대시보드 컬럼 매칭 실패를 줄입니다.
+            if (headers.every((h, idx) => isGenericGvizHeader(h, idx)) && matrix.length >= 2) {
+                headers = matrix.shift().map((h, idx) => text(h) || `컬럼${idx + 1}`);
+            }
+
+            headers = headers.map((h, idx) => text(h) || `컬럼${idx + 1}`);
+            return matrix.map((values) => {
+                const obj = {};
+                headers.forEach((header, idx) => { obj[header] = text(values[idx]); });
+                return obj;
+            }).filter((obj) => Object.values(obj).some((v) => text(v) !== ''));
+        }
+
+        function loadGvizJsonp(sheetId, sheetName, timeoutMs = 12000) {
+            return new Promise((resolve, reject) => {
+                const callbackName = `__gsheet_cb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+                const script = document.createElement('script');
+                let done = false;
+                const cleanup = () => {
+                    try { delete window[callbackName]; } catch (error) { window[callbackName] = undefined; }
+                    script.remove();
+                };
+                const timer = setTimeout(() => {
+                    if (done) return;
+                    done = true;
+                    cleanup();
+                    reject(new Error(`${sheetName} 시트 응답 시간이 초과되었습니다.`));
+                }, timeoutMs);
+
+                window[callbackName] = (payload) => {
+                    if (done) return;
+                    done = true;
+                    clearTimeout(timer);
+                    try {
+                        const rows = gvizResponseToRows(payload);
+                        cleanup();
+                        resolve(rows);
+                    } catch (error) {
+                        cleanup();
+                        reject(error);
+                    }
+                };
+
+                script.onerror = () => {
+                    if (done) return;
+                    done = true;
+                    clearTimeout(timer);
+                    cleanup();
+                    reject(new Error(`${sheetName} 시트 로드에 실패했습니다.`));
+                };
+                script.src = buildGvizJsonUrl(sheetId, sheetName, callbackName);
+                document.head.appendChild(script);
+            });
         }
 
         function parseCsvText(textValue) {
@@ -1201,7 +1420,7 @@
 
             const nonEmpty = rows.filter((r) => r.some((v) => text(v) !== ''));
             if (nonEmpty.length < 2) return [];
-            const headers = nonEmpty[0].map(text);
+            const headers = nonEmpty[0].map((h, idx) => text(h) || `컬럼${idx + 1}`);
             return nonEmpty.slice(1).map((values) => {
                 const obj = {};
                 headers.forEach((h, i) => { obj[h] = text(values[i]); });
@@ -1218,18 +1437,37 @@
         }
 
         async function fetchRowsBySheetAliases(sheetId, aliases) {
+            const errors = [];
             for (const sheetName of aliases) {
                 try {
-                    const response = await fetch(buildCsvUrl(sheetId, sheetName));
-                    if (!response.ok) continue;
-                    const csvText = await response.text();
-                    if (!csvLooksUsable(csvText)) continue;
-                    return { sheetName, rows: parseCsvText(csvText) };
+                    const rows = await loadGvizJsonp(sheetId, sheetName);
+                    if (rows.length) return { sheetName, rows, method: 'gviz' };
+                    errors.push(`${sheetName}: 시트는 열렸지만 데이터 행이 없습니다.`);
                 } catch (error) {
-                    console.warn(`${sheetName} 시트 로드 실패`, error);
+                    errors.push(`${sheetName}: ${error.message}`);
+                }
+
+                // JSONP가 실패하는 브라우저/권한 케이스를 대비한 보조 경로입니다.
+                try {
+                    const response = await fetch(buildCsvUrl(sheetId, sheetName), { cache: 'no-store' });
+                    if (!response.ok) {
+                        errors.push(`${sheetName} CSV: HTTP ${response.status}`);
+                        continue;
+                    }
+                    const csvText = await response.text();
+                    if (!csvLooksUsable(csvText)) {
+                        errors.push(`${sheetName} CSV: CSV 형식이 아닌 응답입니다.`);
+                        continue;
+                    }
+                    const rows = parseCsvText(csvText);
+                    if (rows.length) return { sheetName, rows, method: 'csv' };
+                    errors.push(`${sheetName} CSV: 데이터 행이 없습니다.`);
+                } catch (fetchError) {
+                    errors.push(`${sheetName} CSV: ${fetchError.message}`);
                 }
             }
-            return { sheetName: null, rows: [] };
+            console.warn('구글시트 로드 실패 후보', errors);
+            return { sheetName: null, rows: [], method: null, errors };
         }
 
         async function fetchSiteSheets(url) {
@@ -1241,17 +1479,44 @@
             const loadMap = {
                 admin_meta: SHEET_ALIASES.admin_meta,
                 admin_tiktok: SHEET_ALIASES.admin_tiktok,
+                admin_google: SHEET_ALIASES.admin_google,
                 matching: SHEET_ALIASES.matching,
                 meta: SHEET_ALIASES.meta,
-                tiktok: SHEET_ALIASES.tiktok
+                tiktok: SHEET_ALIASES.tiktok,
+                google: SHEET_ALIASES.google
             };
 
+            const report = [];
             await Promise.all(Object.entries(loadMap).map(async ([key, aliases]) => {
-                const { rows } = await fetchRowsBySheetAliases(sheetId, aliases);
-                if (key === 'admin_meta' || key === 'admin_tiktok') result.admin.push(...rows);
-                else result[key] = rows;
+                const { sheetName, rows, method, errors } = await fetchRowsBySheetAliases(sheetId, aliases);
+                if (key === 'admin_meta' || key === 'admin_tiktok' || key === 'admin_google') {
+                    result.admin.push(...rows.map((row) => ({ ...row, __adminSource: key })));
+                } else {
+                    result[key] = rows;
+                }
+
+                report.push({
+                    key,
+                    sheetName: sheetName || aliases[0],
+                    rows: rows.length,
+                    method,
+                    ok: rows.length > 0,
+                    errors: errors || []
+                });
             }));
+            result.__report = report;
             return result;
+        }
+
+        function buildGsheetReportText() {
+            const chunks = [];
+            SITES.forEach((site) => {
+                const report = state.uploaded[site]?.__report;
+                if (!Array.isArray(report)) return;
+                const loaded = report.filter((item) => item.ok).map((item) => `${item.sheetName} ${item.rows}행`).join(', ');
+                if (loaded) chunks.push(`${site}: ${loaded}`);
+            });
+            return chunks.join(' / ');
         }
 
         async function applyGoogleSheetData() {
@@ -1274,13 +1539,37 @@
                 const [cvData, cmData] = await Promise.all([fetchSiteSheets(cvUrl), fetchSiteSheets(cmUrl)]);
                 state.uploaded['카빌리지'] = cvUrl ? cvData : emptySiteData();
                 state.uploaded['차맵'] = cmUrl ? cmData : emptySiteData();
-                setActiveFromUploaded({ save: true, closeModal: true, message: '✅ 구글 스프레드시트 데이터 연동 완료!' });
 
+                const loadedCount = ['카빌리지', '차맵'].reduce((sum, site) => {
+                    const data = state.uploaded[site] || emptySiteData();
+                    return sum + ['admin', 'matching', 'meta', 'tiktok', 'google'].reduce((inner, key) => inner + (data[key]?.length || 0), 0);
+                }, 0);
+
+                if (!loadedCount) {
+                    throw new Error('읽어온 행이 없습니다. 시트 공유 권한, 시트명, 첫 행 헤더를 확인해주세요.');
+                }
+
+                const { active, hasAny } = buildActiveFromUploaded();
+                if (!hasAny) {
+                    throw new Error('행은 읽었지만 대시보드 필수 컬럼명과 맞지 않습니다. 어드민 DB는 광고사/키워드/처리상태, 광고비 시트는 광고 이름/비용/클릭수/월별 컬럼을 확인해주세요.');
+                }
+
+                state.active = active;
+                saveToLocalStorage();
+                buildMonthFilter();
+                applyFilters();
+
+                const detail = buildGsheetReportText();
                 statusEl.className = 'p-3 rounded-xl text-xs font-semibold flex items-center gap-2 bg-green-50 text-green-700';
-                statusEl.textContent = '✅ 구글 스프레드시트 데이터 연동 완료!';
+                statusEl.textContent = `✅ 구글 스프레드시트 데이터 연동 완료! 총 ${loadedCount.toLocaleString()}행을 읽었습니다.${detail ? ' (' + detail + ')' : ''}`;
+
+                if (!$('integrationModal')?.classList.contains('hidden')) toggleIntegrationModal();
+                showLoading(true, '✅ 구글 스프레드시트 데이터 연동 완료!');
+                setTimeout(() => showLoading(false), 1500);
             } catch (error) {
                 statusEl.className = 'p-3 rounded-xl text-xs font-semibold flex items-center gap-2 bg-red-50 text-red-700';
-                statusEl.textContent = `❌ 연동 오류: ${error.message} (시트 공유 설정을 확인하세요)`;
+                statusEl.textContent = `❌ 연동 오류: ${error.message}`;
+                console.error('구글 스프레드시트 연동 오류', error, state.uploaded);
             }
         }
 
@@ -1288,66 +1577,113 @@
         // 데이터 정규화 / 저장
         // ─────────────────────────────────────────────
         function mapAdminRow(row, sourceSite) {
-            const date = firstValue(row, ['접수시간', 'date']);
+            const rawDate = firstValue(row, ['접수시간', 'date']);
+            const date = rawDate instanceof Date ? rawDate : text(rawDate);
+            const agency = normalizeAgency(firstValue(row, ['광고사', 'agency']));
+            const status = text(firstValue(row, ['처리상태', 'status']));
+
             return {
                 no: firstValue(row, ['No', 'no']),
                 duplicate: text(firstValue(row, ['중복', 'duplicate'])),
-                date: date instanceof Date ? date : text(date),
+                date,
+                month: extractMonth(date),
                 site: sourceSite,
                 sourceSite,
-                agency: normalizeAgency(firstValue(row, ['광고사', 'agency'])),
+                adminSource: text(firstValue(row, ['__adminSource', 'adminSource', '_adminSource'])),
+                agency,
                 keyword: text(firstValue(row, ['키워드', 'keyword'])),
-                status: text(firstValue(row, ['처리상태', 'status']))
+                status,
+                isContractComplete: text(status).replace(/\s+/g, '') === '계약완료'
             };
         }
 
+        function hasAdminLeadContent(lead) {
+            return [lead.no, lead.duplicate, lead.date, lead.agency, lead.keyword, lead.status]
+                .some((value) => text(value) !== '');
+        }
+
+        function isValidDbSource(lead) {
+            const adminSource = text(lead.adminSource || lead.__adminSource);
+            if (adminSource) return VALID_DB_ADMIN_SOURCES.has(adminSource);
+
+            // 이전 버전 localStorage처럼 시트 출처가 없는 데이터는 광고사 기준으로 Meta/Tiktok만 유효 DB로 인정합니다.
+            return lead.agency === 'Meta' || lead.agency === 'Tiktok';
+        }
+
+        function isContractComplete(lead) {
+            return lead?.isContractComplete === true || text(lead?.status).replace(/\s+/g, '') === '계약완료';
+        }
+
         function mapMatchingRow(row, sourceSite) {
+            const adName = text(firstValue(row, ['광고 이름', 'adName', '소재명']));
             return {
                 sourceSite,
                 adminKeyword: text(firstValue(row, ['어드민 키워드', 'adminKeyword'])),
                 agency: normalizeAgency(firstValue(row, ['광고 매체명', 'agency'])),
-                adName: text(firstValue(row, ['광고 이름', 'adName', '소재명']))
+                adName,
+                creativeGroup: normalizeCreativeGroup(firstValue(row, ['타입', 'type', 'Type', '소재분류', '소재 분류', '영상타입', '분류그룹', 'creativeGroup', '비고']), adName)
             };
         }
 
+        const REPORT_MONTH_COLUMNS = ['월별', '월', '연월', '보고 월', '보고월', '날짜', '일자', '보고 종료', '보고 시작', 'date', 'Date', 'Month'];
+
+        function reportMonth(row, preferredColumns = []) {
+            // 광고비는 반드시 보고서 행의 월 컬럼 기준으로 귀속합니다.
+            // Meta보고서/Tiktok보고서에 월별 컬럼이 있으면 보고 시작/종료보다 우선 사용합니다.
+            const dateValue = firstValue(row, [...preferredColumns, ...REPORT_MONTH_COLUMNS]);
+            return formatDateToMonth(dateValue);
+        }
+
         function mapMetaRow(row, sourceSite) {
-            const date = firstValue(row, ['보고 종료', '보고 시작', 'date']);
             return {
                 sourceSite,
-                adName: text(firstValue(row, ['광고 이름', 'adName'])),
-                spend: numberValue(firstValue(row, ['지출 금액 (KRW)', '지출 금액', 'spend', '비용'], 0)),
-                clicks: intValue(firstValue(row, ['링크 클릭', '클릭수', 'clicks'], 0)),
-                date: formatDateToMonth(date)
+                adName: text(firstValue(row, ['광고 이름', '광고명', '광고', '소재명', 'Ad name', 'adName'])),
+                spend: numberValue(firstValue(row, ['지출 금액 (KRW)', '지출 금액', '금액 지출(KRW)', '금액 지출', '비용', 'Cost', 'Spend', 'Amount spent (KRW)', 'spend'], 0)),
+                clicks: intValue(firstValue(row, ['링크 클릭', '링크 클릭수', '클릭수', '클릭', 'Clicks', 'clicks'], 0)),
+                date: reportMonth(row, ['월별', '월', '연월'])
             };
         }
 
         function mapTiktokRow(row, sourceSite) {
-            const date = firstValue(row, ['월별', 'date']);
             return {
                 sourceSite,
-                adName: text(firstValue(row, ['광고 이름', 'adName'])),
-                spend: numberValue(firstValue(row, ['비용', 'spend'], 0)),
-                clicks: intValue(firstValue(row, ['클릭수(목적지)', '클릭수', 'clicks'], 0)),
-                date: formatDateToMonth(date)
+                adName: text(firstValue(row, ['광고 이름', '광고명', '광고', '소재명', 'Ad name', 'adName'])),
+                spend: numberValue(firstValue(row, ['비용', '비용 (KRW)', 'Cost', 'Spend', 'spend'], 0)),
+                clicks: intValue(firstValue(row, ['클릭수(목적지)', '목적지 클릭수', '클릭수', '클릭', 'Clicks', 'clicks'], 0)),
+                date: reportMonth(row, ['월별', '월', '연월'])
+            };
+        }
+
+        function mapGoogleRow(row, sourceSite) {
+            return {
+                sourceSite,
+                adName: text(firstValue(row, ['광고 이름', '광고명', '광고', '소재명', 'Ad name', 'adName'])),
+                spend: numberValue(firstValue(row, ['비용', '비용 (KRW)', '지출 금액', 'Cost', 'Spend', 'spend'], 0)),
+                clicks: intValue(firstValue(row, ['클릭수', '클릭', 'Clicks', 'clicks'], 0)),
+                date: reportMonth(row, ['월별', '월', '연월'])
             };
         }
 
         function buildActiveFromUploaded() {
-            const active = { admin: [], matching: [], meta: [], tiktok: [] };
+            const active = { admin: [], matching: [], meta: [], tiktok: [], google: [] };
             let hasAny = false;
 
             SITES.forEach((site) => {
                 const source = state.uploaded[site] || emptySiteData();
-                const admin = (source.admin || []).map((row) => mapAdminRow(row, site)).filter((row) => row.date);
+                const admin = (source.admin || [])
+                    .map((row) => mapAdminRow(row, site))
+                    .filter((row) => hasAdminLeadContent(row) && isValidDbSource(row));
                 const matching = (source.matching || []).map((row) => mapMatchingRow(row, site)).filter((row) => row.adminKeyword && row.agency && row.adName);
                 const meta = (source.meta || []).map((row) => mapMetaRow(row, site)).filter((row) => row.adName && row.date);
                 const tiktok = (source.tiktok || []).map((row) => mapTiktokRow(row, site)).filter((row) => row.adName && row.date);
+                const google = (source.google || []).map((row) => mapGoogleRow(row, site)).filter((row) => row.adName && row.date);
 
                 active.admin.push(...admin);
                 active.matching.push(...matching);
                 active.meta.push(...meta);
                 active.tiktok.push(...tiktok);
-                if (admin.length || matching.length || meta.length || tiktok.length) hasAny = true;
+                active.google.push(...google);
+                if (admin.length || matching.length || meta.length || tiktok.length || google.length) hasAny = true;
             });
 
             return { active, hasAny };
@@ -1402,7 +1738,7 @@
                 const payload = {};
                 SITES.forEach((site) => {
                     payload[site] = emptySiteData();
-                    ['admin', 'matching', 'meta', 'tiktok'].forEach((key) => {
+                    DATA_KEYS.forEach((key) => {
                         payload[site][key] = serializeRows(state.uploaded[site]?.[key] || []);
                     });
                 });
@@ -1420,7 +1756,7 @@
                 let hasAny = false;
                 SITES.forEach((site) => {
                     state.uploaded[site] = emptySiteData();
-                    ['admin', 'matching', 'meta', 'tiktok'].forEach((key) => {
+                    DATA_KEYS.forEach((key) => {
                         const rows = payload?.[site]?.[key] || [];
                         state.uploaded[site][key] = deserializeRows(rows);
                         if (rows.length) hasAny = true;
@@ -1439,7 +1775,7 @@
                 const fileStatus = $(`fileStatus_${site}`);
                 if (dropLabel) dropLabel.textContent = '클릭하거나 파일을 여기에 드래그하세요';
                 if (fileStatus) fileStatus.classList.add('hidden');
-                ['admin', 'matching', 'meta', 'tiktok'].forEach((key) => {
+                DATA_KEYS.forEach((key) => {
                     const el = $(`tabStatus_${site}_${key}`);
                     if (el) el.className = 'text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 text-slate-400';
                 });
@@ -1457,8 +1793,10 @@
             if (tableSearch) tableSearch.value = '';
 
             $$('.agency-filter-cb').forEach((cb) => { cb.checked = cb.value === 'ALL'; });
-            $$('.month-filter-cb').forEach((cb) => { cb.checked = cb.value === 'ALL'; });
+            state.selectedMonths = ['ALL'];
             state.tableSelectedMonths = ['ALL'];
+            buildMonthFilter();
+            updateMonthFilterLabel();
             updateTableMonthFilterLabel();
         }
 
@@ -1517,21 +1855,22 @@
         // 필터
         // ─────────────────────────────────────────────
         function getSelectedMonths() {
-            const allCb = document.querySelector('.month-filter-cb[value="ALL"]');
-            if (allCb?.checked) return 'ALL';
-            const selected = $$('.month-filter-cb:not([value="ALL"])').filter((cb) => cb.checked).map((cb) => cb.value);
-            return selected.length ? selected : 'ALL';
+            return state.selectedMonths.includes('ALL') ? 'ALL' : [...state.selectedMonths];
         }
 
-        function getSelectedAgencies() {
-            const allCb = document.querySelector('.agency-filter-cb[value="ALL"]');
-            if (allCb?.checked) return 'ALL';
-            const selected = $$('.agency-filter-cb:not([value="ALL"])').filter((cb) => cb.checked).map((cb) => cb.value);
-            return selected.length ? selected : 'ALL';
+        function toggleMonthDropdown() {
+            const dropdown = $('monthDropdown');
+            if (dropdown) dropdown.classList.toggle('hidden');
         }
 
         function handleMonthCheckAll(el) {
-            if (el.checked) $$('.month-filter-cb:not([value="ALL"])').forEach((cb) => { cb.checked = false; });
+            if (el.checked) {
+                $$('.month-filter-cb:not([value="ALL"])').forEach((cb) => { cb.checked = false; });
+                state.selectedMonths = ['ALL'];
+            } else {
+                state.selectedMonths = [];
+            }
+            updateMonthFilterLabel();
             applyFilters();
         }
 
@@ -1540,11 +1879,29 @@
                 const allCb = document.querySelector('.month-filter-cb[value="ALL"]');
                 if (allCb) allCb.checked = false;
             }
-            if (!$$('.month-filter-cb:not([value="ALL"])').some((cb) => cb.checked)) {
+            const checked = $$('.month-filter-cb:not([value="ALL"])').filter((cb) => cb.checked).map((cb) => cb.value);
+            state.selectedMonths = checked.length ? checked : ['ALL'];
+            if (!checked.length) {
                 const allCb = document.querySelector('.month-filter-cb[value="ALL"]');
                 if (allCb) allCb.checked = true;
             }
+            updateMonthFilterLabel();
             applyFilters();
+        }
+
+        function updateMonthFilterLabel() {
+            const label = $('monthFilterLabel');
+            if (!label) return;
+            if (state.selectedMonths.includes('ALL')) label.textContent = '전체 보기';
+            else if (state.selectedMonths.length === 1) label.textContent = fullMonthLabel(state.selectedMonths[0]);
+            else label.textContent = `${state.selectedMonths.length}개 연월 선택됨`;
+        }
+
+        function getSelectedAgencies() {
+            const allCb = document.querySelector('.agency-filter-cb[value="ALL"]');
+            if (allCb?.checked) return 'ALL';
+            const selected = $$('.agency-filter-cb:not([value="ALL"])').filter((cb) => cb.checked).map((cb) => cb.value);
+            return selected.length ? selected : 'ALL';
         }
 
         function handleAgencyCheckAll(el) {
@@ -1566,17 +1923,35 @@
 
         function buildMonthFilter() {
             const months = new Set();
-            state.active.admin.forEach((lead) => { const m = extractMonth(lead.date); if (m) months.add(m); });
-            const container = $('monthFilterContainer');
-            if (!container) return;
-            container.querySelectorAll('label:not(:first-child)').forEach((el) => el.remove());
-
-            [...months].sort().reverse().forEach((month) => {
-                const div = document.createElement('label');
-                div.className = 'flex items-center gap-2 cursor-pointer py-1 px-2 rounded hover:bg-[#0a294a] transition-colors';
-                div.innerHTML = `<input type="checkbox" value="${month}" class="month-filter-cb accent-[#e9ff70] w-3 h-3" onchange="handleMonthCheck(this)"> <span class="text-sm text-slate-300">${fullMonthLabel(month)}</span>`;
-                container.appendChild(div);
+            state.active.admin.forEach((lead) => { const m = lead.month || extractMonth(lead.date); if (m) months.add(m); });
+            ['meta', 'tiktok', 'google'].forEach((key) => {
+                (state.active[key] || []).forEach((row) => { const m = extractMonth(row.date); if (m) months.add(m); });
             });
+
+            const monthList = [...months].filter(Boolean).sort().reverse();
+            const container = $('monthList');
+            if (container) {
+                container.innerHTML = '';
+                if (!state.selectedMonths.includes('ALL')) {
+                    const available = new Set(monthList);
+                    state.selectedMonths = state.selectedMonths.filter((m) => available.has(m));
+                    if (!state.selectedMonths.length) state.selectedMonths = ['ALL'];
+                }
+
+                const allCb = document.querySelector('.month-filter-cb[value="ALL"]');
+                if (allCb) allCb.checked = state.selectedMonths.includes('ALL');
+
+                monthList.forEach((month) => {
+                    const checked = !state.selectedMonths.includes('ALL') && state.selectedMonths.includes(month);
+                    const div = document.createElement('label');
+                    div.className = 'flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-[#4B5563] transition-colors';
+                    div.innerHTML = `<input type="checkbox" value="${month}" class="month-filter-cb accent-[#8B5CF6] w-3.5 h-3.5" ${checked ? 'checked' : ''} onchange="handleMonthCheck(this)"> <span class="text-xs text-slate-200">${fullMonthLabel(month)}</span>`;
+                    container.appendChild(div);
+                });
+                updateMonthFilterLabel();
+                lucide.createIcons();
+            }
+            buildCompareMonthSelectors(monthList);
         }
 
         function buildTableMonthFilter(dataList) {
@@ -1643,62 +2018,84 @@
         // 사이트(sourceSite)를 집계 키에 포함하여 카빌리지/차맵 데이터가 섞이지 않게 처리
         // 광고비만 있고 어드민 DB 매칭이 없는 행은 표에 노출하지 않음
         // ─────────────────────────────────────────────
-        function compileAggregatedData() {
-            const selectedMonths = getSelectedMonths();
+        function compileAggregatedData(options = {}) {
+            const selectedMonths = options.monthOverride || getSelectedMonths();
             const selectedAgencies = getSelectedAgencies();
             const filterSite = $('filterSite')?.value || 'ALL';
+            const selectedMonthSet = selectedMonths === 'ALL' ? null : new Set(selectedMonths);
+            const selectedAgencySet = selectedAgencies === 'ALL' ? null : new Set(selectedAgencies);
 
-            const monthOk = (m) => selectedMonths === 'ALL' || selectedMonths.includes(m);
-            const agencyOk = (a) => selectedAgencies === 'ALL' || selectedAgencies.includes(a);
-            const siteOk = (site) => Boolean(site) && (filterSite === 'ALL' || site === filterSite);
+            const acceptsMonth = (month) => !selectedMonthSet || selectedMonthSet.has(month);
+            const acceptsAgency = (agency) => !selectedAgencySet || selectedAgencySet.has(agency);
+            const acceptsSite = (site) => Boolean(site) && (filterSite === 'ALL' || site === filterSite);
             const matchKey = (site, agency, keyword) => `${site}::${agency}::${keyword}`;
             const rowKey = (site, agency, adName, month) => `${site}::${agency}::${adName}::${month}`;
 
             const matchingIndex = new Map();
-            state.active.matching.forEach((row) => {
-                if (!siteOk(row.sourceSite) || !agencyOk(row.agency)) return;
-                matchingIndex.set(matchKey(row.sourceSite, row.agency, row.adminKeyword), row.adName);
-            });
+            for (const row of state.active.matching) {
+                if (!acceptsSite(row.sourceSite) || !acceptsAgency(row.agency)) continue;
+                matchingIndex.set(matchKey(row.sourceSite, row.agency, row.adminKeyword), {
+                    adName: row.adName,
+                    creativeGroup: row.creativeGroup || normalizeCreativeGroup('', row.adName)
+                });
+            }
 
             const finalMap = new Map();
             const filteredLeads = [];
 
-            state.active.admin.forEach((lead) => {
+            for (const lead of state.active.admin) {
                 const site = lead.sourceSite || lead.site;
-                const month = extractMonth(lead.date);
-                const agency = normalizeAgency(lead.agency);
-                if (!siteOk(site) || !monthOk(month) || !agencyOk(agency)) return;
+                const month = lead.month || extractMonth(lead.date);
+                const agency = lead.agency;
+                if (!acceptsSite(site) || !acceptsMonth(month) || !acceptsAgency(agency)) continue;
 
                 filteredLeads.push(lead);
                 const keyword = text(lead.keyword);
-                const adName = keyword
-                    ? (matchingIndex.get(matchKey(site, agency, keyword)) || `[미매칭] ${keyword}`)
-                    : '[키워드없음]';
+                const matched = keyword ? matchingIndex.get(matchKey(site, agency, keyword)) : null;
+                const adName = keyword ? (matched?.adName || `[미매칭] ${keyword}`) : '[키워드없음]';
+                const creativeGroup = matched?.creativeGroup || normalizeCreativeGroup('', adName);
                 const key = rowKey(site, agency, adName, month);
 
-                if (!finalMap.has(key)) {
-                    finalMap.set(key, { sourceSite: site, site, agency, adName, month, spend: 0, clicks: 0, dbCount: 0, contracts: 0 });
+                let bucket = finalMap.get(key);
+                if (!bucket) {
+                    bucket = { sourceSite: site, site, agency, adName, creativeGroup, month, spend: 0, clicks: 0, dbCount: 0, contracts: 0 };
+                    finalMap.set(key, bucket);
                 }
-                const bucket = finalMap.get(key);
-                if (lead.duplicate !== '중복') bucket.dbCount += 1;
-                if (lead.status === '계약완료') bucket.contracts += 1;
-            });
+                bucket.dbCount += 1;
+                bucket.contracts += lead.isContractComplete ? 1 : 0;
+            }
 
-            function attachSpend(agency, reports) {
-                if (!agencyOk(agency)) return;
-                reports.forEach((report) => {
+            const attachSpend = (agency, reports) => {
+                if (!acceptsAgency(agency)) return;
+
+                // Meta보고서/Tiktok보고서의 광고비를 소재명 + 월별로 먼저 합산한 뒤
+                // 같은 월의 어드민 DB 버킷에만 붙입니다.
+                // 따라서 5월 선택 시 4월/6월 보고서 비용이 섞이지 않습니다.
+                const monthlyReportMap = new Map();
+                for (const report of reports) {
                     const site = report.sourceSite;
                     const month = report.date;
-                    if (!siteOk(site) || !monthOk(month)) return;
-                    const bucket = finalMap.get(rowKey(site, agency, report.adName, month));
-                    if (!bucket) return;
-                    bucket.spend += report.spend || 0;
-                    bucket.clicks += report.clicks || 0;
-                });
-            }
+                    const adName = text(report.adName);
+                    if (!acceptsSite(site) || !acceptsMonth(month) || !adName) continue;
+
+                    const key = rowKey(site, agency, adName, month);
+                    if (!monthlyReportMap.has(key)) monthlyReportMap.set(key, { spend: 0, clicks: 0 });
+                    const monthly = monthlyReportMap.get(key);
+                    monthly.spend += report.spend || 0;
+                    monthly.clicks += report.clicks || 0;
+                }
+
+                for (const [key, monthly] of monthlyReportMap.entries()) {
+                    const bucket = finalMap.get(key);
+                    if (!bucket) continue;
+                    bucket.spend += monthly.spend;
+                    bucket.clicks += monthly.clicks;
+                }
+            };
 
             attachSpend('Meta', state.active.meta);
             attachSpend('Tiktok', state.active.tiktok);
+            attachSpend('Google', state.active.google);
 
             const details = [...finalMap.values()].map((row) => {
                 const cpa = row.dbCount > 0 ? Math.round(row.spend / row.dbCount) : 0;
@@ -1715,8 +2112,8 @@
             state.filteredLeadsCache = filteredLeads;
 
             const totalSpend = details.reduce((sum, row) => sum + row.spend, 0);
-            const totalDB = filteredLeads.filter((lead) => lead.duplicate !== '중복').length;
-            const totalContracts = filteredLeads.filter((lead) => lead.status === '계약완료').length;
+            const totalDB = filteredLeads.length;
+            const totalContracts = filteredLeads.reduce((sum, lead) => sum + (isContractComplete(lead) ? 1 : 0), 0);
             const overallCPA = totalDB > 0 ? Math.round(totalSpend / totalDB) : 0;
             const overallCPS = totalContracts > 0 ? Math.round(totalSpend / totalContracts) : 0;
 
@@ -1729,6 +2126,7 @@
             buildTableMonthFilter(details);
             renderCurrentTable();
             updateCharts(details, filteredLeads);
+            updateCompareDashboard();
         }
 
         function sortData(column) {
@@ -1738,7 +2136,11 @@
         }
 
         function searchTable() {
-            renderCurrentTable();
+            if (state.tableRenderFrame) cancelAnimationFrame(state.tableRenderFrame);
+            state.tableRenderFrame = requestAnimationFrame(() => {
+                state.tableRenderFrame = null;
+                renderCurrentTable();
+            });
         }
 
         function filteredTableRows() {
@@ -1747,19 +2149,22 @@
             return state.tableRowsCache.filter((row) => {
                 if (!allMonths && !state.tableSelectedMonths.includes(row.month)) return false;
                 if (!query) return true;
-                return [row.adName, row.agency, row.site, row.monthLabel].some((v) => text(v).toLowerCase().includes(query));
+                return [row.adName, row.creativeGroup, row.agency, row.site, row.monthLabel].some((v) => text(v).toLowerCase().includes(query));
             });
         }
 
-        function renderCurrentTable() {
+        function getSortedPerformanceRows() {
             const data = filteredTableRows();
-            const sorted = [...data].sort((a, b) => {
+            return [...data].sort((a, b) => {
                 const av = a[state.currentSortColumn];
                 const bv = b[state.currentSortColumn];
                 if (typeof av === 'string') return state.currentSortDirection === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
                 return state.currentSortDirection === 'asc' ? av - bv : bv - av;
             });
-            renderTable(sorted);
+        }
+
+        function renderCurrentTable() {
+            renderTable(getSortedPerformanceRows());
         }
 
         function renderTable(rows) {
@@ -1770,7 +2175,7 @@
             if (!rows.length) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="10" class="px-6 py-12 text-center text-slate-400">
+                        <td colspan="11" class="px-6 py-12 text-center text-slate-400">
                             <i data-lucide="info" class="w-8 h-8 mx-auto mb-2 text-slate-300"></i>
                             지정된 필터 조건에 부합하는 광고 데이터 매칭 내역이 없습니다.
                         </td>
@@ -1789,13 +2194,14 @@
                     : 'bg-blue-50 text-blue-600 border border-blue-100';
 
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-brand-50/40 transition-colors border-b border-[#e8e8d1]/40';
+                tr.className = 'hover:bg-brand-50/40 transition-colors border-b border-[#E2E8F0]/40';
                 tr.innerHTML = `
                     <td class="px-6 py-3.5 whitespace-nowrap text-slate-600 font-semibold text-[11px]">${escapeHTML(row.monthLabel)}</td>
                     <td class="px-6 py-3.5 font-medium whitespace-nowrap">${badge}</td>
                     <td class="px-6 py-3.5 whitespace-nowrap"><span class="px-1.5 py-0.5 rounded text-[10px] ${siteClass} font-bold">${escapeHTML(row.site)}</span></td>
                     <td class="px-6 py-3.5 max-w-xs truncate font-medium text-slate-800" title="${escapeHTML(row.adName)}">${escapeHTML(row.adName)}</td>
-                    <td class="px-6 py-3.5 text-right font-bold text-[#041d35] whitespace-nowrap">${row.spend.toLocaleString()}원</td>
+                    <td class="px-6 py-3.5 whitespace-nowrap"><span class="px-2 py-0.5 rounded text-[10px] bg-brand-50 text-brand-700 border border-brand-100 font-bold">${escapeHTML(normalizeCreativeGroup(row.creativeGroup, row.adName))}</span></td>
+                    <td class="px-6 py-3.5 text-right font-bold text-[#1F2937] whitespace-nowrap">${row.spend.toLocaleString()}원</td>
                     <td class="px-6 py-3.5 text-right text-slate-500">${row.clicks.toLocaleString()}</td>
                     <td class="px-6 py-3.5 text-right text-brand-700 font-semibold">${row.dbCount}</td>
                     <td class="px-6 py-3.5 text-right text-emerald-600 font-semibold">${row.contracts}</td>
@@ -1808,9 +2214,342 @@
         }
 
         function agencyBadge(agency) {
-            if (agency === 'Meta') return '<span class="px-2 py-0.5 rounded text-[10px] bg-[#041d35]/10 text-[#041d35] border border-[#041d35]/20 font-bold">Meta</span>';
-            if (agency === 'Tiktok') return '<span class="px-2 py-0.5 rounded text-[10px] bg-[#b3be3e]/10 text-[#9fa835] border border-[#b3be3e]/20 font-bold">TikTok</span>';
+            if (agency === 'Meta') return '<span class="px-2 py-0.5 rounded text-[10px] bg-[#DBEAFE] text-[#1D4ED8] border border-[#BFDBFE] font-bold">Meta</span>';
+            if (agency === 'Tiktok') return '<span class="px-2 py-0.5 rounded text-[10px] bg-[#7A6B8F]/10 text-[#6D28D9] border border-[#7A6B8F]/20 font-bold">TikTok</span>';
             return `<span class="px-2 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 border border-slate-200 font-semibold">${escapeHTML(agency)}</span>`;
+        }
+
+        // ─────────────────────────────────────────────
+        // 월별 비교 대시보드
+        // ─────────────────────────────────────────────
+        function buildCompareMonthSelectors(months) {
+            const monthList = months && months.length ? months : [...new Set([
+                ...state.active.admin.map((lead) => extractMonth(lead.date)),
+                ...state.active.meta.map((row) => row.date),
+                ...state.active.tiktok.map((row) => row.date),
+                ...state.active.google.map((row) => row.date)
+            ].filter(Boolean))].sort().reverse();
+
+            const aSel = $('compareMonthA');
+            const bSel = $('compareMonthB');
+            if (!aSel || !bSel) return;
+
+            [aSel, bSel].forEach((sel) => {
+                sel.innerHTML = monthList.map((month) => `<option value="${month}">${fullMonthLabel(month)}</option>`).join('');
+            });
+
+            if (!monthList.length) {
+                state.compareMonthA = '';
+                state.compareMonthB = '';
+                return;
+            }
+
+            if (!state.compareMonthA || !monthList.includes(state.compareMonthA)) state.compareMonthA = monthList[1] || monthList[0];
+            if (!state.compareMonthB || !monthList.includes(state.compareMonthB)) state.compareMonthB = monthList[0];
+            aSel.value = state.compareMonthA;
+            bSel.value = state.compareMonthB;
+        }
+
+        function handleCompareMonthChange() {
+            state.compareMonthA = $('compareMonthA')?.value || '';
+            state.compareMonthB = $('compareMonthB')?.value || '';
+            updateCompareDashboard();
+        }
+
+        function handleCompareMetricChange() {
+            state.compareMetric = $('compareMetric')?.value || 'dbCount';
+            updateCompareDashboard();
+        }
+
+        function summarizeComparisonRows(details, months) {
+            const map = new Map();
+            details.forEach((row) => {
+                if (!months.includes(row.month)) return;
+                const group = normalizeCreativeGroup(row.creativeGroup, row.adName);
+                const key = `${row.month}::${row.agency}::${row.site}::${group}`;
+                if (!map.has(key)) map.set(key, { month: row.month, agency: row.agency, site: row.site, creativeGroup: group, spend: 0, clicks: 0, dbCount: 0, contracts: 0 });
+                const bucket = map.get(key);
+                bucket.spend += row.spend || 0;
+                bucket.clicks += row.clicks || 0;
+                bucket.dbCount += row.dbCount || 0;
+                bucket.contracts += row.contracts || 0;
+            });
+
+            return [...map.values()].map((row) => ({
+                ...row,
+                cpc: row.clicks > 0 ? Math.round(row.spend / row.clicks) : 0,
+                cpa: row.dbCount > 0 ? Math.round(row.spend / row.dbCount) : 0,
+                cps: row.contracts > 0 ? Math.round(row.spend / row.contracts) : 0,
+                clickToDb: row.clicks > 0 ? row.dbCount / row.clicks : 0,
+                dbToContract: row.dbCount > 0 ? row.contracts / row.dbCount : 0,
+                clickToContract: row.clicks > 0 ? row.contracts / row.clicks : 0
+            }));
+        }
+
+        function updateCompareDashboard() {
+            const a = $('compareMonthA')?.value || state.compareMonthA;
+            const b = $('compareMonthB')?.value || state.compareMonthB;
+            const months = [...new Set([a, b].filter(Boolean))];
+            const tbody = $('compareTableBody');
+            if (!tbody) return;
+
+            if (!months.length) {
+                state.compareRowsCache = [];
+                state.compareMonthsCache = [];
+                tbody.innerHTML = `<tr><td colspan="11" class="px-6 py-10 text-center text-slate-400">비교할 연월 데이터가 없습니다.</td></tr>`;
+                clearCompareSummaries();
+                updateCompareTypeSummary([]);
+                updateCompareChart([], []);
+                return;
+            }
+
+            state.compareMonthA = a;
+            state.compareMonthB = b;
+            state.compareMetric = $('compareMetric')?.value || state.compareMetric || 'dbCount';
+
+            const orderedMonths = [a, b].filter(Boolean);
+            const { details } = compileAggregatedData({ monthOverride: months });
+            const rows = summarizeComparisonRows(details, months);
+            state.compareRowsCache = rows;
+            state.compareMonthsCache = orderedMonths;
+            renderCompareTable(rows, orderedMonths);
+            updateCompareTypeSummary(rows);
+            updateCompareSummaries(rows, a, b);
+            updateCompareChart(rows, orderedMonths);
+        }
+
+        function renderCompareTable(rows, orderedMonths) {
+            const tbody = $('compareTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            if (!rows.length) {
+                tbody.innerHTML = `<tr><td colspan="11" class="px-6 py-10 text-center text-slate-400">선택한 비교 연월에 표시할 데이터가 없습니다.</td></tr>`;
+                return;
+            }
+
+            const frag = document.createDocumentFragment();
+            const uniqueMonths = [...new Set(orderedMonths)].filter(Boolean);
+            uniqueMonths.forEach((month) => {
+                const header = document.createElement('tr');
+                header.innerHTML = `<td colspan="11" class="px-3 py-2 bg-[#F4F6FA] text-brand-900 font-extrabold border-y border-[#E2E8F0]">${fullMonthLabel(month)}</td>`;
+                frag.appendChild(header);
+
+                rows.filter((row) => row.month === month)
+                    .sort((a, b) => `${a.agency}${a.site}${a.creativeGroup}`.localeCompare(`${b.agency}${b.site}${b.creativeGroup}`))
+                    .forEach((row) => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-brand-50/40 transition-colors';
+                        tr.innerHTML = `
+                            <td class="px-3 py-2 font-semibold whitespace-nowrap truncate" title="${escapeHTML(agencyKoreanLabel(row.agency))}">${escapeHTML(agencyKoreanLabel(row.agency))}</td>
+                            <td class="px-3 py-2 whitespace-nowrap truncate" title="${escapeHTML(row.site)}">${escapeHTML(row.site)}</td>
+                            <td class="px-2 py-2 text-center whitespace-nowrap"><span class="inline-flex justify-center min-w-[72px] px-1.5 py-0.5 rounded text-[10px] bg-brand-50 text-brand-700 border border-brand-100 font-extrabold">${escapeHTML(normalizeCreativeGroup(row.creativeGroup, row.adName))}</span></td>
+                            <td class="px-3 py-2 text-right font-semibold">${numberDisplay(row.spend, '원')}</td>
+                            <td class="px-3 py-2 text-right">${numberDisplay(row.clicks)}</td>
+                            <td class="px-3 py-2 text-right font-bold text-brand-700">${numberDisplay(row.dbCount)}</td>
+                            <td class="px-3 py-2 text-right font-bold text-emerald-600">${numberDisplay(row.contracts)}</td>
+                            <td class="px-3 py-2 text-right ${row.cpa > 45000 ? 'text-rose-600 font-bold' : 'font-semibold'}">${row.cpa ? numberDisplay(row.cpa, '원') : '-'}</td>
+                            <td class="px-3 py-2 text-right ${row.cps > 200000 ? 'text-amber-600 font-bold' : 'font-semibold'}">${row.cps ? numberDisplay(row.cps, '원') : '-'}</td>
+                            <td class="px-3 py-2 text-right font-semibold text-blue-700">${percentDisplay(row.clickToDb)}</td>
+                            <td class="px-3 py-2 text-right font-semibold text-purple-700">${percentDisplay(row.dbToContract)}</td>`;
+                        frag.appendChild(tr);
+                    });
+            });
+            tbody.appendChild(frag);
+        }
+
+        function updateCompareSummaries(rows, monthA, monthB) {
+            const findBestCPA = (month) => rows
+                .filter((row) => row.month === month && row.dbCount > 0 && row.cpa > 0)
+                .sort((a, b) => a.cpa - b.cpa || b.dbCount - a.dbCount)[0];
+            const bestA = findBestCPA(monthA);
+            const bestB = findBestCPA(monthB);
+
+            setSummaryText('compareBestA', bestA ? `${bestA.site} / ${bestA.creativeGroup} · ${bestA.cpa.toLocaleString()}원` : '-');
+            setSummaryText('compareBestB', bestB ? `${bestB.site} / ${bestB.creativeGroup} · ${bestB.cpa.toLocaleString()}원` : '-');
+
+            const improvement = findBestImprovement(rows, monthA, monthB, 'cpa');
+            setSummaryText('compareImproveCPA', improvement ? `${improvement.site} / ${improvement.creativeGroup} · ${improvement.diff.toLocaleString()}원 개선` : '-');
+
+            const bestContract = rows
+                .filter((row) => row.contracts > 0 && row.cps > 0)
+                .sort((a, b) => a.cps - b.cps || b.contracts - a.contracts)[0];
+            setSummaryText('compareBestContract', bestContract ? `${bestContract.site} / ${bestContract.creativeGroup} · 계약단가 ${bestContract.cps.toLocaleString()}원` : '-');
+        }
+
+        function clearCompareSummaries() {
+            ['compareBestA', 'compareBestB', 'compareImproveCPA', 'compareBestContract'].forEach((id) => setSummaryText(id, '-'));
+        }
+
+        function setSummaryText(id, value) {
+            const el = $(id);
+            if (el) el.textContent = value;
+        }
+
+        function findBestImprovement(rows, monthA, monthB, metric) {
+            if (!monthA || !monthB || monthA === monthB) return null;
+            const aMap = new Map();
+            rows.filter((row) => row.month === monthA).forEach((row) => aMap.set(`${row.agency}::${row.site}::${row.creativeGroup}`, row));
+            const improved = rows.filter((row) => row.month === monthB).map((row) => {
+                const before = aMap.get(`${row.agency}::${row.site}::${row.creativeGroup}`);
+                if (!before || !before[metric] || !row[metric]) return null;
+                const diff = before[metric] - row[metric];
+                return diff > 0 ? { ...row, diff } : null;
+            }).filter(Boolean).sort((a, b) => b.diff - a.diff);
+            return improved[0] || null;
+        }
+
+        function getCreativeGroups(rows = []) {
+            const normalized = rows.map((row) => normalizeCreativeGroup(row.creativeGroup, row.adName)).filter(Boolean);
+            const seen = new Set();
+            const result = [];
+
+            CREATIVE_GROUPS.forEach((group) => {
+                if (normalized.includes(group) && !seen.has(group)) {
+                    seen.add(group);
+                    result.push(group);
+                }
+            });
+            normalized.forEach((group) => {
+                if (!seen.has(group)) {
+                    seen.add(group);
+                    result.push(group);
+                }
+            });
+            return result.length ? result : CREATIVE_GROUPS;
+        }
+
+        function updateCompareTypeSummary(rows = []) {
+            const el = $('compareTypeSummary');
+            if (!el) return;
+            const groups = getCreativeGroups(rows);
+            el.textContent = groups.length ? `타입: ${groups.join(' · ')}` : '타입: -';
+        }
+
+        function typeAxisLabel(group) {
+            const label = text(group) || '-';
+            if (label === 'AI기타채널') return ['AI', '기타채널'];
+            if (label === '신규포맷') return ['신규', '포맷'];
+            if (label.length > 6) return label.match(/.{1,6}/g) || [label];
+            return [label];
+        }
+
+        function updateCompareChart(rows, orderedMonths) {
+            const ctx = $('compareChart')?.getContext('2d');
+            if (!ctx) return;
+            if (state.compareChart) state.compareChart.destroy();
+
+            const metric = state.compareMetric || 'dbCount';
+            const labelMap = {
+                dbCount: 'DB수량',
+                cpa: 'DB단가',
+                contracts: '계약수량',
+                cps: '계약단가',
+                clickToDb: 'DB전환율',
+                dbToContract: '계약전환율'
+            };
+            const labelEl = $('compareChartMetricLabel');
+            if (labelEl) labelEl.textContent = labelMap[metric] || 'DB수량';
+
+            const groupLabels = getCreativeGroups(rows);
+            const labels = groupLabels.map(typeAxisLabel);
+            const months = [...new Set(orderedMonths)].filter(Boolean);
+            const metricMap = new Map();
+            const metricKey = (month, group) => `${month}::${group}`;
+
+            for (const row of rows) {
+                const group = normalizeCreativeGroup(row.creativeGroup, row.adName);
+                const key = metricKey(row.month, group);
+                if (!metricMap.has(key)) metricMap.set(key, { spend: 0, clicks: 0, dbCount: 0, contracts: 0 });
+                const bucket = metricMap.get(key);
+                bucket.spend += row.spend || 0;
+                bucket.clicks += row.clicks || 0;
+                bucket.dbCount += row.dbCount || 0;
+                bucket.contracts += row.contracts || 0;
+            }
+
+            const datasets = months.map((month, idx) => ({
+                label: fullMonthLabel(month),
+                data: groupLabels.map((group) => {
+                    const bucket = metricMap.get(metricKey(month, group));
+                    if (!bucket) return 0;
+                    if (metric === 'dbCount' || metric === 'contracts') return bucket[metric] || 0;
+                    if (metric === 'clickToDb') return bucket.clicks > 0 ? (bucket.dbCount / bucket.clicks) * 100 : 0;
+                    if (metric === 'dbToContract') return bucket.dbCount > 0 ? (bucket.contracts / bucket.dbCount) * 100 : 0;
+                    const divisor = metric === 'cps' ? bucket.contracts : bucket.dbCount;
+                    return divisor > 0 ? Math.round(bucket.spend / divisor) : 0;
+                }),
+                backgroundColor: idx === 0 ? 'rgba(3, 4, 94, 0.88)' : 'rgba(94, 96, 206, 0.84)',
+                borderColor: idx === 0 ? '#03045E' : '#5E60CE',
+                borderWidth: 1.5,
+                borderRadius: 5,
+                maxBarThickness: 34
+            }));
+
+            state.compareChart = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#1F2937', font: { family: 'Pretendard', size: 10, weight: '600' } } },
+                        tooltip: {
+                            callbacks: {
+                                title: (items) => groupLabels[items?.[0]?.dataIndex] || '',
+                                label: (item) => {
+                                    const value = Number(item.raw || 0);
+                                    if (metric === 'clickToDb' || metric === 'dbToContract') {
+                                        return `${item.dataset.label}: ${value.toFixed(2)}%`;
+                                    }
+                                    const unit = (metric === 'cpa' || metric === 'cps') ? '원' : '건';
+                                    return `${item.dataset.label}: ${value.toLocaleString()}${unit}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: '#E2E8F0' },
+                            ticks: {
+                                color: '#1F2937',
+                                font: { size: 10, weight: '700' },
+                                maxRotation: 0,
+                                minRotation: 0,
+                                autoSkip: false,
+                                padding: 6
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#E2E8F0' },
+                            ticks: {
+                                color: '#1F2937',
+                                callback: (v) => {
+                                    if (metric === 'clickToDb' || metric === 'dbToContract') return `${Number(v).toFixed(2)}%`;
+                                    return (metric === 'cpa' || metric === 'cps') ? `${Number(v).toLocaleString()}원` : Number(v).toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function agencyKoreanLabel(agency) {
+            if (agency === 'Tiktok') return '틱톡';
+            if (agency === 'Meta') return '메타';
+            if (agency === 'Google') return '구글';
+            return agency || '-';
+        }
+
+        function numberDisplay(value, suffix = '') {
+            return Number(value || 0).toLocaleString() + suffix;
+        }
+
+        function percentDisplay(value) {
+            if (!value) return '0.00%';
+            return `${(value * 100).toFixed(2)}%`;
         }
 
         // ─────────────────────────────────────────────
@@ -1853,20 +2592,20 @@
                 data: {
                     labels: top5.map((row) => splitLabelToLines(row.agency, row.adName)),
                     datasets: [
-                        { label: '유효 DB 수량', data: top5.map((row) => row.dbCount), backgroundColor: 'rgba(4, 29, 53, 0.95)', borderColor: '#041d35', borderWidth: 1.5, borderRadius: 4 },
-                        { label: '계약 완료 수량', data: top5.map((row) => row.contracts), backgroundColor: 'rgba(179, 190, 62, 0.95)', borderColor: '#b3be3e', borderWidth: 1.5, borderRadius: 4 }
+                        { label: '유효 DB 수량', data: top5.map((row) => row.dbCount), backgroundColor: 'rgba(3, 4, 94, 0.88)', borderColor: '#03045E', borderWidth: 1.5, borderRadius: 4 },
+                        { label: '계약 완료 수량', data: top5.map((row) => row.contracts), backgroundColor: 'rgba(94, 96, 206, 0.84)', borderColor: '#5E60CE', borderWidth: 1.5, borderRadius: 4 }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { labels: { color: '#041d35', font: { family: 'Pretendard', size: 11, weight: '600' } }, position: 'top' },
+                        legend: { labels: { color: '#1F2937', font: { family: 'Pretendard', size: 11, weight: '600' } }, position: 'top' },
                         tooltip: { callbacks: { title: (items) => { const row = top5[items[0].dataIndex]; return `[${row.site}/${row.agency}] ${row.adName}`; } } }
                     },
                     scales: {
-                        x: { grid: { color: '#e8e8d1' }, ticks: { color: '#041d35', font: { family: 'Pretendard', size: 10 } } },
-                        y: { grid: { color: '#e8e8d1' }, ticks: { color: '#041d35', precision: 0 } }
+                        x: { grid: { color: '#E2E8F0' }, ticks: { color: '#1F2937', font: { family: 'Pretendard', size: 10 } } },
+                        y: { grid: { color: '#E2E8F0' }, ticks: { color: '#1F2937', precision: 0 } }
                     }
                 }
             });
@@ -1883,15 +2622,29 @@
         function updateTrendChart(data, filteredLeads) {
             const selectedMonths = getSelectedMonths();
             const months = selectedMonths === 'ALL'
-                ? [...new Set([...data.map((row) => row.month), ...filteredLeads.map((lead) => extractMonth(lead.date))].filter(Boolean))].sort()
+                ? [...new Set([...data.map((row) => row.month), ...filteredLeads.map((lead) => lead.month || extractMonth(lead.date))].filter(Boolean))].sort()
                 : [...selectedMonths].sort();
 
+            const monthStats = new Map(months.map((month) => [month, { spend: 0, db: 0, contracts: 0 }]));
+            for (const row of data) {
+                const stat = monthStats.get(row.month);
+                if (stat) stat.spend += row.spend || 0;
+            }
+            for (const lead of filteredLeads) {
+                const month = lead.month || extractMonth(lead.date);
+                const stat = monthStats.get(month);
+                if (!stat) continue;
+                stat.db += 1;
+                if (isContractComplete(lead)) stat.contracts += 1;
+            }
+
             const monthly = months.map((month) => {
-                const spend = data.reduce((sum, row) => row.month === month ? sum + row.spend : sum, 0);
-                const leads = filteredLeads.filter((lead) => extractMonth(lead.date) === month);
-                const db = leads.filter((lead) => lead.duplicate !== '중복').length;
-                const contracts = leads.filter((lead) => lead.status === '계약완료').length;
-                return { month, cpa: db > 0 ? Math.round(spend / db) : 0, cps: contracts > 0 ? Math.round(spend / contracts) : 0 };
+                const stat = monthStats.get(month) || { spend: 0, db: 0, contracts: 0 };
+                return {
+                    month,
+                    cpa: stat.db > 0 ? Math.round(stat.spend / stat.db) : 0,
+                    cps: stat.contracts > 0 ? Math.round(stat.spend / stat.contracts) : 0
+                };
             });
 
             const ctx = $('trendChart')?.getContext('2d');
@@ -1903,47 +2656,127 @@
                 data: {
                     labels: months.map(monthLabel),
                     datasets: [
-                        { label: '평균 CPA (DB 단가)', data: monthly.map((row) => row.cpa), borderColor: '#b3be3e', backgroundColor: 'rgba(179, 190, 62, 0.08)', borderWidth: 3, tension: 0.2, yAxisID: 'y' },
-                        { label: '평균 CPS (계약 단가)', data: monthly.map((row) => row.cps), borderColor: '#041d35', backgroundColor: 'rgba(4, 29, 53, 0.05)', borderWidth: 3, tension: 0.2, yAxisID: 'y1' }
+                        { label: '평균 CPA (DB 단가)', data: monthly.map((row) => row.cpa), borderColor: '#03045E', backgroundColor: 'rgba(3, 4, 94, 0.12)', borderWidth: 3, tension: 0.2, yAxisID: 'y' },
+                        { label: '평균 CPS (계약 단가)', data: monthly.map((row) => row.cps), borderColor: '#5E60CE', backgroundColor: 'rgba(94, 96, 206, 0.12)', borderWidth: 3, tension: 0.2, yAxisID: 'y1' }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#041d35', font: { family: 'Pretendard', size: 11, weight: '600' } } } },
+                    plugins: { legend: { labels: { color: '#1F2937', font: { family: 'Pretendard', size: 11, weight: '600' } } } },
                     scales: {
-                        x: { grid: { color: '#e8e8d1' }, ticks: { color: '#041d35' } },
-                        y: { type: 'linear', display: true, position: 'left', grid: { color: '#e8e8d1' }, ticks: { color: '#6b7700', font: { family: 'Pretendard', weight: '700' }, callback: (v) => `${Number(v).toLocaleString()}원` } },
-                        y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { color: '#041d35', callback: (v) => `${Number(v).toLocaleString()}원` } }
+                        x: { grid: { color: '#E2E8F0' }, ticks: { color: '#1F2937' } },
+                        y: { type: 'linear', display: true, position: 'left', grid: { color: '#E2E8F0' }, ticks: { color: '#1F2937', font: { family: 'Pretendard', weight: '600' }, callback: (v) => `${Number(v).toLocaleString()}원` } },
+                        y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { color: '#1F2937', callback: (v) => `${Number(v).toLocaleString()}원` } }
                     }
                 }
             });
         }
 
+        function buildWorkbookSheet(sheetName, headers, rows) {
+            const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+            ws['!cols'] = headers.map((header, idx) => ({
+                wch: Math.max(
+                    String(header).length + 4,
+                    ...rows.slice(0, 200).map((row) => String(row[idx] ?? '').length + 2)
+                )
+            }));
+            const lastRow = Math.max(rows.length, 1);
+            ws['!autofilter'] = { ref: XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: lastRow, c: headers.length - 1 } }) };
+            return ws;
+        }
+
+        function writeTableWorkbook(filename, sheetName, headers, rows) {
+            if (!rows.length) {
+                alert('다운로드할 데이터가 없습니다. 필터 조건을 확인해 주세요.');
+                return;
+            }
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, buildWorkbookSheet(sheetName, headers, rows), sheetName);
+            XLSX.writeFile(wb, filename);
+        }
+
         function downloadTableCSV() {
-            const rows = filteredTableRows();
-            const lines = ['날짜 (연월),광고 매체사,사이트,소재명 (광고 이름),총 광고비,클릭수,유효 DB수,계약 수량,DB 단가 (CPA),계약 단가 (CPS)'];
-            rows.forEach((row) => {
-                const cells = [row.monthLabel || '-', row.agency, row.site, row.adName, row.spend, row.clicks, row.dbCount, row.contracts, row.cpa, row.cps];
-                lines.push(cells.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','));
+            const rows = getSortedPerformanceRows();
+            const headers = ['날짜 (연월)', '광고 매체사', '사이트', '소재명 (광고 이름)', '타입', '총 광고비', '클릭수', '유효 DB수', '계약 수량', 'DB 단가 (CPA)', '계약 단가 (CPS)'];
+            const excelRows = rows.map((row) => [
+                row.monthLabel || fullMonthLabel(row.month) || '-',
+                row.agency,
+                row.site,
+                row.adName,
+                normalizeCreativeGroup(row.creativeGroup, row.adName),
+                Number(row.spend || 0),
+                Number(row.clicks || 0),
+                Number(row.dbCount || 0),
+                Number(row.contracts || 0),
+                Number(row.cpa || 0),
+                Number(row.cps || 0)
+            ]);
+            writeTableWorkbook(
+                `소재명_키워드_매칭별_종합성과_${new Date().toISOString().slice(0, 10)}.xlsx`,
+                '종합성과목록',
+                headers,
+                excelRows
+            );
+        }
+
+        function getCurrentCompareRowsForDownload() {
+            const a = $('compareMonthA')?.value || state.compareMonthA;
+            const b = $('compareMonthB')?.value || state.compareMonthB;
+            const orderedMonths = [...new Set([a, b].filter(Boolean))];
+            if (!orderedMonths.length) return { rows: [], orderedMonths: [] };
+
+            const cachedMonths = state.compareMonthsCache || [];
+            const cacheMatches = cachedMonths.length === orderedMonths.length && cachedMonths.every((month, idx) => month === orderedMonths[idx]);
+            const rows = cacheMatches && Array.isArray(state.compareRowsCache)
+                ? [...state.compareRowsCache]
+                : summarizeComparisonRows(compileAggregatedData({ monthOverride: orderedMonths }).details, orderedMonths);
+
+            const monthOrder = new Map(orderedMonths.map((month, idx) => [month, idx]));
+            rows.sort((a, b) => {
+                const monthDiff = (monthOrder.get(a.month) ?? 999) - (monthOrder.get(b.month) ?? 999);
+                if (monthDiff) return monthDiff;
+                return `${a.agency}${a.site}${normalizeCreativeGroup(a.creativeGroup, a.adName)}`
+                    .localeCompare(`${b.agency}${b.site}${normalizeCreativeGroup(b.creativeGroup, b.adName)}`);
             });
-            const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `광고소재_분석보고서_${new Date().toISOString().slice(0, 10)}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            URL.revokeObjectURL(link.href);
-            link.remove();
+            return { rows, orderedMonths };
+        }
+
+        function downloadCompareTableExcel() {
+            const { rows, orderedMonths } = getCurrentCompareRowsForDownload();
+            const headers = ['비교 연월', '광고 매체사', '사이트', '타입', '총 광고비', '클릭수', 'DB수', '계약수', 'DB단가', '계약단가', 'DB전환율', '계약전환율'];
+            const excelRows = rows.map((row) => [
+                fullMonthLabel(row.month) || row.month || '-',
+                agencyKoreanLabel(row.agency),
+                row.site,
+                normalizeCreativeGroup(row.creativeGroup, row.adName),
+                Number(row.spend || 0),
+                Number(row.clicks || 0),
+                Number(row.dbCount || 0),
+                Number(row.contracts || 0),
+                Number(row.cpa || 0),
+                Number(row.cps || 0),
+                percentDisplay(row.clickToDb),
+                percentDisplay(row.dbToContract)
+            ]);
+            const monthSuffix = orderedMonths.length ? `_${orderedMonths.join('_vs_')}` : '';
+            writeTableWorkbook(
+                `월별_성과_비교${monthSuffix}_${new Date().toISOString().slice(0, 10)}.xlsx`,
+                '월별성과비교',
+                headers,
+                excelRows
+            );
         }
 
         function downloadExcelTemplate() {
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['접수시간','분배시간','사이트','광고사','기기','문의유형','키워드','문의위치','처리상태']]), 'Meta_DB');
             XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['접수시간','분배시간','사이트','광고사','기기','문의유형','키워드','문의위치','처리상태']]), 'Tiktok_DB');
-            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['어드민 키워드','광고 매체명','광고 이름','비고']]), '키워드매칭');
-            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['캠페인 이름','광고 세트 이름','광고 이름','노출','링크 클릭','지출 금액 (KRW)','결과 유형','결과','결과당 비용','동영상 평균 재생 시간','보고 시작','보고 종료']]), 'Meta');
-            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['캠페인 이름','광고 그룹 이름','광고 이름','월별','클릭수(목적지)','비용','CPC(목적지)','CTR(목적지)','전환수','전환당 비용','전환율(CVR)','통화']]), 'Tiktok');
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['접수시간','분배시간','사이트','광고사','기기','문의유형','키워드','문의위치','처리상태']]), 'Google_DB');
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['어드민 키워드','광고 매체명','광고 이름','타입'], ['예: bryan_honey','Meta','브라이언B260305 (꿀팁)','브라이언']]), '키워드매칭');
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['캠페인 이름','광고 세트 이름','광고 이름','노출','링크 클릭','지출 금액 (KRW)','결과 유형','결과','결과당 비용','동영상 평균 재생 시간','보고 시작','보고 종료']]), 'Meta보고서');
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['캠페인 이름','광고 그룹 이름','광고 이름','월별','클릭수(목적지)','비용','CPC(목적지)','CTR(목적지)','전환수','전환당 비용','전환율(CVR)','통화']]), 'Tiktok보고서');
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([['캠페인 이름','광고 그룹 이름','광고 이름','월별','클릭수','비용']]), 'Google');
             XLSX.writeFile(wb, `광고소재분석_업로드템플릿_${new Date().toISOString().slice(0, 10)}.xlsx`);
         }
 
@@ -1953,7 +2786,7 @@
             buildMonthFilter();
             refreshData();
         };
-    </script>
-
+    
+</script>
 </body>
 </html>

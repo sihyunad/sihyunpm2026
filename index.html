@@ -587,7 +587,7 @@
 <div class="xl:col-span-2 overflow-x-auto rounded-xl border border-[#E2E8F0] bg-white min-h-[520px]">
 <table class="w-full min-w-[1080px] table-fixed text-left text-[11px] text-slate-700">
 <colgroup>
-<col style="width: 11%;"/>
+<col style="width: 9%;"/>
 <col style="width: 9%;"/>
 <col style="width: 9%;"/>
 <col style="width: 13%;"/>
@@ -601,8 +601,8 @@
 </colgroup>
 <thead class="bg-brand-50 text-brand-700 font-bold border-b border-[#E2E8F0] sticky top-0 z-10">
 <tr>
-<th class="px-3 py-3">광고 매체사</th>
 <th class="px-3 py-3">사이트</th>
+<th class="px-3 py-3">광고 매체사</th>
 <th class="px-2 py-3 text-center">타입</th>
 <th class="px-3 py-3 text-right">총 광고비</th>
 <th class="px-3 py-3 text-right">클릭수</th>
@@ -2361,19 +2361,29 @@
 
             const frag = document.createDocumentFragment();
             const uniqueMonths = [...new Set(orderedMonths)].filter(Boolean);
+
+            function agencyBadge(agency) {
+                const label = agencyKoreanLabel(agency);
+                if (agency === 'Meta') return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-blue-50 text-blue-700 border border-blue-100 font-extrabold">${escapeHTML(label)}</span>`;
+                if (agency === 'Tiktok') return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-purple-50 text-purple-700 border border-purple-100 font-extrabold">${escapeHTML(label)}</span>`;
+                if (agency === 'Google') return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-red-50 text-red-600 border border-red-100 font-extrabold">${escapeHTML(label)}</span>`;
+                return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 border border-slate-200 font-extrabold">${escapeHTML(label)}</span>`;
+            }
+
             uniqueMonths.forEach((month) => {
                 const header = document.createElement('tr');
-                header.innerHTML = `<td colspan="11" class="px-3 py-2 bg-[#F4F6FA] text-brand-900 font-extrabold border-y border-[#E2E8F0]">${fullMonthLabel(month)}</td>`;
+                header.className = 'sticky-month-header';
+                header.innerHTML = `<td colspan="11" style="position:sticky;top:37px;z-index:15;" class="px-3 py-2 bg-[#EEF2FF] text-brand-900 font-extrabold border-y border-[#E2E8F0]">${fullMonthLabel(month)}</td>`;
                 frag.appendChild(header);
 
                 rows.filter((row) => row.month === month)
-                    .sort((a, b) => `${a.agency}${a.site}${a.creativeGroup}`.localeCompare(`${b.agency}${b.site}${b.creativeGroup}`))
+                    .sort((a, b) => `${a.site}${a.agency}${a.creativeGroup}`.localeCompare(`${b.site}${b.agency}${b.creativeGroup}`))
                     .forEach((row) => {
                         const tr = document.createElement('tr');
                         tr.className = 'hover:bg-brand-50/40 transition-colors';
                         tr.innerHTML = `
-                            <td class="px-3 py-2 font-semibold whitespace-nowrap truncate" title="${escapeHTML(agencyKoreanLabel(row.agency))}">${escapeHTML(agencyKoreanLabel(row.agency))}</td>
                             <td class="px-3 py-2 whitespace-nowrap truncate" title="${escapeHTML(row.site)}">${escapeHTML(row.site)}</td>
+                            <td class="px-3 py-2 text-center whitespace-nowrap">${agencyBadge(row.agency)}</td>
                             <td class="px-2 py-2 text-center whitespace-nowrap"><span class="inline-flex justify-center min-w-[72px] px-1.5 py-0.5 rounded text-[10px] bg-brand-50 text-brand-700 border border-brand-100 font-extrabold">${escapeHTML(normalizeCreativeGroup(row.creativeGroup, row.adName))}</span></td>
                             <td class="px-3 py-2 text-right font-semibold">${numberDisplay(row.spend, '원')}</td>
                             <td class="px-3 py-2 text-right">${numberDisplay(row.clicks)}</td>

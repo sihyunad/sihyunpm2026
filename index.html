@@ -824,7 +824,7 @@
                         카빌리지 스프레드시트 URL
                     </label>
 <div class="relative">
-<input class="w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all text-slate-800 bg-white" id="gsUrlCavillage" oninput="updateGsStatus('카빌리지')" placeholder="https://docs.google.com/spreadsheets/d/..." type="url" value="https://docs.google.com/spreadsheets/d/1R3jXpSOhvZHh3J1QJrOjTBNAzhQe_7rXT3Bzw6w3gYo/edit?usp=sharing"/>
+<input class="w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all text-slate-800 bg-white" id="gsUrlCavillage" oninput="updateGsStatus('카빌리지')" placeholder="https://docs.google.com/spreadsheets/d/..." type="url" value="https://docs.google.com/spreadsheets/d/1Tsjy87ykIAFKbaKF6i1Q2bOYYXs2b7lkGOKMrkLwQZQ/edit?usp=sharing"/>
 </div>
 <div class="text-[11px] text-slate-400 pl-1" id="gsStatus_카빌리지">URL을 입력하세요.</div>
 </div>
@@ -835,7 +835,7 @@
                         차맵 스프레드시트 URL <span class="text-[10px] text-slate-400 font-normal">(선택)</span>
 </label>
 <div class="relative">
-<input class="w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all text-slate-800 bg-white" id="gsUrlChamap" oninput="updateGsStatus('차맵')" placeholder="https://docs.google.com/spreadsheets/d/..." type="url"/>
+<input class="w-full border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all text-slate-800 bg-white" id="gsUrlChamap" oninput="updateGsStatus('차맵')" placeholder="https://docs.google.com/spreadsheets/d/..." type="url" value="https://docs.google.com/spreadsheets/d/1Tsjy87ykIAFKbaKF6i1Q2bOYYXs2b7lkGOKMrkLwQZQ/edit?usp=sharing"/>
 </div>
 <div class="text-[11px] text-slate-400 pl-1" id="gsStatus_차맵">URL을 입력하세요.</div>
 </div>
@@ -944,18 +944,26 @@
         const SITES = ['카빌리지', '차맵'];
         const AGENCIES = ['Meta', 'Tiktok', 'Google'];
         const DATA_KEYS = ['admin', 'matching', 'meta', 'tiktok', 'google'];
-        const VALID_DB_ADMIN_SOURCES = new Set(['admin_meta', 'admin_tiktok']);
+        const VALID_DB_ADMIN_SOURCES = new Set(['admin_meta', 'admin_tiktok', 'admin_google', 'admin_crm']);
         const CREATIVE_GROUPS = ['브라이언', 'AI기타채널', '신규포맷', '유튜브'];
         const LS_KEY = 'cavillage_dashboard_data_v7_type_column';
         const MONTH_LABELS = { '01':'01월','02':'02월','03':'03월','04':'04월','05':'05월','06':'06월','07':'07월','08':'08월','09':'09월','10':'10월','11':'11월','12':'12월' };
+        // CRM_SHEET_ID: 카빌리지/차맵 탭이 모두 들어있는 단일 구글 시트 ID
+        const CRM_SHEET_ID = '1Tsjy87ykIAFKbaKF6i1Q2bOYYXs2b7lkGOKMrkLwQZQ';
         const SHEET_ALIASES = {
-            admin_meta:   ['Meta_DB', 'META_DB', '메타_DB', '메타 DB', '어드민_Meta', '어드민 DB', 'Meta DB', 'meta_db'],
-            admin_tiktok: ['Tiktok_DB', 'TikTok_DB', '틱톡_DB', '틱톡 DB', 'TikTok DB', 'tiktok_db'],
-            admin_google: ['Google_DB', '구글_DB', '구글 DB', 'Google DB', 'google_db'],
-            matching:     ['키워드매칭', '키워드 매칭', '키워드_매칭', '매칭', 'KeywordMatching', 'keyword_matching'],
-            meta:         ['Meta보고서', 'Meta 보고서', '메타보고서', '메타 보고서', 'Meta', 'meta', '메타', 'SNS-인스타그램'],
-            tiktok:       ['Tiktok보고서', 'TikTok보고서', 'Tiktok 보고서', 'TikTok 보고서', '틱톡보고서', '틱톡 보고서', 'Tiktok', 'TikTok', 'tiktok', '틱톡'],
-            google:       ['Google', 'google', '구글', 'Google GDN', 'GDN']
+            // 광고사별 CRM DB 탭 (크롤링 데이터) - 사이트 prefix로 구분
+            admin_meta:   ['카빌리지_Meta', '차맵_Meta', 'Meta_DB', 'META_DB', '메타_DB', '메타 DB', '어드민_Meta', '어드민 DB', 'Meta DB', 'meta_db'],
+            admin_tiktok: ['카빌리지_Tiktok', '차맵_Tiktok', 'Tiktok_DB', 'TikTok_DB', '틱톡_DB', '틱톡 DB', 'TikTok DB', 'tiktok_db'],
+            admin_google: ['카빌리지_Google', '차맵_Google', 'Google_DB', '구글_DB', '구글 DB', 'Google DB', 'google_db'],
+            // 키워드매칭 탭 (사이트별 분리)
+            matching:     ['카빌리지_키워드매칭', '차맵_키워드매칭', '키워드매칭', '키워드 매칭', '키워드_매칭', '매칭', 'KeywordMatching', 'keyword_matching'],
+            // 광고비 보고서 탭 (사이트별 분리)
+            meta:         ['카빌리지_Meta보고서', '차맵_Meta보고서', 'Meta보고서', 'Meta 보고서', '메타보고서', '메타 보고서', 'Meta', 'meta', '메타'],
+            tiktok:       ['카빌리지_Tiktok보고서', '차맵_Tiktok보고서', 'Tiktok보고서', 'TikTok보고서', '틱톡보고서', '틱톡 보고서', 'Tiktok', 'TikTok', 'tiktok', '틱톡'],
+            google:       ['카빌리지_Google보고서', '차맵_Google보고서', 'Google보고서', 'Google', 'google', '구글', 'Google GDN', 'GDN'],
+            // CRM 자동 크롤링 탭 (사이트별 탭명) - 하위 호환용
+            crm_cavillage: ['카빌리지'],
+            crm_chamap:    ['차맵'],
         };
 
         const DEMO_DATA = {
@@ -1470,20 +1478,23 @@
             return { sheetName: null, rows: [], method: null, errors };
         }
 
-        async function fetchSiteSheets(url) {
+        async function fetchSiteSheets(url, siteName) {
             if (!url) return emptySiteData();
             const sheetId = extractSheetId(url);
             if (!sheetId) throw new Error('구글 스프레드시트 URL 형식이 올바르지 않습니다.');
 
             const result = emptySiteData();
+
+            // 사이트별로 해당 탭명만 우선 읽기
+            const prefix = siteName === '카빌리지' ? '카빌리지' : '차맵';
             const loadMap = {
-                admin_meta: SHEET_ALIASES.admin_meta,
-                admin_tiktok: SHEET_ALIASES.admin_tiktok,
-                admin_google: SHEET_ALIASES.admin_google,
-                matching: SHEET_ALIASES.matching,
-                meta: SHEET_ALIASES.meta,
-                tiktok: SHEET_ALIASES.tiktok,
-                google: SHEET_ALIASES.google
+                admin_meta:   [`${prefix}_Meta`,          ...SHEET_ALIASES.admin_meta.filter(a => !a.includes('카빌리지') && !a.includes('차맵'))],
+                admin_tiktok: [`${prefix}_Tiktok`,        ...SHEET_ALIASES.admin_tiktok.filter(a => !a.includes('카빌리지') && !a.includes('차맵'))],
+                admin_google: [`${prefix}_Google`,        ...SHEET_ALIASES.admin_google.filter(a => !a.includes('카빌리지') && !a.includes('차맵'))],
+                matching:     [`${prefix}_키워드매칭`,    ...SHEET_ALIASES.matching.filter(a => !a.includes('카빌리지') && !a.includes('차맵'))],
+                meta:         [`${prefix}_Meta보고서`,    ...SHEET_ALIASES.meta.filter(a => !a.includes('카빌리지') && !a.includes('차맵'))],
+                tiktok:       [`${prefix}_Tiktok보고서`,  ...SHEET_ALIASES.tiktok.filter(a => !a.includes('카빌리지') && !a.includes('차맵'))],
+                google:       [`${prefix}_Google보고서`,  ...SHEET_ALIASES.google.filter(a => !a.includes('카빌리지') && !a.includes('차맵'))],
             };
 
             const report = [];
@@ -1494,7 +1505,6 @@
                 } else {
                     result[key] = rows;
                 }
-
                 report.push({
                     key,
                     sheetName: sheetName || aliases[0],
@@ -1504,6 +1514,7 @@
                     errors: errors || []
                 });
             }));
+
             result.__report = report;
             return result;
         }
@@ -1536,7 +1547,7 @@
             statusEl.classList.remove('hidden');
 
             try {
-                const [cvData, cmData] = await Promise.all([fetchSiteSheets(cvUrl), fetchSiteSheets(cmUrl)]);
+                const [cvData, cmData] = await Promise.all([fetchSiteSheets(cvUrl, '카빌리지'), fetchSiteSheets(cmUrl, '차맵')]);
                 state.uploaded['카빌리지'] = cvUrl ? cvData : emptySiteData();
                 state.uploaded['차맵'] = cmUrl ? cmData : emptySiteData();
 
@@ -1657,7 +1668,8 @@
         function mapGoogleRow(row, sourceSite) {
             return {
                 sourceSite,
-                adName: text(firstValue(row, ['광고 이름', '광고명', '광고', '소재명', 'Ad name', 'adName'])),
+                // 구글은 캠페인 수준 데이터를 소재명으로 사용
+                adName: text(firstValue(row, ['광고 이름', '광고명', '광고', '소재명', 'Ad name', 'adName', '캠페인', 'Campaign'])),
                 spend: numberValue(firstValue(row, ['비용', '비용 (KRW)', '지출 금액', 'Cost', 'Spend', 'spend'], 0)),
                 clicks: intValue(firstValue(row, ['클릭수', '클릭', 'Clicks', 'clicks'], 0)),
                 date: reportMonth(row, ['월별', '월', '연월'])
@@ -1734,17 +1746,23 @@
         }
 
         function saveToLocalStorage() {
+            // 6개월치 CRM 데이터는 용량이 커서 LocalStorage 저장을 건너뜁니다.
+            // 데이터는 메모리(state)에만 유지됩니다.
             try {
                 const payload = {};
                 SITES.forEach((site) => {
                     payload[site] = emptySiteData();
                     DATA_KEYS.forEach((key) => {
-                        payload[site][key] = serializeRows(state.uploaded[site]?.[key] || []);
+                        const rows = state.uploaded[site]?.[key] || [];
+                        // 최근 500건만 저장해 용량 초과 방지
+                        payload[site][key] = serializeRows(rows.slice(-500));
                     });
                 });
                 localStorage.setItem(LS_KEY, JSON.stringify(payload));
             } catch (error) {
-                console.warn('LocalStorage 저장 실패', error);
+                // 용량 초과 시 LocalStorage를 비우고 계속 진행
+                console.warn('LocalStorage 저장 실패 - 캐시 무시하고 계속 진행', error);
+                try { localStorage.removeItem(LS_KEY); } catch(e) {}
             }
         }
 
@@ -2053,7 +2071,7 @@
                 const keyword = text(lead.keyword);
                 const matched = keyword ? matchingIndex.get(matchKey(site, agency, keyword)) : null;
                 const adName = keyword ? (matched?.adName || `[미매칭] ${keyword}`) : '[키워드없음]';
-                const creativeGroup = matched?.creativeGroup || normalizeCreativeGroup('', adName);
+                const creativeGroup = matched?.creativeGroup || (agency === 'Google' ? '미분류' : normalizeCreativeGroup('', adName));
                 const key = rowKey(site, agency, adName, month);
 
                 let bucket = finalMap.get(key);
@@ -2086,8 +2104,21 @@
                 }
 
                 for (const [key, monthly] of monthlyReportMap.entries()) {
-                    const bucket = finalMap.get(key);
-                    if (!bucket) continue;
+                    let bucket = finalMap.get(key);
+                    if (!bucket) {
+                        // 구글은 DB 버킷이 없어도 광고비 전용 버킷 생성 (미분류)
+                        if (agency === 'Google') {
+                            const parts = key.split('::');
+                            const site = parts[0] || '';
+                            const month = parts[3] || '';
+                            const adName = parts[2] || '';
+                            if (!acceptsSite(site) || !acceptsMonth(month)) continue;
+                            bucket = { sourceSite: site, site, agency, adName, creativeGroup: '미분류', month, spend: 0, clicks: 0, dbCount: 0, contracts: 0 };
+                            finalMap.set(key, bucket);
+                        } else {
+                            continue;
+                        }
+                    }
                     bucket.spend += monthly.spend;
                     bucket.clicks += monthly.clicks;
                 }

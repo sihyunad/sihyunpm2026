@@ -320,6 +320,30 @@
             background: #cbd5e1;
             border-radius: 3px;
         }
+
+        /* ── 모션 애니메이션 ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes countUp {
+            from { opacity: 0.3; transform: scale(0.97); }
+            to   { opacity: 1;   transform: scale(1); }
+        }
+        .kpi-animate {
+            animation: countUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .row-fade {
+            opacity: 0;
+            animation: fadeInUp 0.3s ease forwards;
+        }
+        .section-fade {
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .section-fade.fading {
+            opacity: 0;
+            transform: translateY(4px);
+        }
     </style>
 </head>
 <body class="h-full flex flex-col overflow-hidden text-slate-800">
@@ -2137,6 +2161,26 @@
             return { details, filteredLeads };
         }
 
+        // 숫자 카운트업 애니메이션
+        function animateCount(el, target, suffix = '') {
+            if (!el) return;
+            const start = parseInt(el.dataset.current || '0', 10);
+            const duration = 400;
+            const startTime = performance.now();
+            el.classList.remove('kpi-animate');
+            void el.offsetWidth;
+            el.classList.add('kpi-animate');
+            function tick(now) {
+                const elapsed = Math.min((now - startTime) / duration, 1);
+                const ease = 1 - Math.pow(1 - elapsed, 3);
+                const current = Math.round(start + (target - start) * ease);
+                el.textContent = current.toLocaleString() + suffix;
+                if (elapsed < 1) requestAnimationFrame(tick);
+                else { el.textContent = target.toLocaleString() + suffix; el.dataset.current = target; }
+            }
+            requestAnimationFrame(tick);
+        }
+
         function applyFilters() {
             const { details, filteredLeads } = compileAggregatedData();
             state.tableRowsCache = details;
@@ -2148,11 +2192,12 @@
             const overallCPA = totalDB > 0 ? Math.round(totalSpend / totalDB) : 0;
             const overallCPS = totalContracts > 0 ? Math.round(totalSpend / totalContracts) : 0;
 
-            $('kpiSpend').textContent = totalSpend.toLocaleString();
-            $('kpiDB').textContent = totalDB.toLocaleString();
-            $('kpiContracts').textContent = totalContracts.toLocaleString();
-            $('kpiCPA').textContent = overallCPA.toLocaleString();
-            $('kpiCPS').textContent = overallCPS.toLocaleString();
+            // 카운트업 애니메이션으로 숫자 업데이트
+            animateCount($('kpiSpend'), totalSpend);
+            animateCount($('kpiDB'), totalDB);
+            animateCount($('kpiContracts'), totalContracts);
+            animateCount($('kpiCPA'), overallCPA);
+            animateCount($('kpiCPS'), overallCPS);
 
             buildTableMonthFilter(details);
             renderCurrentTable();
@@ -2216,7 +2261,7 @@
             }
 
             const frag = document.createDocumentFragment();
-            rows.forEach((row) => {
+            rows.forEach((row, idx) => {
                 const cpaClass = row.cpa > 45000 ? 'text-rose-600 font-bold' : 'text-slate-800 font-medium';
                 const cpsClass = row.cps > 200000 ? 'text-amber-600 font-bold' : 'text-slate-800 font-medium';
                 const badge = agencyBadge(row.agency);
@@ -2225,7 +2270,8 @@
                     : 'bg-blue-50 text-blue-600 border border-blue-100';
 
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-brand-50/40 transition-colors border-b border-[#E2E8F0]/40';
+                tr.className = 'row-fade hover:bg-brand-50/40 transition-colors border-b border-[#E2E8F0]/40';
+                tr.style.animationDelay = `${Math.min(idx * 18, 300)}ms`;
                 tr.innerHTML = `
                     <td class="px-6 py-3.5 whitespace-nowrap text-slate-600 font-semibold text-[11px]">${escapeHTML(row.monthLabel)}</td>
                     <td class="px-6 py-3.5 font-medium whitespace-nowrap">${badge}</td>
@@ -2478,7 +2524,8 @@
         function updateCompareChart(rows, orderedMonths) {
             const ctx = $('compareChart')?.getContext('2d');
             if (!ctx) return;
-            if (state.compareChart) state.compareChart.destroy();
+            if (state.compareChart) { state.compareChart.destroy(); state.compareChart = null; }
+            fadeInCanvas('compareChart');
 
             const metric = state.compareMetric || 'dbCount';
             const labelMap = {
@@ -2531,6 +2578,7 @@
                 type: 'bar',
                 data: { labels, datasets },
                 options: {
+                    animation: { duration: 600 },
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
@@ -2596,9 +2644,28 @@
         // ─────────────────────────────────────────────
         // 차트 / 다운로드
         // ─────────────────────────────────────────────
+        function fadeInCanvas(id) {
+            const canvas = $(id);
+            if (!canvas) return;
+            canvas.style.transition = 'none';
+            canvas.style.opacity = '0';
+            canvas.style.transform = 'translateY(6px)';
+            requestAnimationFrame(() => {
+                canvas.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                canvas.style.opacity = '1';
+                canvas.style.transform = 'translateY(0)';
+            });
+        }
+
         function updateCharts(data, filteredLeads) {
-            updatePerformanceChart(data);
-            updateTrendChart(data, filteredLeads);
+            if (state.performanceChart) { state.performanceChart.destroy(); state.performanceChart = null; }
+            if (state.trendChart) { state.trendChart.destroy(); state.trendChart = null; }
+            requestAnimationFrame(() => {
+                updatePerformanceChart(data);
+                fadeInCanvas('performanceChart');
+                updateTrendChart(data, filteredLeads);
+                fadeInCanvas('trendChart');
+            });
         }
 
         function updatePerformanceChart(data) {
@@ -2638,6 +2705,7 @@
                     ]
                 },
                 options: {
+                    animation: { duration: 700 },
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
@@ -2702,6 +2770,7 @@
                     ]
                 },
                 options: {
+                    animation: { duration: 700 },
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { labels: { color: '#1F2937', font: { family: 'Pretendard', size: 11, weight: '600' } } } },

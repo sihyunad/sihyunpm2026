@@ -418,7 +418,24 @@
 <div class="flex-1 flex overflow-hidden">
 <!-- LEFT SIDEBAR: FILTERS -->
 <aside class="w-72 bg-[#1F2937] border-r border-[#4B5563] p-6 flex flex-col space-y-6 overflow-y-auto">
+<!-- PAGE NAVIGATION MENU -->
 <div>
+<h2 class="text-xs font-bold uppercase tracking-wider text-[#C4B5FD] mb-3 flex items-center gap-2">
+<i class="w-3.5 h-3.5 text-[#C4B5FD]" data-lucide="layout-dashboard"></i>
+                    메뉴
+                </h2>
+<nav class="space-y-1.5">
+<button class="nav-menu-btn w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-semibold rounded-lg transition-all bg-[#4F46E5] text-white" data-page="dashboard" id="navBtn_dashboard" onclick="switchPage('dashboard')" type="button">
+<i class="w-4 h-4 shrink-0" data-lucide="gauge"></i>
+<span>대시보드</span>
+</button>
+<button class="nav-menu-btn w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-semibold rounded-lg transition-all text-slate-300 hover:bg-[#374151]" data-page="performance" id="navBtn_performance" onclick="switchPage('performance')" type="button">
+<i class="w-4 h-4 shrink-0" data-lucide="list-checks"></i>
+<span>종합성과목록</span>
+</button>
+</nav>
+</div>
+<div class="pt-5 border-t border-[#4B5563]">
 <h2 class="text-xs font-bold uppercase tracking-wider text-[#C4B5FD] mb-3 flex items-center gap-2">
 <i class="w-3.5 h-3.5 text-[#C4B5FD]" data-lucide="sliders-horizontal"></i>
                     통합 필터 제어
@@ -495,7 +512,7 @@
 <select class="flex-1 bg-[#374151] border border-[#4B5563] text-white rounded-lg px-2 py-2 text-xs focus:outline-none focus:border-[#A78BFA]" id="compareMonthB" onchange="handleCompareMonthChange()"></select>
 </div>
 </div>
-<button class="w-full mt-1 py-2 text-xs font-bold bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-lg transition-all" onclick="document.getElementById('comparisonSection')?.scrollIntoView({behavior:'smooth', block:'start'})">
+<button class="w-full mt-1 py-2 text-xs font-bold bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-lg transition-all" onclick="switchPage('dashboard'); requestAnimationFrame(() => document.getElementById('comparisonSection')?.scrollIntoView({behavior:'smooth', block:'start'}))">
                                 비교표 바로 보기
                             </button>
 </div>
@@ -516,7 +533,9 @@
 </div>
 </aside>
 <!-- CENTER CONTENTS & SCROLLABLE CONTENT SECTION -->
-<main class="flex-1 bg-[#F4F6FA] p-6 overflow-y-auto space-y-6">
+<main class="flex-1 bg-[#F4F6FA] p-6 overflow-y-auto">
+<!-- ══════════════ PAGE 1: 대시보드 ══════════════ -->
+<div class="page-view space-y-6" id="page-dashboard">
 <!-- KPI SCORECARDS GRID (ONLY TITLE / NUMBER) -->
 <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
 <!-- Card 1: Total Spend -->
@@ -602,13 +621,14 @@
 </div>
 </div>
 <div class="p-6 space-y-6">
-<div class="grid grid-cols-1 xl:grid-cols-3 gap-6 items-stretch">
-<div class="xl:col-span-1 rounded-xl border border-[#E2E8F0] p-5 bg-white min-h-[520px]">
-<div class="relative h-[480px]">
+<!-- 상단: 월별 성과 비교 차트 (가로 막대) -->
+<div class="rounded-xl border border-[#E2E8F0] p-5 bg-white">
+<div class="relative h-[420px]">
 <canvas id="compareChart"></canvas>
 </div>
 </div>
-<div class="xl:col-span-2 overflow-x-auto rounded-xl border border-[#E2E8F0] bg-white min-h-[520px]">
+<!-- 하단: 월별 성과 비교 테이블 -->
+<div class="overflow-x-auto rounded-xl border border-[#E2E8F0] bg-white">
 <table class="w-full min-w-[1080px] table-fixed text-left text-[11px] text-slate-700">
 <colgroup>
 <col style="width: 9%;"/>
@@ -642,8 +662,10 @@
 </table>
 </div>
 </div>
-</div>
 </section>
+</div>
+<!-- ══════════════ PAGE 2: 종합성과목록 ══════════════ -->
+<div class="page-view space-y-6 hidden" id="page-performance">
 <!-- CHARTS SECTION GRID -->
 <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 <!-- Chart 1: Site/Channel Performance Comparison (TOP 5) -->
@@ -720,10 +742,25 @@
 <thead class="bg-brand-50 text-brand-700 font-bold border-b border-[#E2E8F0]">
 <tr>
 <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('month')">날짜 (연월) <span class="text-[9px] text-brand-500">▼</span></th>
-<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('agency')">광고 매체사 <span class="text-[9px] text-brand-500">▼</span></th>
-<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('site')">사이트 <span class="text-[9px] text-brand-500">▼</span></th>
+<th class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="cursor-pointer hover:text-brand-900 transition-colors" onclick="sortData('agency')">광고 매체사 <span class="text-[9px] text-brand-500">▼</span></span>
+<button class="col-filter-btn p-0.5 rounded hover:bg-brand-100 transition-colors" data-field="agency" onclick="toggleColumnFilter('agency', event)" title="필터" type="button"><i class="w-3 h-3 text-slate-400" data-lucide="filter"></i></button>
+</div>
+</th>
+<th class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="cursor-pointer hover:text-brand-900 transition-colors" onclick="sortData('site')">사이트 <span class="text-[9px] text-brand-500">▼</span></span>
+<button class="col-filter-btn p-0.5 rounded hover:bg-brand-100 transition-colors" data-field="site" onclick="toggleColumnFilter('site', event)" title="필터" type="button"><i class="w-3 h-3 text-slate-400" data-lucide="filter"></i></button>
+</div>
+</th>
 <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('adName')">매체 소재명 (광고 이름) <span class="text-[9px] text-brand-500">▼</span></th>
-<th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors" onclick="sortData('creativeGroup')">타입 <span class="text-[9px] text-brand-500">▼</span></th>
+<th class="px-6 py-4">
+<div class="flex items-center gap-1.5">
+<span class="cursor-pointer hover:text-brand-900 transition-colors" onclick="sortData('creativeGroup')">타입 <span class="text-[9px] text-brand-500">▼</span></span>
+<button class="col-filter-btn p-0.5 rounded hover:bg-brand-100 transition-colors" data-field="creativeGroup" onclick="toggleColumnFilter('creativeGroup', event)" title="필터" type="button"><i class="w-3 h-3 text-slate-400" data-lucide="filter"></i></button>
+</div>
+</th>
 <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right" onclick="sortData('spend')">총 광고비 <span class="text-[9px] text-brand-500">▼</span></th>
 <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right" onclick="sortData('clicks')">클릭수 <span class="text-[9px] text-brand-500">▼</span></th>
 <th class="px-6 py-4 cursor-pointer hover:bg-brand-100/50 transition-colors text-right" onclick="sortData('dbCount')">유효 DB수 <span class="text-[9px] text-brand-500">▼</span></th>
@@ -738,6 +775,7 @@
 </table>
 </div>
 </section>
+</div>
 </main>
 </div>
 <!-- DATA SOURCE MODAL -->
@@ -1011,6 +1049,7 @@
             currentSortDirection: 'desc',
             selectedMonths: ['ALL'],
             tableSelectedMonths: ['ALL'],
+            tableColFilters: { agency: ['ALL'], site: ['ALL'], creativeGroup: ['ALL'] },
             currentModalTab: 'excel',
             tableRowsCache: [],
             filteredLeadsCache: [],
@@ -1221,6 +1260,16 @@
             const monthWrapper = $('monthFilterWrapper');
             const monthDropdown = $('monthDropdown');
             if (monthWrapper && monthDropdown && !monthWrapper.contains(event.target)) monthDropdown.classList.add('hidden');
+
+            // 컬럼 헤더 필터 패널: 패널/필터버튼 밖 클릭 시 닫기
+            const colPanel = $('columnFilterPanel');
+            if (colPanel && !colPanel.classList.contains('hidden')) {
+                if (!colPanel.contains(event.target) && !event.target.closest('.col-filter-btn')) closeColumnFilter();
+            }
+        });
+        // 스크롤 시 위치가 어긋나므로 패널 닫기
+        document.querySelector('main')?.addEventListener('scroll', () => {
+            if (typeof closeColumnFilter === 'function') closeColumnFilter();
         });
 
         // ─────────────────────────────────────────────
@@ -1837,6 +1886,9 @@
             $$('.agency-filter-cb').forEach((cb) => { cb.checked = cb.value === 'ALL'; });
             state.selectedMonths = ['ALL'];
             state.tableSelectedMonths = ['ALL'];
+            state.tableColFilters = { agency: ['ALL'], site: ['ALL'], creativeGroup: ['ALL'] };
+            closeColumnFilter();
+            refreshColumnFilterIndicators();
             buildMonthFilter();
             updateMonthFilterLabel();
             updateTableMonthFilterLabel();
@@ -2181,6 +2233,30 @@
             requestAnimationFrame(tick);
         }
 
+        // ─────────────────────────────────────────────
+        // 페이지 전환 (대시보드 / 종합성과목록)
+        // ─────────────────────────────────────────────
+        function switchPage(page) {
+            document.querySelectorAll('.page-view').forEach((el) => {
+                el.classList.toggle('hidden', el.id !== `page-${page}`);
+            });
+            document.querySelectorAll('.nav-menu-btn').forEach((btn) => {
+                const active = btn.dataset.page === page;
+                btn.classList.toggle('bg-[#4F46E5]', active);
+                btn.classList.toggle('text-white', active);
+                btn.classList.toggle('text-slate-300', !active);
+                btn.classList.toggle('hover:bg-[#374151]', !active);
+            });
+            // 숨겨진 상태에서 생성된 차트는 크기가 0이므로 표시 후 리사이즈
+            requestAnimationFrame(() => {
+                ['compareChart', 'performanceChart', 'trendChart'].forEach((key) => {
+                    if (state[key]) state[key].resize();
+                });
+            });
+            // 메인 영역 스크롤 상단으로
+            document.querySelector('main')?.scrollTo({ top: 0, behavior: 'auto' });
+        }
+
         function applyFilters() {
             const { details, filteredLeads } = compileAggregatedData();
             state.tableRowsCache = details;
@@ -2200,6 +2276,7 @@
             animateCount($('kpiCPS'), overallCPS);
 
             buildTableMonthFilter(details);
+            reconcileColumnFilters();
             renderCurrentTable();
             updateCharts(details, filteredLeads);
             updateCompareDashboard();
@@ -2222,11 +2299,149 @@
         function filteredTableRows() {
             const query = text($('tableSearch')?.value).toLowerCase();
             const allMonths = state.tableSelectedMonths.includes('ALL');
+            const cf = state.tableColFilters;
+            const allAgency = cf.agency.includes('ALL');
+            const allSite = cf.site.includes('ALL');
+            const allType = cf.creativeGroup.includes('ALL');
             return state.tableRowsCache.filter((row) => {
                 if (!allMonths && !state.tableSelectedMonths.includes(row.month)) return false;
+                if (!allAgency && !cf.agency.includes(row.agency)) return false;
+                if (!allSite && !cf.site.includes(row.site)) return false;
+                if (!allType && !cf.creativeGroup.includes(normalizeCreativeGroup(row.creativeGroup, row.adName))) return false;
                 if (!query) return true;
                 return [row.adName, row.creativeGroup, row.agency, row.site, row.monthLabel].some((v) => text(v).toLowerCase().includes(query));
             });
+        }
+
+        // ─────────────────────────────────────────────
+        // 컬럼 헤더 필터 (광고 매체사 / 사이트 / 타입) - 복수 선택
+        // ─────────────────────────────────────────────
+        const COL_FILTER_META = {
+            agency:        { title: '광고 매체사', display: (v) => agencyKoreanLabel(v) },
+            site:          { title: '사이트',      display: (v) => v },
+            creativeGroup: { title: '타입',        display: (v) => v }
+        };
+
+        function getColumnFilterOptions(field) {
+            const set = new Set();
+            (state.tableRowsCache || []).forEach((row) => {
+                const v = field === 'creativeGroup'
+                    ? normalizeCreativeGroup(row.creativeGroup, row.adName)
+                    : row[field];
+                if (text(v) !== '') set.add(v);
+            });
+            return [...set].sort((a, b) => String(a).localeCompare(String(b), 'ko'));
+        }
+
+        // 데이터 변경 시 사라진 값은 선택목록에서 제거
+        function reconcileColumnFilters() {
+            ['agency', 'site', 'creativeGroup'].forEach((field) => {
+                const sel = state.tableColFilters[field];
+                if (sel.includes('ALL')) return;
+                const valid = new Set(getColumnFilterOptions(field).map(String));
+                const next = sel.filter((v) => valid.has(String(v)));
+                state.tableColFilters[field] = next.length ? next : ['ALL'];
+            });
+            refreshColumnFilterIndicators();
+        }
+
+        function refreshColumnFilterIndicators() {
+            $$('.col-filter-btn').forEach((btn) => {
+                const field = btn.dataset.field;
+                const active = field && !state.tableColFilters[field].includes('ALL');
+                const icon = btn.querySelector('i');
+                if (icon) icon.classList.toggle('text-brand-600', active);
+                if (icon) icon.classList.toggle('text-slate-400', !active);
+                btn.classList.toggle('bg-brand-100', active);
+            });
+        }
+
+        function ensureColumnFilterPanel() {
+            let panel = $('columnFilterPanel');
+            if (panel) return panel;
+            panel = document.createElement('div');
+            panel.id = 'columnFilterPanel';
+            panel.className = 'fixed hidden z-[60] w-52 bg-white border border-[#E2E8F0] rounded-lg shadow-xl overflow-hidden flex-col max-h-[320px] text-slate-700';
+            document.body.appendChild(panel);
+            return panel;
+        }
+
+        let activeColumnFilterField = null;
+
+        function toggleColumnFilter(field, evt) {
+            evt.stopPropagation();
+            const panel = ensureColumnFilterPanel();
+            if (activeColumnFilterField === field && !panel.classList.contains('hidden')) {
+                closeColumnFilter();
+                return;
+            }
+            activeColumnFilterField = field;
+            renderColumnFilterPanel(field);
+
+            // 버튼 위치 기준으로 패널 배치
+            const rect = evt.currentTarget.getBoundingClientRect();
+            panel.classList.remove('hidden');
+            panel.style.display = 'flex';
+            const panelWidth = 208;
+            let left = rect.left;
+            if (left + panelWidth > window.innerWidth - 8) left = window.innerWidth - panelWidth - 8;
+            panel.style.left = `${Math.max(8, left)}px`;
+            panel.style.top = `${rect.bottom + 6}px`;
+        }
+
+        function closeColumnFilter() {
+            const panel = $('columnFilterPanel');
+            if (panel) { panel.classList.add('hidden'); panel.style.display = 'none'; }
+            activeColumnFilterField = null;
+        }
+
+        function renderColumnFilterPanel(field) {
+            const panel = ensureColumnFilterPanel();
+            const meta = COL_FILTER_META[field];
+            const options = getColumnFilterOptions(field);
+            const sel = state.tableColFilters[field];
+            const allChecked = sel.includes('ALL');
+
+            const optionHTML = options.map((opt) => {
+                const checked = allChecked || sel.includes(opt);
+                return `
+                    <label class="flex items-center gap-2 cursor-pointer px-1.5 py-1.5 rounded hover:bg-brand-50 transition-colors">
+                        <input type="checkbox" class="col-filter-cb accent-brand-600 w-3.5 h-3.5" value="${escapeHTML(String(opt))}" ${checked ? 'checked' : ''} onchange="handleColumnFilterCheck('${field}')"/>
+                        <span class="text-xs text-slate-700">${escapeHTML(meta.display(opt))}</span>
+                    </label>`;
+            }).join('');
+
+            panel.innerHTML = `
+                <div class="p-2 border-b border-[#E2E8F0] bg-brand-50/50 flex items-center justify-between">
+                    <label class="flex items-center gap-2 cursor-pointer p-1 rounded hover:bg-brand-50">
+                        <input type="checkbox" class="accent-brand-600 w-3.5 h-3.5" ${allChecked ? 'checked' : ''} onchange="handleColumnFilterCheckAll('${field}', this)"/>
+                        <span class="text-xs font-bold text-brand-900">${meta.title} 전체</span>
+                    </label>
+                </div>
+                <div class="p-2 overflow-y-auto space-y-0.5">${optionHTML || '<p class="text-[11px] text-slate-400 px-2 py-3 text-center">데이터 없음</p>'}</div>
+                <div class="p-2 border-t border-[#E2E8F0] bg-white">
+                    <button class="w-full py-1.5 text-[11px] font-bold bg-brand-700 hover:bg-brand-900 text-white rounded-md transition-all" onclick="closeColumnFilter()">적용 완료</button>
+                </div>`;
+        }
+
+        function handleColumnFilterCheckAll(field, cb) {
+            state.tableColFilters[field] = ['ALL'];
+            renderColumnFilterPanel(field);
+            refreshColumnFilterIndicators();
+            renderCurrentTable();
+        }
+
+        function handleColumnFilterCheck(field) {
+            const panel = $('columnFilterPanel');
+            if (!panel) return;
+            const checked = $$('#columnFilterPanel .col-filter-cb').filter((cb) => cb.checked).map((cb) => cb.value);
+            const total = getColumnFilterOptions(field).length;
+            state.tableColFilters[field] = (checked.length === 0 || checked.length === total) ? ['ALL'] : checked;
+            // 전체선택 체크박스 동기화
+            const allCb = panel.querySelector('.p-2.border-b input[type="checkbox"]');
+            if (allCb) allCb.checked = state.tableColFilters[field].includes('ALL');
+            refreshColumnFilterIndicators();
+            renderCurrentTable();
         }
 
         function getSortedPerformanceRows() {
@@ -2291,9 +2506,11 @@
         }
 
         function agencyBadge(agency) {
-            if (agency === 'Meta') return '<span class="px-2 py-0.5 rounded text-[10px] bg-[#DBEAFE] text-[#1D4ED8] border border-[#BFDBFE] font-bold">Meta</span>';
-            if (agency === 'Tiktok') return '<span class="px-2 py-0.5 rounded text-[10px] bg-[#7A6B8F]/10 text-[#6D28D9] border border-[#7A6B8F]/20 font-bold">TikTok</span>';
-            return `<span class="px-2 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 border border-slate-200 font-semibold">${escapeHTML(agency)}</span>`;
+            const label = agencyKoreanLabel(agency);
+            if (agency === 'Meta')   return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-blue-50 text-blue-700 border border-blue-100 font-extrabold">${escapeHTML(label)}</span>`;
+            if (agency === 'Tiktok') return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-purple-50 text-purple-700 border border-purple-100 font-extrabold">${escapeHTML(label)}</span>`;
+            if (agency === 'Google') return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-red-50 text-red-600 border border-red-100 font-extrabold">${escapeHTML(label)}</span>`;
+            return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 border border-slate-200 font-extrabold">${escapeHTML(label)}</span>`;
         }
 
         // ─────────────────────────────────────────────
@@ -2578,6 +2795,7 @@
                 type: 'bar',
                 data: { labels, datasets },
                 options: {
+                    indexAxis: 'y',
                     animation: { duration: 600 },
                     responsive: true,
                     maintainAspectRatio: false,
@@ -2599,17 +2817,6 @@
                     },
                     scales: {
                         x: {
-                            grid: { color: '#E2E8F0' },
-                            ticks: {
-                                color: '#1F2937',
-                                font: { size: 10, weight: '700' },
-                                maxRotation: 0,
-                                minRotation: 0,
-                                autoSkip: false,
-                                padding: 6
-                            }
-                        },
-                        y: {
                             beginAtZero: true,
                             grid: { color: '#E2E8F0' },
                             ticks: {
@@ -2618,6 +2825,15 @@
                                     if (metric === 'clickToDb' || metric === 'dbToContract') return `${Number(v).toFixed(2)}%`;
                                     return (metric === 'cpa' || metric === 'cps') ? `${Number(v).toLocaleString()}원` : Number(v).toLocaleString();
                                 }
+                            }
+                        },
+                        y: {
+                            grid: { color: '#E2E8F0' },
+                            ticks: {
+                                color: '#1F2937',
+                                font: { size: 10, weight: '700' },
+                                autoSkip: false,
+                                padding: 6
                             }
                         }
                     }

@@ -1109,7 +1109,7 @@
 </div>
 <div>
 <h3 class="text-lg font-bold text-brand-900">데이터 소스 연결</h3>
-<p class="text-xs text-slate-500">엑셀 파일 업로드 또는 구글 스프레드시트 URL 연동 중 선택하세요.</p>
+<p class="text-xs text-slate-500">구글 스프레드시트 URL 연동 또는 엑셀 파일 업로드 중 선택하세요.</p>
 </div>
 </div>
 <button class="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors" onclick="toggleIntegrationModal()">
@@ -1118,17 +1118,17 @@
 </div>
 <!-- Modal Tabs -->
 <div class="flex border-b border-[#E2E8F0] flex-shrink-0 bg-[#F4F6FA]">
-<button class="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-bold transition-all border-b-2 border-brand-500 text-brand-700 bg-white" id="modalTabBtn_excel" onclick="switchModalTab('excel')">
-<i class="w-3.5 h-3.5" data-lucide="file-spreadsheet"></i>
-                    엑셀 파일 업로드
-                </button>
-<button class="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-bold transition-all border-b-2 border-transparent text-slate-500 hover:text-brand-700" id="modalTabBtn_gsheet" onclick="switchModalTab('gsheet')">
+<button class="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-bold transition-all border-b-2 border-brand-500 text-brand-700 bg-white" id="modalTabBtn_gsheet" onclick="switchModalTab('gsheet')">
 <svg class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 24 24"><path d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3zM7 17H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V7h2v2zm10 8H9v-2h8v2zm0-4H9v-2h8v2zm0-4H9V7h8v2z"></path></svg>
                     구글 스프레드시트 연동
                 </button>
+<button class="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 text-xs font-bold transition-all border-b-2 border-transparent text-slate-500 hover:text-brand-700" id="modalTabBtn_excel" onclick="switchModalTab('excel')">
+<i class="w-3.5 h-3.5" data-lucide="file-spreadsheet"></i>
+                    엑셀 파일 업로드
+                </button>
 </div>
 <!-- Tab Panel: 엑셀 업로드 -->
-<div class="p-6 space-y-5 flex-1 overflow-y-auto" id="modalTabPanel_excel">
+<div class="p-6 space-y-5 flex-1 overflow-y-auto hidden" id="modalTabPanel_excel">
 <!-- 가이드 -->
 <div class="p-4 bg-brand-50 border border-brand-100 rounded-xl space-y-1">
 <h4 class="text-xs font-bold text-brand-900 flex items-center gap-1">
@@ -1186,7 +1186,7 @@
 </div>
 </div>
 <!-- Tab Panel: 구글 스프레드시트 연동 -->
-<div class="p-6 space-y-5 flex-1 overflow-y-auto hidden" id="modalTabPanel_gsheet">
+<div class="p-6 space-y-5 flex-1 overflow-y-auto" id="modalTabPanel_gsheet">
 <!-- 가이드 -->
 <div class="p-4 bg-blue-50 border border-blue-100 rounded-xl space-y-2">
 <h4 class="text-xs font-bold text-blue-900 flex items-center gap-1.5">
@@ -1274,7 +1274,7 @@
                         닫기
                     </button>
 <button class="px-5 py-2 text-xs font-bold bg-brand-700 hover:bg-brand-900 text-white rounded-lg shadow-md transition-colors" id="modalApplyBtn" onclick="handleModalApply()">
-                        적용 및 새로고침
+                        연동 적용
                     </button>
 </div>
 </div>
@@ -1405,7 +1405,7 @@
             selectedMonths: ['ALL'],
             tableSelectedMonths: ['ALL'],
             tableColFilters: { agency: ['ALL'], site: ['ALL'], creativeGroup: ['ALL'] },
-            currentModalTab: 'excel',
+            currentModalTab: 'gsheet',
             tableRowsCache: [],
             filteredLeadsCache: [],
             tableRenderFrame: null,

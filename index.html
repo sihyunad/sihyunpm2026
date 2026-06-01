@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!-- compare-table-column-order: spend-clicks-db-contracts-cpa-cps-clickToDb-dbToContract -->
 <!-- compare-table-header-style-unified: repeated-header-style-applied-to-top-thead -->
+<!-- spend-only-report-rows: included-with-zero-db-contracts -->
 
 <html class="h-full bg-[#F4F6FA] text-slate-800" lang="ko">
 <head>
@@ -580,6 +581,22 @@
             border-bottom: 1px solid #E2E8F0;
             box-shadow: inset 0 -1px 0 rgba(226,232,240,0.72);
         }
+        .compare-repeat-header th.compare-sort-th {
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 180ms ease, color 180ms ease;
+        }
+        .compare-repeat-header th.compare-sort-th:hover {
+            background: #EEF2FF !important;
+            color: #312E81 !important;
+        }
+        .compare-sort-icon {
+            display: inline-flex;
+            min-width: 10px;
+            justify-content: center;
+            font-size: 9px;
+            line-height: 1;
+        }
         #comparisonSection table thead,
         #comparisonSection table thead tr {
             background: #F8FAFF !important;
@@ -1121,6 +1138,7 @@
 <ol class="list-decimal list-inside text-[11px] text-brand-700/80 space-y-1 leading-relaxed">
 <li>아래 <span class="font-semibold text-slate-900">업로드 템플릿 다운로드</span> 버튼으로 양식을 받습니다.</li>
 <li>시트탭 이름이 정확히 <span class="font-semibold text-slate-900">Meta_DB / Tiktok_DB / Google_DB / 키워드매칭 / Meta / Tiktok / Google</span> 이어야 합니다. 유효 DB수는 Meta_DB/Tiktok_DB의 첫 행과 빈 행을 제외한 모든 행으로 집계합니다.</li>
+<li>광고비는 소진됐지만 CRM 키워드 유입이 없는 소재도 <span class="font-semibold text-slate-900">광고비/클릭은 반영</span>하고 <span class="font-semibold text-slate-900">DB수·계약수는 0</span>으로 대시보드에 표시합니다.</li>
 <li><span class="font-semibold text-slate-900">키워드매칭</span> 시트의 <span class="font-semibold text-slate-900">타입</span> 열에 브라이언 / AI기타채널 / 신규포맷 / 유튜브 중 하나를 입력하면 비교표에 반영됩니다.</li>
 <li>카빌리지 / 차맵 파일을 각각 업로드하세요.</li>
 </ol>
@@ -1177,6 +1195,7 @@
                     </h4>
 <ol class="list-decimal list-inside text-[11px] text-blue-800/80 space-y-1.5 leading-relaxed">
 <li>엑셀 업로드 탭의 <span class="font-semibold text-slate-900">업로드 템플릿</span>과 동일한 시트 구조(Meta_DB / Tiktok_DB / Google_DB / 키워드매칭 / Meta / Tiktok / Google)로 구글 스프레드시트를 작성합니다. 유효 DB수는 Meta_DB/Tiktok_DB의 첫 행과 빈 행을 제외한 모든 행으로 집계하며, 키워드매칭 시트에는 타입 열을 추가할 수 있습니다.</li>
+<li>CRM 키워드로 유입되지 않은 광고 소재도 미연결로 제외하지 않고 <span class="font-semibold text-slate-900">광고비/클릭은 그대로 표시</span>, <span class="font-semibold text-slate-900">DB수·계약수는 0</span>으로 표시합니다.</li>
 <li>구글 스프레드시트를 <span class="font-semibold text-slate-900">공유 → 링크가 있는 모든 사용자 (뷰어)</span>로 설정합니다.</li>
 <li>스프레드시트 URL을 아래에 붙여넣고 <span class="font-semibold text-slate-900">연동 적용</span>을 클릭합니다.</li>
 <li>데이터를 업데이트한 후에는 <span class="font-semibold text-slate-900">다시 연동 적용</span>을 눌러 새로고침하세요.</li>
@@ -1211,9 +1230,9 @@
 <div class="flex items-center justify-between mb-2">
 <p class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
 <i class="w-3.5 h-3.5 text-brand-600" data-lucide="stethoscope"></i>
-                        탭별 로드 · 광고비 연결 진단
+                        탭별 로드 · 광고비 반영 진단
                     </p>
-<span class="text-[10px] text-slate-400">보고서행=0이면 탭 문제, 광고비=0이면 헤더 문제, DB연결=0이면 소재명·월 불일치</span>
+<span class="text-[10px] text-slate-400">보고서행=0이면 탭 문제, 광고비=0이면 헤더 문제, 광고비전용=CRM 유입 없이 광고비만 있는 소재</span>
 </div>
 <div class="overflow-x-auto rounded-xl border border-[#E2E8F0]">
 <table class="w-full text-[11px] text-slate-700">
@@ -1225,18 +1244,18 @@
 <th class="px-3 py-2 text-right">광고비 합산</th>
 <th class="px-3 py-2 text-right">키워드매칭</th>
 <th class="px-3 py-2 text-right">DB연결됨</th>
-<th class="px-3 py-2 text-right">미연결</th>
+<th class="px-3 py-2 text-right">광고비전용</th>
 <th class="px-3 py-2 text-left">상태</th>
 </tr>
 </thead>
 <tbody id="gsDiagTableBody" class="divide-y divide-[#E2E8F0]/60"></tbody>
 </table>
 </div>
-<!-- 미연결 샘플: 소재명/월 목록 -->
+<!-- 광고비 전용 샘플: 소재명/월 목록 -->
 <div class="hidden mt-3 space-y-2" id="gsDiagUnmatchedDetail">
-<p class="text-[11px] font-bold text-amber-700 flex items-center gap-1"><i class="w-3 h-3" data-lucide="alert-triangle"></i> 미연결 보고서 소재명 (광고비가 붙지 않는 행)</p>
+<p class="text-[11px] font-bold text-blue-700 flex items-center gap-1"><i class="w-3 h-3" data-lucide="info"></i> 광고비 전용 소재명 (DB/계약 0으로 표시되는 행)</p>
 <div id="gsDiagUnmatchedList" class="space-y-1.5"></div>
-<p class="text-[10px] text-slate-400 leading-relaxed">위 소재명이 <span class="font-semibold">키워드매칭 탭의 "광고 이름"</span>과 정확히 일치하는지 확인하세요. 공백·괄호 차이도 불일치 원인이 됩니다.</p>
+<p class="text-[10px] text-slate-400 leading-relaxed">CRM 키워드 유입이 없어도 위 소재의 광고비와 클릭수는 대시보드에 반영되며, DB수와 계약수는 0으로 표시됩니다. 키워드매칭 탭에 광고 이름이 있으면 타입도 함께 반영됩니다.</p>
 </div>
 </div>
 <!-- 주의사항 -->
@@ -1398,6 +1417,7 @@
             compareMetric: 'dbCount',
             compareRowsCache: [],
             compareMonthsCache: [],
+            compareSortByMonth: {},
             currentPage: 'dashboard',
             pageTransitionTimer: null
         };
@@ -2515,9 +2535,48 @@
         }
 
         // ─────────────────────────────────────────────
+        // 키워드 ↔ 광고이름 다대일(N:1) 정규화
+        // 하나의 (사이트·매체·어드민 키워드)에 여러 광고이름이 매핑된 경우
+        // (예: 광고이름 가/나/다 → CRM 키워드 '라'),
+        // 오름차순 첫 광고이름을 "대표 광고이름"으로 삼아
+        //   - 가/나/다 보고서의 광고비·클릭을 대표 광고이름 한 행으로 합산하고
+        //   - 표기를 대표 광고이름으로 통일한다.
+        // keywordToCanonical: matchKey(site,agency,keyword) → { adName, creativeGroup }
+        // adNameToCanonical : adKey(site,agency,광고이름)     → 대표 광고이름
+        // ─────────────────────────────────────────────
+        function buildKeywordCanonicalization(matchingRows) {
+            const keyOf = (site, agency, keyword) => `${site}::${agency}::${keyword}`;
+            const adKeyOf = (site, agency, adName) => `${site}::${agency}::${adName}`;
+
+            // 1) 키워드별 광고이름 그룹 수집 (중복 광고이름은 1회만)
+            const groups = new Map();
+            for (const row of matchingRows) {
+                if (!row.adminKeyword || !row.agency || !row.adName) continue;
+                const k = keyOf(row.sourceSite, row.agency, row.adminKeyword);
+                let g = groups.get(k);
+                if (!g) { g = { site: row.sourceSite, agency: row.agency, adNames: [], cgByAd: new Map() }; groups.set(k, g); }
+                if (!g.adNames.includes(row.adName)) g.adNames.push(row.adName);
+                if (!g.cgByAd.has(row.adName)) g.cgByAd.set(row.adName, row.creativeGroup || '');
+            }
+
+            // 2) 대표 광고이름(오름차순 첫 번째) 선정 + 역매핑 구축
+            const keywordToCanonical = new Map();
+            const adNameToCanonical = new Map();
+            for (const [k, g] of groups.entries()) {
+                const canonical = [...g.adNames].sort((a, b) => String(a).localeCompare(String(b), 'ko'))[0];
+                keywordToCanonical.set(k, { adName: canonical, creativeGroup: g.cgByAd.get(canonical) || '' });
+                // 같은 키워드 그룹에 속한 모든 광고이름 → 대표 광고이름으로 역매핑
+                g.adNames.forEach((ad) => adNameToCanonical.set(adKeyOf(g.site, g.agency, ad), canonical));
+            }
+
+            return { keywordToCanonical, adNameToCanonical, keyOf, adKeyOf };
+        }
+
+        // ─────────────────────────────────────────────
         // 핵심 집계 로직
         // 사이트(sourceSite)를 집계 키에 포함하여 카빌리지/차맵 데이터가 섞이지 않게 처리
-        // 광고비만 있고 어드민 DB 매칭이 없는 행은 표에 노출하지 않음
+        // 광고비만 있고 어드민 DB/CRM 키워드 매칭이 없는 행도 표에 노출합니다.
+        // 해당 행은 광고비·클릭수는 반영하고 DB수·계약수는 0으로 표시합니다.
         // ─────────────────────────────────────────────
         function compileAggregatedData(options = {}) {
             const selectedMonths = options.monthOverride || getSelectedMonths();
@@ -2530,16 +2589,24 @@
             const acceptsAgency = (agency) => !selectedAgencySet || selectedAgencySet.has(agency);
             const acceptsSite = (site) => Boolean(site) && (filterSite === 'ALL' || site === filterSite);
             const matchKey = (site, agency, keyword) => `${site}::${agency}::${keyword}`;
+            const adKey = (site, agency, adName) => `${site}::${agency}::${adName}`;
             const rowKey = (site, agency, adName, month) => `${site}::${agency}::${adName}::${month}`;
 
-            const matchingIndex = new Map();
-            for (const row of state.active.matching) {
-                if (!acceptsSite(row.sourceSite) || !acceptsAgency(row.agency)) continue;
-                matchingIndex.set(matchKey(row.sourceSite, row.agency, row.adminKeyword), {
-                    adName: row.adName,
-                    creativeGroup: row.creativeGroup || normalizeCreativeGroup('', row.adName)
-                });
-            }
+            // 키워드 다대일 정규화: 같은 키워드에 묶인 여러 광고이름을 대표 광고이름으로 통합
+            const acceptedMatching = state.active.matching.filter(
+                (row) => acceptsSite(row.sourceSite) && acceptsAgency(row.agency)
+            );
+            const { keywordToCanonical, adNameToCanonical } = buildKeywordCanonicalization(acceptedMatching);
+
+            // 보고서에는 광고비가 있지만 CRM/어드민 DB 유입이 없는 소재도 타입을 최대한 유지합니다.
+            // 키워드매칭 탭에 같은 광고 이름이 있으면 해당 타입을 사용하고, 없으면 광고 이름에서 추정합니다.
+            const canonicalCreativeGroupByAd = new Map();
+            acceptedMatching.forEach((row) => {
+                const canonicalAdName = adNameToCanonical.get(adKey(row.sourceSite, row.agency, row.adName)) || row.adName;
+                const canonicalKey = adKey(row.sourceSite, row.agency, canonicalAdName);
+                const group = row.creativeGroup || normalizeCreativeGroup('', canonicalAdName);
+                if (!canonicalCreativeGroupByAd.has(canonicalKey) && group) canonicalCreativeGroupByAd.set(canonicalKey, group);
+            });
 
             const finalMap = new Map();
             const filteredLeads = [];
@@ -2552,9 +2619,9 @@
 
                 filteredLeads.push(lead);
                 const keyword = text(lead.keyword);
-                const matched = keyword ? matchingIndex.get(matchKey(site, agency, keyword)) : null;
+                const matched = keyword ? keywordToCanonical.get(matchKey(site, agency, keyword)) : null;
                 const adName = keyword ? (matched?.adName || `[미매칭] ${keyword}`) : '[키워드없음]';
-                const creativeGroup = matched?.creativeGroup || (agency === 'Google' ? '미분류' : normalizeCreativeGroup('', adName));
+                const creativeGroup = (matched && matched.creativeGroup) || (agency === 'Google' ? '미분류' : normalizeCreativeGroup('', adName));
                 const key = rowKey(site, agency, adName, month);
 
                 let bucket = finalMap.get(key);
@@ -2569,18 +2636,25 @@
             const attachSpend = (agency, reports) => {
                 if (!acceptsAgency(agency)) return;
 
-                // Meta보고서/Tiktok보고서의 광고비를 소재명 + 월별로 먼저 합산한 뒤
-                // 같은 월의 어드민 DB 버킷에만 붙입니다.
-                // 따라서 5월 선택 시 4월/6월 보고서 비용이 섞이지 않습니다.
+                // 광고비를 소재명 + 월별로 먼저 합산합니다.
+                // 같은 월의 어드민 DB 버킷이 있으면 거기에 붙이고,
+                // CRM 키워드 유입이 없어 DB 버킷이 없으면 광고비 전용 버킷을 새로 만듭니다.
+                // 이 버킷은 DB수·계약수가 0인 정상 데이터 행으로 대시보드에 표시됩니다.
                 const monthlyReportMap = new Map();
                 for (const report of reports) {
                     const site = report.sourceSite;
                     const month = report.date;
-                    const adName = text(report.adName);
-                    if (!acceptsSite(site) || !acceptsMonth(month) || !adName) continue;
+                    const adNameRaw = text(report.adName);
+                    if (!acceptsSite(site) || !acceptsMonth(month) || !adNameRaw) continue;
+                    // 같은 키워드 그룹의 광고이름이면 대표 광고이름으로 통합 (가/나/다 → 대표 1행)
+                    const adName = adNameToCanonical.get(adKey(site, agency, adNameRaw)) || adNameRaw;
+                    const creativeGroup = canonicalCreativeGroupByAd.get(adKey(site, agency, adName))
+                        || (agency === 'Google' ? '미분류' : normalizeCreativeGroup('', adName));
 
                     const key = rowKey(site, agency, adName, month);
-                    if (!monthlyReportMap.has(key)) monthlyReportMap.set(key, { spend: 0, clicks: 0 });
+                    if (!monthlyReportMap.has(key)) {
+                        monthlyReportMap.set(key, { sourceSite: site, site, agency, adName, creativeGroup, month, spend: 0, clicks: 0 });
+                    }
                     const monthly = monthlyReportMap.get(key);
                     monthly.spend += report.spend || 0;
                     monthly.clicks += report.clicks || 0;
@@ -2589,18 +2663,21 @@
                 for (const [key, monthly] of monthlyReportMap.entries()) {
                     let bucket = finalMap.get(key);
                     if (!bucket) {
-                        // 구글은 DB 버킷이 없어도 광고비 전용 버킷 생성 (미분류)
-                        if (agency === 'Google') {
-                            const parts = key.split('::');
-                            const site = parts[0] || '';
-                            const month = parts[3] || '';
-                            const adName = parts[2] || '';
-                            if (!acceptsSite(site) || !acceptsMonth(month)) continue;
-                            bucket = { sourceSite: site, site, agency, adName, creativeGroup: '미분류', month, spend: 0, clicks: 0, dbCount: 0, contracts: 0 };
-                            finalMap.set(key, bucket);
-                        } else {
-                            continue;
-                        }
+                        if ((monthly.spend || 0) <= 0 && (monthly.clicks || 0) <= 0) continue;
+                        bucket = {
+                            sourceSite: monthly.sourceSite,
+                            site: monthly.site,
+                            agency: monthly.agency,
+                            adName: monthly.adName,
+                            creativeGroup: monthly.creativeGroup,
+                            month: monthly.month,
+                            spend: 0,
+                            clicks: 0,
+                            dbCount: 0,
+                            contracts: 0,
+                            spendOnly: true
+                        };
+                        finalMap.set(key, bucket);
                     }
                     bucket.spend += monthly.spend;
                     bucket.clicks += monthly.clicks;
@@ -2621,9 +2698,9 @@
         }
 
         // ─────────────────────────────────────────────
-        // 광고비 연결 진단 (차맵/카빌리지 Meta·Tiktok·Google 집계 확인)
-        // Meta/Tiktok 광고비는 "보고서의 광고이름+월"이 "어드민DB가 매칭으로 만든 광고이름+월"과
-        // 정확히 일치할 때만 붙습니다. 어디서 끊기는지 여기서 확인합니다.
+        // 광고비 반영 진단 (차맵/카빌리지 Meta·Tiktok·Google 집계 확인)
+        // 보고서에는 광고비가 있지만 CRM/어드민 DB 유입이 없는 소재도 정상 데이터로 반영합니다.
+        // 이런 소재는 광고비·클릭수는 표시하고 DB수·계약수는 0으로 표시됩니다.
         // 콘솔에서 diagnoseSpend() 실행.
         // ─────────────────────────────────────────────
         function runSpendDiagnostics() {
@@ -2633,10 +2710,9 @@
 
             SITES.forEach((site) => {
                 AGENCIES.forEach((agency) => {
-                    // 1) 이 site/agency의 키워드매칭 인덱스
+                    // 1) 이 site/agency의 키워드매칭 + 다대일 정규화
                     const matchingRows = state.active.matching.filter((r) => r.sourceSite === site && r.agency === agency);
-                    const mIndex = new Map();
-                    matchingRows.forEach((r) => mIndex.set(matchKey(site, agency, r.adminKeyword), r.adName));
+                    const { keywordToCanonical, adNameToCanonical } = buildKeywordCanonicalization(matchingRows);
 
                     // 2) 어드민 DB가 만들어내는 (광고이름::월) 키 집합
                     const dbKeys = new Set();
@@ -2644,7 +2720,8 @@
                         if ((lead.sourceSite || lead.site) !== site || lead.agency !== agency) return;
                         const month = lead.month || extractMonth(lead.date);
                         const kw = text(lead.keyword);
-                        const adName = kw ? (mIndex.get(matchKey(site, agency, kw)) || `[미매칭] ${kw}`) : '[키워드없음]';
+                        const canon = kw ? keywordToCanonical.get(matchKey(site, agency, kw)) : null;
+                        const adName = kw ? (canon?.adName || `[미매칭] ${kw}`) : '[키워드없음]';
                         dbKeys.add(`${adName}::${month}`);
                     });
 
@@ -2654,13 +2731,18 @@
                     const reportClicks = reportRows.reduce((s, r) => s + (r.clicks || 0), 0);
                     const withDate = reportRows.filter((r) => r.date).length;
 
-                    // 4) 보고서 ↔ DB 매칭 여부 (Google은 DB 없이도 붙으므로 별도)
-                    const unmatched = [];
+                    // 4) 보고서 ↔ DB 매칭 여부와 광고비 전용 행 파악
+                    // 광고비 전용 행은 오류/미연결이 아니라 DB 0·계약 0으로 표시되는 정상 행입니다.
+                    const spendOnly = [];
                     let matched = 0;
                     reportRows.forEach((r) => {
-                        const k = `${text(r.adName)}::${r.date}`;
+                        const adNameRaw = text(r.adName);
+                        const canonAd = adNameToCanonical.get(`${site}::${agency}::${adNameRaw}`) || adNameRaw;
+                        const k = `${canonAd}::${r.date}`;
                         if (dbKeys.has(k)) matched += 1;
-                        else unmatched.push({ 광고이름: r.adName, 월: r.date, 금액: r.spend });
+                        else if (agency !== 'Google' && ((r.spend || 0) > 0 || (r.clicks || 0) > 0)) {
+                            spendOnly.push({ 광고이름: r.adName, 월: r.date, 금액: r.spend, 클릭수: r.clicks });
+                        }
                     });
 
                     summary.push({
@@ -2672,16 +2754,16 @@
                         보고서클릭: reportClicks,
                         매칭탭행: matchingRows.length,
                         'DB와매칭됨': agency === 'Google' ? '(DB불필요)' : matched,
-                        '미매칭': agency === 'Google' ? 0 : unmatched.length
+                        '광고비전용': agency === 'Google' ? 0 : spendOnly.length
                     });
-                    if (unmatched.length) detail[`${site}_${agency}_미매칭샘플`] = unmatched.slice(0, 8);
+                    if (spendOnly.length) detail[`${site}_${agency}_광고비전용샘플`] = spendOnly.slice(0, 8);
                 });
             });
 
-            console.log('%c[광고비 연결 진단]', 'font-weight:bold;color:#4F46E5;font-size:13px');
+            console.log('%c[광고비 반영 진단]', 'font-weight:bold;color:#4F46E5;font-size:13px');
             console.table(summary);
             Object.entries(detail).forEach(([k, v]) => { console.log(k); console.table(v); });
-            console.log('해석: 보고서행=0 → 탭 로드 실패 / 보고서광고비=0 → 금액 컬럼명 불일치 / 월값있음<보고서행 → 월별 컬럼 누락 / DB와매칭됨=0 → 광고이름·월이 매칭탭과 불일치(광고비 안붙음)');
+            console.log('해석: 보고서행=0 → 탭 로드 실패 / 보고서광고비=0 → 금액 컬럼명 불일치 / 월값있음<보고서행 → 월별 컬럼 누락 / 광고비전용 → CRM 유입 없이 광고비만 있는 소재이며 DB 0·계약 0으로 표시됨');
             window._spendDiagDetail = detail;
             return summary;
         }
@@ -2696,7 +2778,7 @@
 
             panel.classList.remove('hidden');
             tbody.innerHTML = '';
-            const unmatchedGroups = [];
+            const spendOnlyGroups = [];
 
             summary.forEach((row) => {
                 // 상태 판별
@@ -2708,14 +2790,11 @@
                     badge = '<span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 font-bold">금액 컬럼 불일치</span>';
                     rowCls = 'bg-amber-50/40';
                 } else if (row['DB와매칭됨'] === '(DB불필요)') {
-                    badge = '<span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-bold">Google(미분류)</span>';
+                    badge = '<span class="px-1.5 py-0.5 rounded bg-green-100 text-green-700 font-bold">정상</span>';
                     rowCls = '';
-                } else if (row['DB와매칭됨'] === 0 && row['보고서행'] > 0) {
-                    badge = '<span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 font-bold">소재명·월 불일치</span>';
-                    rowCls = 'bg-amber-50/40';
-                } else if (row['미매칭'] > 0) {
-                    badge = '<span class="px-1.5 py-0.5 rounded bg-yellow-100 text-yellow-700 font-bold">일부 미연결</span>';
-                    rowCls = 'bg-yellow-50/30';
+                } else if (row['광고비전용'] > 0) {
+                    badge = '<span class="px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 font-bold">광고비 전용 포함</span>';
+                    rowCls = 'bg-blue-50/30';
                 } else {
                     badge = '<span class="px-1.5 py-0.5 rounded bg-green-100 text-green-700 font-bold">정상</span>';
                     rowCls = '';
@@ -2727,13 +2806,11 @@
 
                 const dbMatchText = row['DB와매칭됨'] === '(DB불필요)'
                     ? '<span class="text-slate-400">—</span>'
-                    : (row['DB와매칭됨'] === 0 && row['보고서행'] > 0
-                        ? '<span class="text-red-600 font-bold">0</span>'
-                        : row['DB와매칭됨']);
+                    : row['DB와매칭됨'];
 
-                const unmatchedText = row['미매칭'] > 0
-                    ? `<span class="text-amber-600 font-bold">${row['미매칭']}</span>`
-                    : row['미매칭'];
+                const spendOnlyText = row['광고비전용'] > 0
+                    ? `<span class="text-blue-600 font-bold">${row['광고비전용']}</span>`
+                    : row['광고비전용'];
 
                 const tr = document.createElement('tr');
                 tr.className = `${rowCls} border-b border-[#E2E8F0]/60`;
@@ -2744,23 +2821,23 @@
                     <td class="px-3 py-2 text-right font-mono">${spendText}</td>
                     <td class="px-3 py-2 text-right font-mono">${row['매칭탭행']}</td>
                     <td class="px-3 py-2 text-right font-mono">${dbMatchText}</td>
-                    <td class="px-3 py-2 text-right font-mono">${unmatchedText}</td>
+                    <td class="px-3 py-2 text-right font-mono">${spendOnlyText}</td>
                     <td class="px-3 py-2">${badge}</td>`;
                 tbody.appendChild(tr);
 
-                // 미연결 샘플 수집
-                const sampleKey = `${row['사이트']}_${row['매체']}_미매칭샘플`;
+                // 광고비 전용 샘플 수집
+                const sampleKey = `${row['사이트']}_${row['매체']}_광고비전용샘플`;
                 const samples = window._spendDiagDetail?.[sampleKey];
                 if (samples?.length) {
-                    unmatchedGroups.push({ site: row['사이트'], agency: row['매체'], samples });
+                    spendOnlyGroups.push({ site: row['사이트'], agency: row['매체'], samples });
                 }
             });
 
-            // 미연결 소재 상세
-            if (unmatchedGroups.length && detailSection && detailList) {
+            // 광고비 전용 소재 상세
+            if (spendOnlyGroups.length && detailSection && detailList) {
                 detailSection.classList.remove('hidden');
                 detailList.innerHTML = '';
-                unmatchedGroups.forEach(({ site, agency, samples }) => {
+                spendOnlyGroups.forEach(({ site, agency, samples }) => {
                     const header = document.createElement('p');
                     header.className = 'text-[11px] font-bold text-slate-600 mb-1';
                     header.textContent = `${site} / ${agencyKoreanLabel(agency)}`;
@@ -2769,8 +2846,8 @@
                     ul.className = 'space-y-0.5 mb-2';
                     samples.forEach((s) => {
                         const li = document.createElement('li');
-                        li.className = 'flex items-center gap-1.5 px-2 py-1.5 bg-amber-50 rounded text-[10px] text-amber-800';
-                        li.innerHTML = `<span class="font-mono font-bold text-slate-500 shrink-0">${escapeHTML(s['월'] || '—')}</span><span class="text-slate-300">·</span><span class="flex-1 truncate">${escapeHTML(s['광고이름'] || '—')}</span><span class="text-slate-300 shrink-0">·</span><span class="ml-1 text-amber-600 font-bold shrink-0 whitespace-nowrap">${(s['금액'] || 0).toLocaleString()}원</span>`;
+                        li.className = 'flex items-center gap-1.5 px-2 py-1.5 bg-blue-50 rounded text-[10px] text-blue-800';
+                        li.innerHTML = `<span class="font-mono font-bold text-slate-500 shrink-0">${escapeHTML(s['월'] || '—')}</span><span class="text-slate-300">·</span><span class="flex-1 truncate">${escapeHTML(s['광고이름'] || '—')}</span><span class="text-slate-300 shrink-0">·</span><span class="ml-1 text-blue-600 font-bold shrink-0 whitespace-nowrap">${(s['금액'] || 0).toLocaleString()}원</span>`;
                         ul.appendChild(li);
                     });
                     detailList.appendChild(ul);
@@ -3215,6 +3292,71 @@
             updateCompareChart(rows, orderedMonths);
         }
 
+        function getCompareSortMeta(column) {
+            const meta = {
+                site: { type: 'text', defaultDirection: 'asc' },
+                agency: { type: 'text', defaultDirection: 'asc' },
+                creativeGroup: { type: 'text', defaultDirection: 'asc' },
+                spend: { type: 'number', defaultDirection: 'desc' },
+                clicks: { type: 'number', defaultDirection: 'desc' },
+                dbCount: { type: 'number', defaultDirection: 'desc' },
+                contracts: { type: 'number', defaultDirection: 'desc' },
+                cpa: { type: 'number', defaultDirection: 'asc' },
+                cps: { type: 'number', defaultDirection: 'asc' },
+                clickToDb: { type: 'number', defaultDirection: 'desc' },
+                dbToContract: { type: 'number', defaultDirection: 'desc' }
+            };
+            return meta[column] || { type: 'text', defaultDirection: 'asc' };
+        }
+
+        function getCompareSortState(month) {
+            const sortMap = state.compareSortByMonth || {};
+            return sortMap[month] || { column: '', direction: 'asc' };
+        }
+
+        function getCompareSortValue(row, column) {
+            if (column === 'agency') return agencyKoreanLabel(row.agency);
+            if (column === 'creativeGroup') return normalizeCreativeGroup(row.creativeGroup, row.adName);
+            if (column === 'site') return row.site;
+            return Number(row[column] || 0);
+        }
+
+        function defaultCompareRowKey(row) {
+            return `${row.site || ''}${agencyKoreanLabel(row.agency || '')}${normalizeCreativeGroup(row.creativeGroup, row.adName || '')}`;
+        }
+
+        function sortCompareRowsForMonth(monthRows, month) {
+            const sortState = getCompareSortState(month);
+            const { column, direction } = sortState;
+            if (!column) {
+                return [...monthRows].sort((a, b) => defaultCompareRowKey(a).localeCompare(defaultCompareRowKey(b), 'ko'));
+            }
+
+            const meta = getCompareSortMeta(column);
+            const directionMultiplier = direction === 'asc' ? 1 : -1;
+            return [...monthRows].sort((a, b) => {
+                let diff = 0;
+                const av = getCompareSortValue(a, column);
+                const bv = getCompareSortValue(b, column);
+                if (meta.type === 'number') diff = (Number(av) || 0) - (Number(bv) || 0);
+                else diff = String(av || '').localeCompare(String(bv || ''), 'ko', { numeric: true, sensitivity: 'base' });
+                if (diff === 0) diff = defaultCompareRowKey(a).localeCompare(defaultCompareRowKey(b), 'ko', { numeric: true, sensitivity: 'base' });
+                return diff * directionMultiplier;
+            });
+        }
+
+        function sortCompareTable(month, column) {
+            if (!month || !column) return;
+            if (!state.compareSortByMonth) state.compareSortByMonth = {};
+            const current = state.compareSortByMonth[month];
+            const meta = getCompareSortMeta(column);
+            const nextDirection = current && current.column === column
+                ? (current.direction === 'asc' ? 'desc' : 'asc')
+                : meta.defaultDirection;
+            state.compareSortByMonth[month] = { column, direction: nextDirection };
+            renderCompareTable(state.compareRowsCache || [], state.compareMonthsCache || []);
+        }
+
         function renderCompareTable(rows, orderedMonths) {
             const tbody = $('compareTableBody');
             if (!tbody) return;
@@ -3237,24 +3379,30 @@
             }
 
             const compareHeaderCells = [
-                ['사이트', 'px-3 py-2.5 text-left'],
-                ['광고 매체사', 'px-3 py-2.5 text-left'],
-                ['타입', 'px-2 py-2.5 text-center'],
-                ['총 광고비', 'px-3 py-2.5 text-right'],
-                ['클릭수', 'px-3 py-2.5 text-right'],
-                ['DB수', 'px-3 py-2.5 text-right'],
-                ['계약수', 'px-3 py-2.5 text-right'],
-                ['DB단가', 'px-3 py-2.5 text-right'],
-                ['계약단가', 'px-3 py-2.5 text-right'],
-                ['DB전환율', 'px-3 py-2.5 text-right'],
-                ['계약전환율', 'px-3 py-2.5 text-right'],
+                { label: '사이트', field: 'site', className: 'px-3 py-2.5 text-left' },
+                { label: '광고 매체사', field: 'agency', className: 'px-3 py-2.5 text-left' },
+                { label: '타입', field: 'creativeGroup', className: 'px-2 py-2.5 text-center' },
+                { label: '총 광고비', field: 'spend', className: 'px-3 py-2.5 text-right' },
+                { label: '클릭수', field: 'clicks', className: 'px-3 py-2.5 text-right' },
+                { label: 'DB수', field: 'dbCount', className: 'px-3 py-2.5 text-right' },
+                { label: '계약수', field: 'contracts', className: 'px-3 py-2.5 text-right' },
+                { label: 'DB단가', field: 'cpa', className: 'px-3 py-2.5 text-right' },
+                { label: '계약단가', field: 'cps', className: 'px-3 py-2.5 text-right' },
+                { label: 'DB전환율', field: 'clickToDb', className: 'px-3 py-2.5 text-right' },
+                { label: '계약전환율', field: 'dbToContract', className: 'px-3 py-2.5 text-right' },
             ];
 
-            function appendRepeatedHeader() {
+            function appendRepeatedHeader(month) {
                 const headerRow = document.createElement('tr');
                 headerRow.className = 'compare-repeat-header';
                 headerRow.innerHTML = compareHeaderCells
-                    .map(([label, className]) => `<th class="${className}">${label}</th>`)
+                    .map(({ label, field, className }) => {
+                        const sortState = getCompareSortState(month);
+                        const isActive = sortState.column === field;
+                        const icon = isActive ? (sortState.direction === 'asc' ? '▲' : '▼') : '↕';
+                        const justify = className.includes('text-right') ? 'justify-end' : (className.includes('text-center') ? 'justify-center' : 'justify-start');
+                        return `<th class="${className} compare-sort-th ${isActive ? 'text-brand-900' : ''}" onclick='sortCompareTable(${JSON.stringify(month)}, ${JSON.stringify(field)})' title="${escapeHTML(label)} 오름차순/내림차순 정렬"><span class="inline-flex items-center gap-1 w-full ${justify}">${escapeHTML(label)}<span class="compare-sort-icon ${isActive ? 'text-brand-700' : 'text-slate-300'}">${icon}</span></span></th>`;
+                    })
                     .join('');
                 frag.appendChild(headerRow);
             }
@@ -3266,10 +3414,9 @@
                 frag.appendChild(header);
 
                 // 모든 월 구간을 동일하게 '날짜 → 헤더 → 데이터' 순서로 표시합니다.
-                appendRepeatedHeader();
+                appendRepeatedHeader(month);
 
-                rows.filter((row) => row.month === month)
-                    .sort((a, b) => `${a.site}${a.agency}${a.creativeGroup}`.localeCompare(`${b.site}${b.agency}${b.creativeGroup}`))
+                sortCompareRowsForMonth(rows.filter((row) => row.month === month), month)
                     .forEach((row) => {
                         const tr = document.createElement('tr');
                         tr.className = 'row-fade hover:bg-brand-50/40 transition-colors';

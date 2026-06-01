@@ -1139,7 +1139,7 @@
 <li>아래 <span class="font-semibold text-slate-900">업로드 템플릿 다운로드</span> 버튼으로 양식을 받습니다.</li>
 <li>시트탭 이름이 정확히 <span class="font-semibold text-slate-900">Meta_DB / Tiktok_DB / Google_DB / 키워드매칭 / Meta / Tiktok / Google</span> 이어야 합니다. 유효 DB수는 Meta_DB/Tiktok_DB의 첫 행과 빈 행을 제외한 모든 행으로 집계합니다.</li>
 <li>광고비는 소진됐지만 CRM 키워드 유입이 없는 소재도 <span class="font-semibold text-slate-900">광고비/클릭은 반영</span>하고 <span class="font-semibold text-slate-900">DB수·계약수는 0</span>으로 대시보드에 표시합니다.</li>
-<li><span class="font-semibold text-slate-900">키워드매칭</span> 시트의 <span class="font-semibold text-slate-900">타입</span> 열에 브라이언 / AI기타채널 / 신규포맷 / 유튜브 중 하나를 입력하면 비교표에 반영됩니다.</li>
+<li><span class="font-semibold text-slate-900">키워드매칭</span> 시트의 <span class="font-semibold text-slate-900">타입</span> 열에 브라이언 / AI기타채널 / 신규포맷 / 유튜브 / 미분류 중 하나를 입력하면 비교표에 반영됩니다.</li>
 <li>카빌리지 / 차맵 파일을 각각 업로드하세요.</li>
 </ol>
 </div>
@@ -1194,7 +1194,7 @@
                         구글 스프레드시트 연동 가이드
                     </h4>
 <ol class="list-decimal list-inside text-[11px] text-blue-800/80 space-y-1.5 leading-relaxed">
-<li>엑셀 업로드 탭의 <span class="font-semibold text-slate-900">업로드 템플릿</span>과 동일한 시트 구조(Meta_DB / Tiktok_DB / Google_DB / 키워드매칭 / Meta / Tiktok / Google)로 구글 스프레드시트를 작성합니다. 유효 DB수는 Meta_DB/Tiktok_DB의 첫 행과 빈 행을 제외한 모든 행으로 집계하며, 키워드매칭 시트에는 타입 열을 추가할 수 있습니다.</li>
+<li>엑셀 업로드 탭의 <span class="font-semibold text-slate-900">업로드 템플릿</span>과 동일한 시트 구조(Meta_DB / Tiktok_DB / Google_DB / 키워드매칭 / Meta / Tiktok / Google)로 구글 스프레드시트를 작성합니다. 유효 DB수는 Meta_DB/Tiktok_DB의 첫 행과 빈 행을 제외한 모든 행으로 집계하며, 키워드매칭 시트에는 타입 또는 광고이름 타입 열을 추가할 수 있습니다.</li>
 <li>CRM 키워드로 유입되지 않은 광고 소재도 미연결로 제외하지 않고 <span class="font-semibold text-slate-900">광고비/클릭은 그대로 표시</span>, <span class="font-semibold text-slate-900">DB수·계약수는 0</span>으로 표시합니다.</li>
 <li>구글 스프레드시트를 <span class="font-semibold text-slate-900">공유 → 링크가 있는 모든 사용자 (뷰어)</span>로 설정합니다.</li>
 <li>스프레드시트 URL을 아래에 붙여넣고 <span class="font-semibold text-slate-900">연동 적용</span>을 클릭합니다.</li>
@@ -1255,7 +1255,7 @@
 <div class="hidden mt-3 space-y-2" id="gsDiagUnmatchedDetail">
 <p class="text-[11px] font-bold text-blue-700 flex items-center gap-1"><i class="w-3 h-3" data-lucide="info"></i> 광고비 전용 소재명 (DB/계약 0으로 표시되는 행)</p>
 <div id="gsDiagUnmatchedList" class="space-y-1.5"></div>
-<p class="text-[10px] text-slate-400 leading-relaxed">CRM 키워드 유입이 없어도 위 소재의 광고비와 클릭수는 대시보드에 반영되며, DB수와 계약수는 0으로 표시됩니다. 키워드매칭 탭에 광고 이름이 있으면 타입도 함께 반영됩니다.</p>
+<p class="text-[10px] text-slate-400 leading-relaxed">CRM 키워드 유입이 없어도 위 소재의 광고비와 클릭수는 대시보드에 반영되며, DB수와 계약수는 0으로 표시됩니다. 키워드매칭 탭에 광고 이름과 타입이 있으면 해당 타입이 우선 반영됩니다.</p>
 </div>
 </div>
 <!-- 주의사항 -->
@@ -1362,7 +1362,7 @@
         const AGENCIES = ['Meta', 'Tiktok', 'Google'];
         const DATA_KEYS = ['admin', 'matching', 'meta', 'tiktok', 'google'];
         const VALID_DB_ADMIN_SOURCES = new Set(['admin_meta', 'admin_tiktok', 'admin_google', 'admin_crm']);
-        const CREATIVE_GROUPS = ['브라이언', 'AI기타채널', '신규포맷', '유튜브'];
+        const CREATIVE_GROUPS = ['브라이언', 'AI기타채널', '신규포맷', '유튜브', '미분류'];
         const LS_KEY = 'cavillage_dashboard_data_v7_type_column';
         const MONTH_LABELS = { '01':'01월','02':'02월','03':'03월','04':'04월','05':'05월','06':'06월','07':'07월','08':'08월','09':'09월','10':'10월','11':'11월','12':'12월' };
         // CRM_SHEET_ID: 카빌리지/차맵 탭이 모두 들어있는 단일 구글 시트 ID
@@ -1449,9 +1449,21 @@
             }[ch]));
         }
 
+        function normalizeHeaderKey(value) {
+            return text(value).replace(/[\s_\-./()\[\]{}<>:：·ㆍ]+/g, '').toLowerCase();
+        }
+
         function firstValue(row, keys, fallback = '') {
+            // 1) 정확한 헤더명 우선 매칭
             for (const key of keys) {
                 if (row[key] !== undefined && row[key] !== null && text(row[key]) !== '') return row[key];
+            }
+
+            // 2) 공백/기호 차이 보정: 예) '광고 이름 타입' ↔ '광고이름타입', 'Type' ↔ 'type'
+            const wanted = new Set(keys.map(normalizeHeaderKey).filter(Boolean));
+            for (const actualKey of Object.keys(row || {})) {
+                if (!wanted.has(normalizeHeaderKey(actualKey))) continue;
+                if (row[actualKey] !== undefined && row[actualKey] !== null && text(row[actualKey]) !== '') return row[actualKey];
             }
             return fallback;
         }
@@ -1485,23 +1497,19 @@
         function normalizeCreativeGroup(value, adName = '') {
             const raw = text(value);
             const compactRaw = raw.replace(/\s+/g, '').toLowerCase();
-            const source = `${raw} ${text(adName)}`.toLowerCase();
-            const compactSource = source.replace(/\s+/g, '');
 
-            // 타입 열에 직접 입력된 값은 우선 반영합니다. 기존 4개 타입의 영문/공백 변형만 표준명으로 정리합니다.
+            // 키워드매칭 시트의 타입 값을 최우선으로 사용합니다.
+            // 예전 버전처럼 광고 이름 안의 'youtube', 'ai', 'gpt' 같은 단어로 타입을 자동 추정하면
+            // 사용자가 명시한 '미분류'가 대시보드에서 '유튜브'/'AI기타채널'로 섞여 보일 수 있어
+            // 타입 열이 비어 있거나 읽히지 않은 경우에는 안전하게 '미분류'로 처리합니다.
+            if (compactRaw === '미분류' || compactRaw === '미분류광고' || compactRaw === '분류없음' || compactRaw === '기타' || compactRaw === 'unclassified' || compactRaw === 'uncategorized' || compactRaw === 'none') return '미분류';
             if (compactRaw === '브라이언' || compactRaw === 'brian' || compactRaw === 'bryan') return '브라이언';
             if (compactRaw === 'ai기타채널' || compactRaw === 'ai기타' || compactRaw === '기타채널') return 'AI기타채널';
             if (compactRaw === '신규포맷' || compactRaw === 'newformat') return '신규포맷';
             if (compactRaw === '유튜브' || compactRaw === 'youtube' || compactRaw === 'yt') return '유튜브';
             if (raw) return raw;
 
-            if (compactSource.includes('브라이언') || compactSource.includes('brian') || compactSource.includes('bryan')) return '브라이언';
-            if (compactSource.includes('신규포맷') || compactSource.includes('newformat')) return '신규포맷';
-            if (compactSource.includes('유튜브') || compactSource.includes('youtube') || compactSource.includes('우파') || compactSource.includes('카비니') || compactSource.includes('딴비')) return '유튜브';
-            if (compactSource.includes('ai') || compactSource.includes('gpt') || compactSource.includes('챗gpt') || compactSource.includes('기타채널')) return 'AI기타채널';
-
-            // 타입 열이 비어 있으면 광고 이름으로 추정하고, 그래도 없으면 AI기타채널로 묶습니다.
-            return 'AI기타채널';
+            return '미분류';
         }
 
         function extractMonth(value) {
@@ -2133,7 +2141,12 @@
                 adminKeyword: text(firstValue(row, ['어드민 키워드', 'adminKeyword'])),
                 agency: normalizeAgency(firstValue(row, ['광고 매체명', 'agency'])),
                 adName,
-                creativeGroup: normalizeCreativeGroup(firstValue(row, ['타입', 'type', 'Type', '소재분류', '소재 분류', '영상타입', '분류그룹', 'creativeGroup', '비고']), adName)
+                creativeGroup: normalizeCreativeGroup(firstValue(row, [
+                    '타입', '광고이름 타입', '광고 이름 타입', '광고명 타입', '광고명타입',
+                    '소재 타입', '소재타입', '영상 타입', '영상타입', '콘텐츠 타입', '컨텐츠 타입',
+                    'type', 'Type', 'adNameType', 'ad_name_type', 'creativeType', 'creative_type',
+                    '소재분류', '소재 분류', '분류그룹', 'creativeGroup', '비고'
+                ]), adName)
             };
         }
 
@@ -2599,12 +2612,12 @@
             const { keywordToCanonical, adNameToCanonical } = buildKeywordCanonicalization(acceptedMatching);
 
             // 보고서에는 광고비가 있지만 CRM/어드민 DB 유입이 없는 소재도 타입을 최대한 유지합니다.
-            // 키워드매칭 탭에 같은 광고 이름이 있으면 해당 타입을 사용하고, 없으면 광고 이름에서 추정합니다.
+            // 키워드매칭 탭에 같은 광고 이름이 있으면 해당 타입을 사용하고, 없으면 미분류로 처리합니다.
             const canonicalCreativeGroupByAd = new Map();
             acceptedMatching.forEach((row) => {
                 const canonicalAdName = adNameToCanonical.get(adKey(row.sourceSite, row.agency, row.adName)) || row.adName;
                 const canonicalKey = adKey(row.sourceSite, row.agency, canonicalAdName);
-                const group = row.creativeGroup || normalizeCreativeGroup('', canonicalAdName);
+                const group = normalizeCreativeGroup(row.creativeGroup, canonicalAdName);
                 if (!canonicalCreativeGroupByAd.has(canonicalKey) && group) canonicalCreativeGroupByAd.set(canonicalKey, group);
             });
 

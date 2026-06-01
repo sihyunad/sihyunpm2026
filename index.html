@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <!-- compare-table-column-order: spend-clicks-db-contracts-cpa-cps-clickToDb-dbToContract -->
+<!-- compare-table-header-style-unified: repeated-header-style-applied-to-top-thead -->
 
 <html class="h-full bg-[#F4F6FA] text-slate-800" lang="ko">
 <head>
@@ -343,6 +344,308 @@
         .section-fade.fading {
             opacity: 0;
             transform: translateY(4px);
+        }
+
+
+        /* ── Premium Motion Layer: 부드러운 화면 전환 / 고급 인터랙션 ── */
+        :root {
+            --motion-fast: 180ms;
+            --motion-base: 320ms;
+            --motion-slow: 520ms;
+            --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+            --motion-soft: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        html { scroll-behavior: smooth; }
+        body { -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; }
+        main { scroll-behavior: smooth; }
+
+        .page-view {
+            transform-origin: 50% 24px;
+            will-change: opacity, transform, filter;
+        }
+        .page-enter {
+            opacity: 0;
+            transform: translateY(16px) scale(0.992);
+            filter: blur(5px);
+        }
+        .page-enter.page-enter-active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+            transition: opacity var(--motion-slow) var(--motion-soft),
+                        transform var(--motion-slow) var(--motion-soft),
+                        filter var(--motion-base) ease;
+        }
+        .page-exit {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.996);
+            filter: blur(3px);
+            transition: opacity var(--motion-fast) ease,
+                        transform var(--motion-fast) ease,
+                        filter var(--motion-fast) ease;
+        }
+        .page-view > section,
+        .page-view > div {
+            animation: contentRise 560ms var(--motion-soft) both;
+        }
+        .page-view > section:nth-child(2),
+        .page-view > div:nth-child(2) { animation-delay: 70ms; }
+        @keyframes contentRise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-menu-btn {
+            position: relative;
+            overflow: hidden;
+            will-change: transform, background-color;
+        }
+        .nav-menu-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 24px 50%, rgba(255,255,255,0.20), transparent 45%);
+            opacity: 0;
+            transform: translateX(-12px);
+            transition: opacity var(--motion-base) var(--motion-ease), transform var(--motion-base) var(--motion-ease);
+            pointer-events: none;
+        }
+        .nav-menu-btn:hover { transform: translateX(2px); }
+        .nav-menu-btn.bg-\[\#4F46E5\]::after,
+        .nav-menu-btn:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        header button,
+        aside button,
+        .login-btn,
+        #modalApplyBtn,
+        button[onclick*="download"],
+        button[onclick*="reset"] {
+            transition: transform var(--motion-fast) var(--motion-ease),
+                        box-shadow var(--motion-base) var(--motion-ease),
+                        background-color var(--motion-base) ease,
+                        border-color var(--motion-base) ease,
+                        color var(--motion-base) ease;
+            will-change: transform;
+        }
+        header button:hover,
+        aside button:hover,
+        #modalApplyBtn:hover,
+        button[onclick*="download"]:hover,
+        button[onclick*="reset"]:hover {
+            transform: translateY(-1px);
+        }
+        header button:active,
+        aside button:active,
+        #modalApplyBtn:active,
+        button[onclick*="download"]:active,
+        button[onclick*="reset"]:active {
+            transform: translateY(0) scale(0.985);
+        }
+
+        main section.bg-white,
+        main section > .bg-white,
+        main .rounded-xl.border,
+        #comparisonSection,
+        .login-card {
+            transition: transform var(--motion-base) var(--motion-ease),
+                        box-shadow var(--motion-base) var(--motion-ease),
+                        border-color var(--motion-base) ease,
+                        background-color var(--motion-base) ease;
+        }
+        main section > .bg-white:hover,
+        main section.bg-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08), 0 1px 0 rgba(255,255,255,0.8) inset;
+            border-color: rgba(99,102,241,0.24);
+        }
+        main section > .bg-white::before,
+        main section.bg-white::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            background: linear-gradient(135deg, rgba(99,102,241,0.09), transparent 36%);
+            transition: opacity var(--motion-base) ease;
+        }
+        main section > .bg-white:hover::before,
+        main section.bg-white:hover::before { opacity: 1; }
+
+        #integrationModal {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity var(--motion-base) ease, visibility var(--motion-base) ease;
+        }
+        #integrationModal.modal-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        #integrationModal > div {
+            opacity: 0;
+            transform: translateY(18px) scale(0.972);
+            filter: blur(5px);
+            transform-origin: 50% 48%;
+            transition: opacity 380ms var(--motion-soft),
+                        transform 380ms var(--motion-soft),
+                        filter 280ms ease;
+            will-change: opacity, transform, filter;
+        }
+        #integrationModal.modal-open > div {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+        #integrationModal.modal-closing > div {
+            opacity: 0;
+            transform: translateY(10px) scale(0.985);
+            filter: blur(2px);
+        }
+        .modal-tab-panel-enter {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        .modal-tab-panel-enter.modal-tab-panel-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity var(--motion-base) var(--motion-soft), transform var(--motion-base) var(--motion-soft);
+        }
+
+        #monthDropdown,
+        #tableMonthDropdown,
+        #columnFilterPanel {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.98);
+            transform-origin: top center;
+            transition: opacity 220ms var(--motion-ease), transform 220ms var(--motion-ease);
+            will-change: opacity, transform;
+        }
+        #monthDropdown.dropdown-open,
+        #tableMonthDropdown.dropdown-open,
+        #columnFilterPanel.dropdown-open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        #monthDropdown.dropdown-closing,
+        #tableMonthDropdown.dropdown-closing,
+        #columnFilterPanel.dropdown-closing {
+            opacity: 0;
+            transform: translateY(-6px) scale(0.985);
+        }
+
+        .row-fade {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 420ms var(--motion-soft) forwards;
+        }
+        #performanceTableBody tr,
+        #compareTableBody tr {
+            transition: background-color var(--motion-base) ease, transform var(--motion-fast) var(--motion-ease), box-shadow var(--motion-base) ease;
+        }
+        #performanceTableBody tr:hover {
+            background-color: transparent !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        #compareTableBody tr:hover {
+            transform: translateX(2px);
+        }
+        .sticky-month-header:hover,
+        .compare-repeat-header:hover {
+            transform: none !important;
+        }
+        /* 월별 성과 비교 테이블은 각 월마다 '날짜 → 헤더 → 데이터' 순서로 표시합니다. */
+        #comparisonSection table thead {
+            display: none;
+        }
+        .sticky-month-header td {
+            position: sticky;
+            top: 0;
+            z-index: 16;
+            background: #EEF2FF !important;
+            color: #111827 !important;
+            font-weight: 900;
+            border-top: 1px solid #E2E8F0;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        .compare-repeat-header th {
+            position: relative;
+            background: #F8FAFF !important;
+            color: #4338CA !important;
+            font-weight: 800;
+            border-bottom: 1px solid #E2E8F0;
+            box-shadow: inset 0 -1px 0 rgba(226,232,240,0.72);
+        }
+        #comparisonSection table thead,
+        #comparisonSection table thead tr {
+            background: #F8FAFF !important;
+        }
+        #comparisonSection table thead th {
+            padding-top: 0.625rem !important;
+            padding-bottom: 0.625rem !important;
+        }
+
+        .kpi-animate {
+            animation: countUp 520ms var(--motion-soft) forwards;
+        }
+        @keyframes countUp {
+            from { opacity: 0.55; transform: translateY(3px) scale(0.982); filter: blur(2px); }
+            to   { opacity: 1;    transform: translateY(0) scale(1);     filter: blur(0); }
+        }
+        .chart-soft-enter {
+            opacity: 0;
+            transform: translateY(10px) scale(0.995);
+            filter: blur(3px);
+        }
+        .chart-soft-enter.chart-soft-enter-active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+            transition: opacity 520ms var(--motion-soft), transform 520ms var(--motion-soft), filter 360ms ease;
+        }
+        #loadingBanner {
+            transition: opacity var(--motion-base) ease,
+                        transform var(--motion-base) var(--motion-soft),
+                        box-shadow var(--motion-base) ease;
+        }
+        #loadingBanner.loading-visible {
+            box-shadow: 0 18px 48px rgba(15,23,42,0.16);
+            transform: translateY(0) scale(1);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html, main { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+    
+
+        /* ── 성과목록 데이터 행 배경 정리 ──
+           대상: '소재명(키워드) 매칭별 종합 성과 목록' tbody 데이터 행만
+           기본값은 흰색, 마우스를 올렸을 때만 연보라색으로 표시합니다. */
+        #page-performance #performanceTableBody tr,
+        #page-performance #performanceTableBody tr > td {
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            transition: background-color 180ms ease, opacity 420ms var(--motion-soft), transform 160ms var(--motion-ease), box-shadow 240ms ease !important;
+        }
+        #page-performance #performanceTableBody tr:hover,
+        #page-performance #performanceTableBody tr:hover > td {
+            background: #EEF2FF !important;
+            background-color: #EEF2FF !important;
+        }
+        #page-performance #performanceTableBody tr:hover {
+            transform: none !important;
+            box-shadow: none !important;
         }
     </style>
 </head>
@@ -903,6 +1206,39 @@
 </div>
 <!-- 연동 상태 표시 -->
 <div class="hidden p-3 rounded-xl text-xs font-semibold flex items-center gap-2" id="gsLoadStatus"></div>
+<!-- ── 연동 진단 패널 (연동 적용 후 자동 표시) ── -->
+<div class="hidden" id="gsDiagPanel">
+<div class="flex items-center justify-between mb-2">
+<p class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+<i class="w-3.5 h-3.5 text-brand-600" data-lucide="stethoscope"></i>
+                        탭별 로드 · 광고비 연결 진단
+                    </p>
+<span class="text-[10px] text-slate-400">보고서행=0이면 탭 문제, 광고비=0이면 헤더 문제, DB연결=0이면 소재명·월 불일치</span>
+</div>
+<div class="overflow-x-auto rounded-xl border border-[#E2E8F0]">
+<table class="w-full text-[11px] text-slate-700">
+<thead class="bg-slate-50 text-slate-500 font-bold border-b border-[#E2E8F0]">
+<tr>
+<th class="px-3 py-2 text-left">사이트</th>
+<th class="px-3 py-2 text-left">매체</th>
+<th class="px-3 py-2 text-right">보고서 행</th>
+<th class="px-3 py-2 text-right">광고비 합산</th>
+<th class="px-3 py-2 text-right">키워드매칭</th>
+<th class="px-3 py-2 text-right">DB연결됨</th>
+<th class="px-3 py-2 text-right">미연결</th>
+<th class="px-3 py-2 text-left">상태</th>
+</tr>
+</thead>
+<tbody id="gsDiagTableBody" class="divide-y divide-[#E2E8F0]/60"></tbody>
+</table>
+</div>
+<!-- 미연결 샘플: 소재명/월 목록 -->
+<div class="hidden mt-3 space-y-2" id="gsDiagUnmatchedDetail">
+<p class="text-[11px] font-bold text-amber-700 flex items-center gap-1"><i class="w-3 h-3" data-lucide="alert-triangle"></i> 미연결 보고서 소재명 (광고비가 붙지 않는 행)</p>
+<div id="gsDiagUnmatchedList" class="space-y-1.5"></div>
+<p class="text-[10px] text-slate-400 leading-relaxed">위 소재명이 <span class="font-semibold">키워드매칭 탭의 "광고 이름"</span>과 정확히 일치하는지 확인하세요. 공백·괄호 차이도 불일치 원인이 됩니다.</p>
+</div>
+</div>
 <!-- 주의사항 -->
 <div class="p-3 bg-amber-50 border border-amber-100 rounded-xl text-[11px] text-amber-800 leading-relaxed">
                     ⚠️ 구글 스프레드시트는 <span class="font-semibold">CSV 내보내기 방식</span>으로 데이터를 읽습니다. 시트 공유 설정이 <span class="font-semibold">링크 공개(뷰어)</span>로 되어 있어야 합니다. 사내 전용 시트는 공유 설정 확인 후 사용하세요.
@@ -1061,7 +1397,9 @@
             compareMonthB: '',
             compareMetric: 'dbCount',
             compareRowsCache: [],
-            compareMonthsCache: []
+            compareMonthsCache: [],
+            currentPage: 'dashboard',
+            pageTransitionTimer: null
         };
 
         const $ = (id) => document.getElementById(id);
@@ -1186,6 +1524,45 @@
             return y && m ? `${y}년 ${MONTH_LABELS[m] || m}` : month;
         }
 
+
+        function prefersReducedMotion() {
+            return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        }
+
+        function runSoftEnter(el, baseClass, activeClass, cleanupDelay = 420) {
+            if (!el) return;
+            el.classList.remove(baseClass, activeClass);
+            void el.offsetWidth;
+            el.classList.add(baseClass);
+            requestAnimationFrame(() => el.classList.add(activeClass));
+            window.setTimeout(() => el.classList.remove(baseClass, activeClass), prefersReducedMotion() ? 0 : cleanupDelay);
+        }
+
+        function openSoftDropdown(dropdown, display = 'flex') {
+            if (!dropdown) return;
+            dropdown.classList.remove('hidden', 'dropdown-closing');
+            dropdown.style.display = display;
+            requestAnimationFrame(() => dropdown.classList.add('dropdown-open'));
+        }
+
+        function closeSoftDropdown(dropdown) {
+            if (!dropdown || dropdown.classList.contains('hidden')) return;
+            dropdown.classList.remove('dropdown-open');
+            dropdown.classList.add('dropdown-closing');
+            window.setTimeout(() => {
+                dropdown.classList.add('hidden');
+                dropdown.classList.remove('dropdown-closing');
+                dropdown.style.display = '';
+            }, prefersReducedMotion() ? 0 : 180);
+        }
+
+        function toggleSoftDropdown(dropdown, display = 'flex') {
+            if (!dropdown) return;
+            const isOpen = !dropdown.classList.contains('hidden') && dropdown.classList.contains('dropdown-open');
+            if (isOpen) closeSoftDropdown(dropdown);
+            else openSoftDropdown(dropdown, display);
+        }
+
         function showLoading(show, message = '데이터 갱신 중...') {
             const banner = $('loadingBanner');
             const label = $('loadingText');
@@ -1194,20 +1571,34 @@
             banner.classList.toggle('opacity-0', !show);
             banner.classList.toggle('pointer-events-none', !show);
             banner.classList.toggle('translate-y-2', !show);
+            banner.classList.toggle('loading-visible', show);
         }
 
         // ─────────────────────────────────────────────
         // 모달 / UI 핸들러
         // ─────────────────────────────────────────────
-        function toggleIntegrationModal() {
+        function toggleIntegrationModal(forceOpen) {
             const modal = $('integrationModal');
             if (!modal) return;
-            modal.classList.toggle('hidden');
-            if (!modal.classList.contains('hidden')) {
+            const shouldOpen = typeof forceOpen === 'boolean'
+                ? forceOpen
+                : modal.classList.contains('hidden') || !modal.classList.contains('modal-open');
+
+            if (shouldOpen) {
+                modal.classList.remove('hidden', 'modal-closing');
+                requestAnimationFrame(() => modal.classList.add('modal-open'));
                 switchSiteConfig('카빌리지');
                 switchModalTab(state.currentModalTab);
                 lucide.createIcons();
+                return;
             }
+
+            modal.classList.remove('modal-open');
+            modal.classList.add('modal-closing');
+            window.setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('modal-closing');
+            }, prefersReducedMotion() ? 0 : 240);
         }
 
         function switchSiteConfig(site) {
@@ -1217,9 +1608,15 @@
                 if (!btn || !panel) return;
                 const selected = name === site;
                 btn.className = selected
-                    ? 'flex-1 py-2.5 text-xs font-bold rounded-xl border-2 border-brand-500 bg-brand-700 text-white transition-all'
+                    ? 'flex-1 py-2.5 text-xs font-bold rounded-xl border-2 border-brand-500 bg-brand-700 text-white transition-all shadow-md shadow-brand-700/10'
                     : 'flex-1 py-2.5 text-xs font-bold rounded-xl border-2 border-[#E2E8F0] bg-white text-slate-500 hover:border-brand-300 transition-all';
-                panel.classList.toggle('hidden', !selected);
+                if (selected) {
+                    panel.classList.remove('hidden');
+                    runSoftEnter(panel, 'modal-tab-panel-enter', 'modal-tab-panel-enter-active', 340);
+                } else {
+                    panel.classList.add('hidden');
+                    panel.classList.remove('modal-tab-panel-enter', 'modal-tab-panel-enter-active');
+                }
             });
         }
 
@@ -1235,7 +1632,13 @@
                 btn.classList.toggle('bg-white', selected);
                 btn.classList.toggle('border-transparent', !selected);
                 btn.classList.toggle('text-slate-500', !selected);
-                panel.classList.toggle('hidden', !selected);
+                if (selected) {
+                    panel.classList.remove('hidden');
+                    runSoftEnter(panel, 'modal-tab-panel-enter', 'modal-tab-panel-enter-active', 340);
+                } else {
+                    panel.classList.add('hidden');
+                    panel.classList.remove('modal-tab-panel-enter', 'modal-tab-panel-enter-active');
+                }
             });
             const applyBtn = $('modalApplyBtn');
             if (applyBtn) applyBtn.textContent = tab === 'gsheet' ? '연동 적용' : '적용 및 새로고침';
@@ -1248,18 +1651,17 @@
         }
 
         function toggleTableMonthDropdown() {
-            const dropdown = $('tableMonthDropdown');
-            if (dropdown) dropdown.classList.toggle('hidden');
+            toggleSoftDropdown($('tableMonthDropdown'), 'flex');
         }
 
         document.addEventListener('click', (event) => {
             const wrapper = $('tableMonthFilterWrapper');
             const dropdown = $('tableMonthDropdown');
-            if (wrapper && dropdown && !wrapper.contains(event.target)) dropdown.classList.add('hidden');
+            if (wrapper && dropdown && !wrapper.contains(event.target)) closeSoftDropdown(dropdown);
 
             const monthWrapper = $('monthFilterWrapper');
             const monthDropdown = $('monthDropdown');
-            if (monthWrapper && monthDropdown && !monthWrapper.contains(event.target)) monthDropdown.classList.add('hidden');
+            if (monthWrapper && monthDropdown && !monthWrapper.contains(event.target)) closeSoftDropdown(monthDropdown);
 
             // 컬럼 헤더 필터 패널: 패널/필터버튼 밖 클릭 시 닫기
             const colPanel = $('columnFilterPanel');
@@ -1270,6 +1672,8 @@
         // 스크롤 시 위치가 어긋나므로 패널 닫기
         document.querySelector('main')?.addEventListener('scroll', () => {
             if (typeof closeColumnFilter === 'function') closeColumnFilter();
+            closeSoftDropdown($('monthDropdown'));
+            closeSoftDropdown($('tableMonthDropdown'));
         });
 
         // ─────────────────────────────────────────────
@@ -1643,13 +2047,17 @@
                 buildMonthFilter();
                 applyFilters();
 
+                const diagSummary = runSpendDiagnostics();
+                renderGsDiagPanel(diagSummary);
+
                 const detail = buildGsheetReportText();
                 statusEl.className = 'p-3 rounded-xl text-xs font-semibold flex items-center gap-2 bg-green-50 text-green-700';
-                statusEl.textContent = `✅ 구글 스프레드시트 데이터 연동 완료! 총 ${loadedCount.toLocaleString()}행을 읽었습니다.${detail ? ' (' + detail + ')' : ''}`;
+                statusEl.textContent = `✅ 연동 완료! 총 ${loadedCount.toLocaleString()}행 로드${detail ? ' (' + detail + ')' : ''} — 아래 진단표에서 광고비 연결 현황을 확인하세요.`;
 
-                if (!$('integrationModal')?.classList.contains('hidden')) toggleIntegrationModal();
-                showLoading(true, '✅ 구글 스프레드시트 데이터 연동 완료!');
-                setTimeout(() => showLoading(false), 1500);
+                // 모달을 닫지 않고 진단 패널을 보여줌
+                const panel = $('modalTabPanel_gsheet');
+                if (panel) panel.scrollTop = panel.scrollHeight;
+                lucide.createIcons();
             } catch (error) {
                 statusEl.className = 'p-3 rounded-xl text-xs font-semibold flex items-center gap-2 bg-red-50 text-red-700';
                 statusEl.textContent = `❌ 연동 오류: ${error.message}`;
@@ -1953,8 +2361,7 @@
         }
 
         function toggleMonthDropdown() {
-            const dropdown = $('monthDropdown');
-            if (dropdown) dropdown.classList.toggle('hidden');
+            toggleSoftDropdown($('monthDropdown'), 'flex');
         }
 
         function handleMonthCheckAll(el) {
@@ -2213,11 +2620,171 @@
             return { details, filteredLeads };
         }
 
+        // ─────────────────────────────────────────────
+        // 광고비 연결 진단 (차맵/카빌리지 Meta·Tiktok·Google 집계 확인)
+        // Meta/Tiktok 광고비는 "보고서의 광고이름+월"이 "어드민DB가 매칭으로 만든 광고이름+월"과
+        // 정확히 일치할 때만 붙습니다. 어디서 끊기는지 여기서 확인합니다.
+        // 콘솔에서 diagnoseSpend() 실행.
+        // ─────────────────────────────────────────────
+        function runSpendDiagnostics() {
+            const matchKey = (site, agency, keyword) => `${site}::${agency}::${keyword}`;
+            const summary = [];
+            const detail = {};
+
+            SITES.forEach((site) => {
+                AGENCIES.forEach((agency) => {
+                    // 1) 이 site/agency의 키워드매칭 인덱스
+                    const matchingRows = state.active.matching.filter((r) => r.sourceSite === site && r.agency === agency);
+                    const mIndex = new Map();
+                    matchingRows.forEach((r) => mIndex.set(matchKey(site, agency, r.adminKeyword), r.adName));
+
+                    // 2) 어드민 DB가 만들어내는 (광고이름::월) 키 집합
+                    const dbKeys = new Set();
+                    state.active.admin.forEach((lead) => {
+                        if ((lead.sourceSite || lead.site) !== site || lead.agency !== agency) return;
+                        const month = lead.month || extractMonth(lead.date);
+                        const kw = text(lead.keyword);
+                        const adName = kw ? (mIndex.get(matchKey(site, agency, kw)) || `[미매칭] ${kw}`) : '[키워드없음]';
+                        dbKeys.add(`${adName}::${month}`);
+                    });
+
+                    // 3) 보고서 행 분석
+                    const reportRows = (state.active[agency.toLowerCase()] || []).filter((r) => r.sourceSite === site);
+                    const reportSpend = reportRows.reduce((s, r) => s + (r.spend || 0), 0);
+                    const reportClicks = reportRows.reduce((s, r) => s + (r.clicks || 0), 0);
+                    const withDate = reportRows.filter((r) => r.date).length;
+
+                    // 4) 보고서 ↔ DB 매칭 여부 (Google은 DB 없이도 붙으므로 별도)
+                    const unmatched = [];
+                    let matched = 0;
+                    reportRows.forEach((r) => {
+                        const k = `${text(r.adName)}::${r.date}`;
+                        if (dbKeys.has(k)) matched += 1;
+                        else unmatched.push({ 광고이름: r.adName, 월: r.date, 금액: r.spend });
+                    });
+
+                    summary.push({
+                        사이트: site,
+                        매체: agency,
+                        보고서행: reportRows.length,
+                        '월값있음': withDate,
+                        보고서광고비: reportSpend,
+                        보고서클릭: reportClicks,
+                        매칭탭행: matchingRows.length,
+                        'DB와매칭됨': agency === 'Google' ? '(DB불필요)' : matched,
+                        '미매칭': agency === 'Google' ? 0 : unmatched.length
+                    });
+                    if (unmatched.length) detail[`${site}_${agency}_미매칭샘플`] = unmatched.slice(0, 8);
+                });
+            });
+
+            console.log('%c[광고비 연결 진단]', 'font-weight:bold;color:#4F46E5;font-size:13px');
+            console.table(summary);
+            Object.entries(detail).forEach(([k, v]) => { console.log(k); console.table(v); });
+            console.log('해석: 보고서행=0 → 탭 로드 실패 / 보고서광고비=0 → 금액 컬럼명 불일치 / 월값있음<보고서행 → 월별 컬럼 누락 / DB와매칭됨=0 → 광고이름·월이 매칭탭과 불일치(광고비 안붙음)');
+            window._spendDiagDetail = detail;
+            return summary;
+        }
+        window.diagnoseSpend = runSpendDiagnostics;
+
+        function renderGsDiagPanel(summary) {
+            const panel = $('gsDiagPanel');
+            const tbody = $('gsDiagTableBody');
+            const detailSection = $('gsDiagUnmatchedDetail');
+            const detailList = $('gsDiagUnmatchedList');
+            if (!panel || !tbody) return;
+
+            panel.classList.remove('hidden');
+            tbody.innerHTML = '';
+            const unmatchedGroups = [];
+
+            summary.forEach((row) => {
+                // 상태 판별
+                let badge, rowCls;
+                if (row['보고서행'] === 0) {
+                    badge = '<span class="px-1.5 py-0.5 rounded bg-red-100 text-red-700 font-bold">탭 로드 실패</span>';
+                    rowCls = 'bg-red-50/40';
+                } else if (row['보고서광고비'] === 0 && row['보고서행'] > 0) {
+                    badge = '<span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 font-bold">금액 컬럼 불일치</span>';
+                    rowCls = 'bg-amber-50/40';
+                } else if (row['DB와매칭됨'] === '(DB불필요)') {
+                    badge = '<span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-bold">Google(미분류)</span>';
+                    rowCls = '';
+                } else if (row['DB와매칭됨'] === 0 && row['보고서행'] > 0) {
+                    badge = '<span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 font-bold">소재명·월 불일치</span>';
+                    rowCls = 'bg-amber-50/40';
+                } else if (row['미매칭'] > 0) {
+                    badge = '<span class="px-1.5 py-0.5 rounded bg-yellow-100 text-yellow-700 font-bold">일부 미연결</span>';
+                    rowCls = 'bg-yellow-50/30';
+                } else {
+                    badge = '<span class="px-1.5 py-0.5 rounded bg-green-100 text-green-700 font-bold">정상</span>';
+                    rowCls = '';
+                }
+
+                const spendText = row['보고서광고비'] > 0
+                    ? row['보고서광고비'].toLocaleString() + '원'
+                    : '<span class="text-red-500 font-bold">0원</span>';
+
+                const dbMatchText = row['DB와매칭됨'] === '(DB불필요)'
+                    ? '<span class="text-slate-400">—</span>'
+                    : (row['DB와매칭됨'] === 0 && row['보고서행'] > 0
+                        ? '<span class="text-red-600 font-bold">0</span>'
+                        : row['DB와매칭됨']);
+
+                const unmatchedText = row['미매칭'] > 0
+                    ? `<span class="text-amber-600 font-bold">${row['미매칭']}</span>`
+                    : row['미매칭'];
+
+                const tr = document.createElement('tr');
+                tr.className = `${rowCls} border-b border-[#E2E8F0]/60`;
+                tr.innerHTML = `
+                    <td class="px-3 py-2 font-semibold">${escapeHTML(String(row['사이트']))}</td>
+                    <td class="px-3 py-2">${agencyBadge(row['매체'])}</td>
+                    <td class="px-3 py-2 text-right font-mono">${row['보고서행']}</td>
+                    <td class="px-3 py-2 text-right font-mono">${spendText}</td>
+                    <td class="px-3 py-2 text-right font-mono">${row['매칭탭행']}</td>
+                    <td class="px-3 py-2 text-right font-mono">${dbMatchText}</td>
+                    <td class="px-3 py-2 text-right font-mono">${unmatchedText}</td>
+                    <td class="px-3 py-2">${badge}</td>`;
+                tbody.appendChild(tr);
+
+                // 미연결 샘플 수집
+                const sampleKey = `${row['사이트']}_${row['매체']}_미매칭샘플`;
+                const samples = window._spendDiagDetail?.[sampleKey];
+                if (samples?.length) {
+                    unmatchedGroups.push({ site: row['사이트'], agency: row['매체'], samples });
+                }
+            });
+
+            // 미연결 소재 상세
+            if (unmatchedGroups.length && detailSection && detailList) {
+                detailSection.classList.remove('hidden');
+                detailList.innerHTML = '';
+                unmatchedGroups.forEach(({ site, agency, samples }) => {
+                    const header = document.createElement('p');
+                    header.className = 'text-[11px] font-bold text-slate-600 mb-1';
+                    header.textContent = `${site} / ${agencyKoreanLabel(agency)}`;
+                    detailList.appendChild(header);
+                    const ul = document.createElement('ul');
+                    ul.className = 'space-y-0.5 mb-2';
+                    samples.forEach((s) => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-center gap-1.5 px-2 py-1.5 bg-amber-50 rounded text-[10px] text-amber-800';
+                        li.innerHTML = `<span class="font-mono font-bold text-slate-500 shrink-0">${escapeHTML(s['월'] || '—')}</span><span class="text-slate-300">·</span><span class="flex-1 truncate">${escapeHTML(s['광고이름'] || '—')}</span><span class="text-slate-300 shrink-0">·</span><span class="ml-1 text-amber-600 font-bold shrink-0 whitespace-nowrap">${(s['금액'] || 0).toLocaleString()}원</span>`;
+                        ul.appendChild(li);
+                    });
+                    detailList.appendChild(ul);
+                });
+            } else if (detailSection) {
+                detailSection.classList.add('hidden');
+            }
+        }
+
         // 숫자 카운트업 애니메이션
         function animateCount(el, target, suffix = '') {
             if (!el) return;
             const start = parseInt(el.dataset.current || '0', 10);
-            const duration = 400;
+            const duration = 650;
             const startTime = performance.now();
             el.classList.remove('kpi-animate');
             void el.offsetWidth;
@@ -2237,24 +2804,61 @@
         // 페이지 전환 (대시보드 / 종합성과목록)
         // ─────────────────────────────────────────────
         function switchPage(page) {
-            document.querySelectorAll('.page-view').forEach((el) => {
-                el.classList.toggle('hidden', el.id !== `page-${page}`);
-            });
+            const target = $(`page-${page}`);
+            if (!target) return;
+            const current = document.querySelector('.page-view:not(.hidden)');
+            const samePage = current === target;
+
             document.querySelectorAll('.nav-menu-btn').forEach((btn) => {
                 const active = btn.dataset.page === page;
                 btn.classList.toggle('bg-[#4F46E5]', active);
                 btn.classList.toggle('text-white', active);
                 btn.classList.toggle('text-slate-300', !active);
                 btn.classList.toggle('hover:bg-[#374151]', !active);
+                btn.setAttribute('aria-current', active ? 'page' : 'false');
             });
-            // 숨겨진 상태에서 생성된 차트는 크기가 0이므로 표시 후 리사이즈
-            requestAnimationFrame(() => {
+
+            const resizeCharts = () => {
                 ['compareChart', 'performanceChart', 'trendChart'].forEach((key) => {
                     if (state[key]) state[key].resize();
                 });
-            });
-            // 메인 영역 스크롤 상단으로
-            document.querySelector('main')?.scrollTo({ top: 0, behavior: 'auto' });
+            };
+
+            if (state.pageTransitionTimer) clearTimeout(state.pageTransitionTimer);
+            if (samePage) {
+                requestAnimationFrame(resizeCharts);
+                document.querySelector('main')?.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+                return;
+            }
+
+            const finishEnter = () => {
+                target.classList.remove('hidden', 'page-exit');
+                target.classList.add('page-enter');
+                document.querySelector('main')?.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+                requestAnimationFrame(() => {
+                    target.classList.add('page-enter-active');
+                    resizeCharts();
+                });
+                state.currentPage = page;
+                state.pageTransitionTimer = window.setTimeout(() => {
+                    target.classList.remove('page-enter', 'page-enter-active');
+                    resizeCharts();
+                }, prefersReducedMotion() ? 0 : 520);
+            };
+
+            if (current) {
+                current.classList.remove('page-enter', 'page-enter-active');
+                current.classList.add('page-exit');
+                current.style.pointerEvents = 'none';
+                state.pageTransitionTimer = window.setTimeout(() => {
+                    current.classList.add('hidden');
+                    current.classList.remove('page-exit');
+                    current.style.pointerEvents = '';
+                    finishEnter();
+                }, prefersReducedMotion() ? 0 : 170);
+            } else {
+                finishEnter();
+            }
         }
 
         function applyFilters() {
@@ -2380,18 +2984,17 @@
 
             // 버튼 위치 기준으로 패널 배치
             const rect = evt.currentTarget.getBoundingClientRect();
-            panel.classList.remove('hidden');
-            panel.style.display = 'flex';
             const panelWidth = 208;
             let left = rect.left;
             if (left + panelWidth > window.innerWidth - 8) left = window.innerWidth - panelWidth - 8;
             panel.style.left = `${Math.max(8, left)}px`;
             panel.style.top = `${rect.bottom + 6}px`;
+            openSoftDropdown(panel, 'flex');
         }
 
         function closeColumnFilter() {
             const panel = $('columnFilterPanel');
-            if (panel) { panel.classList.add('hidden'); panel.style.display = 'none'; }
+            if (panel) closeSoftDropdown(panel);
             activeColumnFilterField = null;
         }
 
@@ -2485,7 +3088,7 @@
                     : 'bg-blue-50 text-blue-600 border border-blue-100';
 
                 const tr = document.createElement('tr');
-                tr.className = 'row-fade hover:bg-brand-50/40 transition-colors border-b border-[#E2E8F0]/40';
+                tr.className = 'row-fade border-b border-[#E2E8F0]/40';
                 tr.style.animationDelay = `${Math.min(idx * 18, 300)}ms`;
                 tr.innerHTML = `
                     <td class="px-6 py-3.5 whitespace-nowrap text-slate-600 font-semibold text-[11px]">${escapeHTML(row.monthLabel)}</td>
@@ -2633,17 +3236,43 @@
                 return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 border border-slate-200 font-extrabold">${escapeHTML(label)}</span>`;
             }
 
+            const compareHeaderCells = [
+                ['사이트', 'px-3 py-2.5 text-left'],
+                ['광고 매체사', 'px-3 py-2.5 text-left'],
+                ['타입', 'px-2 py-2.5 text-center'],
+                ['총 광고비', 'px-3 py-2.5 text-right'],
+                ['클릭수', 'px-3 py-2.5 text-right'],
+                ['DB수', 'px-3 py-2.5 text-right'],
+                ['계약수', 'px-3 py-2.5 text-right'],
+                ['DB단가', 'px-3 py-2.5 text-right'],
+                ['계약단가', 'px-3 py-2.5 text-right'],
+                ['DB전환율', 'px-3 py-2.5 text-right'],
+                ['계약전환율', 'px-3 py-2.5 text-right'],
+            ];
+
+            function appendRepeatedHeader() {
+                const headerRow = document.createElement('tr');
+                headerRow.className = 'compare-repeat-header';
+                headerRow.innerHTML = compareHeaderCells
+                    .map(([label, className]) => `<th class="${className}">${label}</th>`)
+                    .join('');
+                frag.appendChild(headerRow);
+            }
+
             uniqueMonths.forEach((month) => {
                 const header = document.createElement('tr');
                 header.className = 'sticky-month-header';
-                header.innerHTML = `<td colspan="11" style="position:sticky;top:37px;z-index:15;" class="px-3 py-2 bg-[#EEF2FF] text-brand-900 font-extrabold border-y border-[#E2E8F0]">${fullMonthLabel(month)}</td>`;
+                header.innerHTML = `<td colspan="11" class="px-3 py-2.5 bg-[#EEF2FF] text-brand-900 font-extrabold border-y border-[#E2E8F0]">${fullMonthLabel(month)}</td>`;
                 frag.appendChild(header);
+
+                // 모든 월 구간을 동일하게 '날짜 → 헤더 → 데이터' 순서로 표시합니다.
+                appendRepeatedHeader();
 
                 rows.filter((row) => row.month === month)
                     .sort((a, b) => `${a.site}${a.agency}${a.creativeGroup}`.localeCompare(`${b.site}${b.agency}${b.creativeGroup}`))
                     .forEach((row) => {
                         const tr = document.createElement('tr');
-                        tr.className = 'hover:bg-brand-50/40 transition-colors';
+                        tr.className = 'row-fade hover:bg-brand-50/40 transition-colors';
                         tr.innerHTML = `
                             <td class="px-3 py-2 whitespace-nowrap truncate" title="${escapeHTML(row.site)}">${escapeHTML(row.site)}</td>
                             <td class="px-3 py-2 text-center whitespace-nowrap">${agencyBadge(row.agency)}</td>
@@ -2787,7 +3416,8 @@
                 backgroundColor: idx === 0 ? 'rgba(3, 4, 94, 0.88)' : 'rgba(94, 96, 206, 0.84)',
                 borderColor: idx === 0 ? '#03045E' : '#5E60CE',
                 borderWidth: 1.5,
-                borderRadius: 5,
+                borderRadius: 8,
+                borderSkipped: false,
                 maxBarThickness: 34
             }));
 
@@ -2796,7 +3426,7 @@
                 data: { labels, datasets },
                 options: {
                     indexAxis: 'y',
-                    animation: { duration: 600 },
+                    animation: { duration: 900, easing: 'easeOutQuart' },
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
@@ -2863,14 +3493,11 @@
         function fadeInCanvas(id) {
             const canvas = $(id);
             if (!canvas) return;
-            canvas.style.transition = 'none';
-            canvas.style.opacity = '0';
-            canvas.style.transform = 'translateY(6px)';
-            requestAnimationFrame(() => {
-                canvas.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                canvas.style.opacity = '1';
-                canvas.style.transform = 'translateY(0)';
-            });
+            canvas.classList.remove('chart-soft-enter', 'chart-soft-enter-active');
+            void canvas.offsetWidth;
+            canvas.classList.add('chart-soft-enter');
+            requestAnimationFrame(() => canvas.classList.add('chart-soft-enter-active'));
+            window.setTimeout(() => canvas.classList.remove('chart-soft-enter', 'chart-soft-enter-active'), prefersReducedMotion() ? 0 : 560);
         }
 
         function updateCharts(data, filteredLeads) {
@@ -2916,12 +3543,12 @@
                 data: {
                     labels: top5.map((row) => splitLabelToLines(row.agency, row.adName)),
                     datasets: [
-                        { label: '유효 DB 수량', data: top5.map((row) => row.dbCount), backgroundColor: 'rgba(3, 4, 94, 0.88)', borderColor: '#03045E', borderWidth: 1.5, borderRadius: 4 },
-                        { label: '계약 완료 수량', data: top5.map((row) => row.contracts), backgroundColor: 'rgba(94, 96, 206, 0.84)', borderColor: '#5E60CE', borderWidth: 1.5, borderRadius: 4 }
+                        { label: '유효 DB 수량', data: top5.map((row) => row.dbCount), backgroundColor: 'rgba(3, 4, 94, 0.88)', borderColor: '#03045E', borderWidth: 1.5, borderRadius: 8, borderSkipped: false },
+                        { label: '계약 완료 수량', data: top5.map((row) => row.contracts), backgroundColor: 'rgba(94, 96, 206, 0.84)', borderColor: '#5E60CE', borderWidth: 1.5, borderRadius: 8, borderSkipped: false }
                     ]
                 },
                 options: {
-                    animation: { duration: 700 },
+                    animation: { duration: 950, easing: 'easeOutQuart' },
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
@@ -2981,12 +3608,12 @@
                 data: {
                     labels: months.map(monthLabel),
                     datasets: [
-                        { label: '평균 CPA (DB 단가)', data: monthly.map((row) => row.cpa), borderColor: '#03045E', backgroundColor: 'rgba(3, 4, 94, 0.12)', borderWidth: 3, tension: 0.2, yAxisID: 'y' },
-                        { label: '평균 CPS (계약 단가)', data: monthly.map((row) => row.cps), borderColor: '#5E60CE', backgroundColor: 'rgba(94, 96, 206, 0.12)', borderWidth: 3, tension: 0.2, yAxisID: 'y1' }
+                        { label: '평균 CPA (DB 단가)', data: monthly.map((row) => row.cpa), borderColor: '#03045E', backgroundColor: 'rgba(3, 4, 94, 0.12)', borderWidth: 3, tension: 0.38, yAxisID: 'y' },
+                        { label: '평균 CPS (계약 단가)', data: monthly.map((row) => row.cps), borderColor: '#5E60CE', backgroundColor: 'rgba(94, 96, 206, 0.12)', borderWidth: 3, tension: 0.38, yAxisID: 'y1' }
                     ]
                 },
                 options: {
-                    animation: { duration: 700 },
+                    animation: { duration: 950, easing: 'easeOutQuart' },
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { labels: { color: '#1F2937', font: { family: 'Pretendard', size: 11, weight: '600' } } } },

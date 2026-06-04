@@ -872,6 +872,12 @@
 <main class="flex-1 bg-[#F4F6FA] p-6 overflow-y-auto">
 <!-- ══════════════ PAGE 1: 대시보드 ══════════════ -->
 <div class="page-view space-y-6" id="page-dashboard">
+<div class="flex items-center justify-end">
+<div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#E2E8F0] text-[11px] font-semibold text-slate-500 shadow-sm">
+<i class="w-3.5 h-3.5 text-brand-600" data-lucide="clock-3"></i>
+<span>최근 업데이트 기간 : <span id="dashboardUpdatePeriodText" class="font-bold text-brand-700">2026년 06월 04일</span></span>
+</div>
+</div>
 <!-- KPI SCORECARDS GRID (ONLY TITLE / NUMBER) -->
 <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
 <!-- Card 1: Total Spend -->
@@ -1203,18 +1209,27 @@
 </div>
 <!-- Tab Panel: 구글 스프레드시트 연동 -->
 <div class="p-6 space-y-5 flex-1 overflow-y-auto" id="modalTabPanel_gsheet">
-<!-- 가이드 -->
+<!-- 업데이트 기간 -->
+<div class="p-4 bg-brand-50 border border-brand-100 rounded-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+<div>
+<p class="text-[11px] font-bold text-brand-700 tracking-wide">데이터 소스 연결 기간</p>
+<p class="text-sm font-extrabold text-brand-900 mt-1">업데이트 기간 : <span id="dataSourceUpdatePeriodText">2026년 06월 04일</span></p>
+</div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-brand-100 text-[11px] font-bold text-brand-700 shadow-sm w-fit">
+<i class="w-3.5 h-3.5" data-lucide="calendar-check"></i>
+<span>최근 연동 기준</span>
+</div>
+</div>
+<!-- 사용 설명 -->
 <div class="p-4 bg-blue-50 border border-blue-100 rounded-xl space-y-2">
 <h4 class="text-xs font-bold text-blue-900 flex items-center gap-1.5">
 <i class="w-4 h-4 text-blue-600" data-lucide="info"></i>
-                        구글 스프레드시트 연동 가이드
+                        사용 설명
                     </h4>
 <ol class="list-decimal list-inside text-[11px] text-blue-800/80 space-y-1.5 leading-relaxed">
-<li>엑셀 업로드 탭의 <span class="font-semibold text-slate-900">업로드 템플릿</span>과 동일한 시트 구조(Meta_DB / Tiktok_DB / Google_DB / 키워드매칭 / Meta / Tiktok / Google)로 구글 스프레드시트를 작성합니다. 유효 DB수는 Meta_DB/Tiktok_DB의 첫 행과 빈 행을 제외한 모든 행으로 집계하며, 키워드매칭 시트에는 타입 또는 광고이름 타입 열을 추가할 수 있습니다.</li>
-<li>CRM 키워드로 유입되지 않은 광고 소재도 미연결로 제외하지 않고 <span class="font-semibold text-slate-900">광고비/클릭은 그대로 표시</span>, <span class="font-semibold text-slate-900">DB수·계약수는 0</span>으로 표시합니다.</li>
-<li>구글 스프레드시트를 <span class="font-semibold text-slate-900">공유 → 링크가 있는 모든 사용자 (뷰어)</span>로 설정합니다.</li>
-<li>스프레드시트 URL을 아래에 붙여넣고 <span class="font-semibold text-slate-900">연동 적용</span>을 클릭합니다.</li>
-<li>데이터를 업데이트한 후에는 <span class="font-semibold text-slate-900">다시 연동 적용</span>을 눌러 새로고침하세요.</li>
+<li>스프레드시트 URL이 자동입력되어 있는지 확인 후, <span class="font-extrabold text-slate-950 bg-yellow-200 px-1 py-0.5 rounded">연동 적용을 클릭합니다.</span></li>
+<li>연동 완료 확인 후 <span class="font-semibold text-slate-900">닫기</span>를 클릭합니다.</li>
+<li>데이터를 업데이트한 후에는 다시 연동 적용을 눌러 새로고침하세요.</li>
 </ol>
 </div>
 <!-- 카빌리지 구글 시트 URL -->
@@ -1293,6 +1308,28 @@
                         연동 적용
                     </button>
 </div>
+</div>
+</div>
+</div>
+<!-- GOOGLE SHEET INTEGRATION COMPLETE MODAL -->
+<div class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4" id="integrationCompleteModal">
+<div class="bg-white border border-[#E2E8F0] rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl text-slate-800">
+<div class="p-6 text-center">
+<div class="mx-auto w-12 h-12 rounded-full bg-green-50 text-green-600 flex items-center justify-center mb-4">
+<i class="w-7 h-7" data-lucide="check-circle-2"></i>
+</div>
+<h3 class="text-lg font-extrabold text-brand-900">연동 완료</h3>
+<p class="text-xs text-slate-500 mt-2 leading-relaxed">구글 스프레드시트 데이터가 대시보드에 정상 반영되었습니다.</p>
+<div class="mt-4 p-3 rounded-xl bg-brand-50 border border-brand-100 text-left">
+<p class="text-[11px] font-bold text-brand-700">업데이트 기간</p>
+<p class="text-sm font-extrabold text-brand-900 mt-1" id="completeModalUpdatePeriodText">2026년 06월 04일</p>
+<p class="text-[10px] text-slate-400 mt-1" id="completeModalLoadedText">데이터 로드가 완료되었습니다.</p>
+</div>
+</div>
+<div class="px-6 pb-6">
+<button class="w-full px-4 py-2.5 text-xs font-bold bg-brand-700 hover:bg-brand-900 text-white rounded-lg shadow-md transition-colors" onclick="closeIntegrationCompleteModal()">
+닫기
+</button>
 </div>
 </div>
 </div>
@@ -1435,7 +1472,8 @@
             compareMonthsCache: [],
             compareSortByMonth: {},
             currentPage: 'dashboard',
-            pageTransitionTimer: null
+            pageTransitionTimer: null,
+            lastUpdatePeriod: '2026년 06월 04일'
         };
 
         const $ = (id) => document.getElementById(id);
@@ -1616,6 +1654,41 @@
             banner.classList.toggle('pointer-events-none', !show);
             banner.classList.toggle('translate-y-2', !show);
             banner.classList.toggle('loading-visible', show);
+        }
+
+        function formatKoreanUpdateDate(date = new Date()) {
+            const d = date instanceof Date ? date : new Date(date);
+            if (Number.isNaN(d.getTime())) return '미정';
+            return `${d.getFullYear()}년 ${String(d.getMonth() + 1).padStart(2, '0')}월 ${String(d.getDate()).padStart(2, '0')}일`;
+        }
+
+        function updateLastUpdatePeriod(value = new Date()) {
+            const formatted = value instanceof Date ? formatKoreanUpdateDate(value) : text(value) || formatKoreanUpdateDate(new Date());
+            state.lastUpdatePeriod = formatted;
+            ['dataSourceUpdatePeriodText', 'dashboardUpdatePeriodText', 'completeModalUpdatePeriodText'].forEach((id) => {
+                const el = $(id);
+                if (el) el.textContent = formatted;
+            });
+        }
+
+        function showIntegrationCompleteModal(loadedCount = 0) {
+            const modal = $('integrationCompleteModal');
+            const loadedText = $('completeModalLoadedText');
+            if (loadedText) {
+                loadedText.textContent = loadedCount > 0
+                    ? `총 ${loadedCount.toLocaleString()}행 로드 완료`
+                    : '데이터 로드가 완료되었습니다.';
+            }
+            updateLastUpdatePeriod(state.lastUpdatePeriod);
+            if (modal) modal.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeIntegrationCompleteModal() {
+            const modal = $('integrationCompleteModal');
+            if (modal) modal.classList.add('hidden');
+            const integrationModal = $('integrationModal');
+            if (integrationModal && !integrationModal.classList.contains('hidden')) toggleIntegrationModal(false);
         }
 
         // ─────────────────────────────────────────────
@@ -2186,6 +2259,7 @@
                 }
 
                 state.active = active;
+                updateLastUpdatePeriod(new Date());
                 saveToLocalStorage();
                 buildMonthFilter();
                 applyFilters();
@@ -2196,6 +2270,8 @@
                 const detail = buildGsheetReportText();
                 statusEl.className = 'p-3 rounded-xl text-xs font-semibold flex items-center gap-2 bg-green-50 text-green-700';
                 statusEl.textContent = `✅ 연동 완료! 총 ${loadedCount.toLocaleString()}행 로드${detail ? ' (' + detail + ')' : ''} — 아래 진단표에서 광고비 연결 현황을 확인하세요.`;
+
+                showIntegrationCompleteModal(loadedCount);
 
                 // 모달을 닫지 않고 진단 패널을 보여줌
                 const panel = $('modalTabPanel_gsheet');
@@ -2343,6 +2419,7 @@
             }
 
             state.active = active;
+            updateLastUpdatePeriod(new Date());
             if (save) saveToLocalStorage();
             buildMonthFilter();
             applyFilters();
@@ -2378,7 +2455,7 @@
             // 6개월치 CRM 데이터는 용량이 커서 LocalStorage 저장을 건너뜁니다.
             // 데이터는 메모리(state)에만 유지됩니다.
             try {
-                const payload = {};
+                const payload = { __lastUpdatePeriod: state.lastUpdatePeriod };
                 SITES.forEach((site) => {
                     payload[site] = emptySiteData();
                     DATA_KEYS.forEach((key) => {
@@ -2409,6 +2486,7 @@
                         if (rows.length) hasAny = true;
                     });
                 });
+                if (payload?.__lastUpdatePeriod) updateLastUpdatePeriod(payload.__lastUpdatePeriod);
                 return hasAny;
             } catch (error) {
                 console.warn('LocalStorage 로드 실패', error);
@@ -2480,6 +2558,7 @@
             clearUploadStatusUI();
             resetFilterUI();
             resetGoogleSheetUI();
+            updateLastUpdatePeriod(new Date());
             buildMonthFilter();
             applyFilters();
 
@@ -4009,6 +4088,7 @@
         }
 
         window.onload = function() {
+            updateLastUpdatePeriod(state.lastUpdatePeriod);
             updateGsStatus('카빌리지');
             updateGsStatus('차맵');
             buildMonthFilter();

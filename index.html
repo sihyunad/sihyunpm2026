@@ -715,7 +715,7 @@
     
 
         /* ── 성과목록 데이터 행 배경 정리 ──
-           대상: '소재명(키워드) 매칭별 종합 성과 목록' tbody 데이터 행만
+           대상: '소재명(키워드) 매칭별 상세 성과' tbody 데이터 행만
            기본값은 흰색, 마우스를 올렸을 때만 연보라색으로 표시합니다. */
         #page-performance #performanceTableBody tr,
         #page-performance #performanceTableBody tr > td {
@@ -731,6 +731,25 @@
         #page-performance #performanceTableBody tr:hover {
             transform: none !important;
             box-shadow: none !important;
+        }
+        #performanceListSection,
+        #performanceListSection:hover {
+            transform: none !important;
+        }
+        #performanceListSection::before,
+        #performanceListSection:hover::before {
+            content: none !important;
+            display: none !important;
+            opacity: 0 !important;
+        }
+        #page-performance #performanceTableBody {
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+        }
+        #page-performance #performanceTableBody tr:not(:hover),
+        #page-performance #performanceTableBody tr:not(:hover) > td {
+            background: #ffffff !important;
+            background-color: #ffffff !important;
         }
 
 
@@ -788,6 +807,11 @@
             background: rgba(100,116,139,0.09);
             border-color: rgba(100,116,139,0.14);
             color: #475569;
+        }
+        .compare-agency-badge.none {
+            background: rgba(148,163,184,0.10);
+            border-color: rgba(148,163,184,0.18);
+            color: #64748B;
         }
     </style>
 </head>
@@ -889,7 +913,7 @@
 </button>
 <button class="nav-menu-btn w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-semibold rounded-lg transition-all text-slate-300 hover:bg-[#374151]" data-page="performance" id="navBtn_performance" onclick="switchPage('performance')" type="button">
 <i class="w-4 h-4 shrink-0" data-lucide="list-checks"></i>
-<span>상세성과목록</span>
+<span>소재별 성과 분석</span>
 </button>
 </nav>
 </div>
@@ -939,7 +963,7 @@
 <!-- Site Filter -->
 <div>
 <label class="block text-xs font-semibold text-[#C4B5FD] mb-1.5">운영 사이트</label>
-<select class="w-full bg-[#374151] border border-[#4B5563] text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#818CF8] focus:ring-1 focus:ring-[#818CF8] transition-colors" id="filterSite" onchange="applyFilters()">
+<select class="w-full bg-[#374151] border border-[#4B5563] text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#818CF8] focus:ring-1 focus:ring-[#818CF8] transition-colors" id="filterSite" onchange="scheduleApplyFilters()">
 <option selected="" value="ALL">전체 사이트 (카빌리지 + 차맵)</option>
 <option value="카빌리지">카빌리지</option>
 <option value="차맵">차맵</option>
@@ -1055,7 +1079,7 @@
 <i class="w-4 h-4 text-brand-600" data-lucide="layout-grid"></i>
 사이트·매체 성과 비교
 </h3>
-<p class="text-xs text-slate-500 mt-1">사이드 메뉴 필터와 별개로 사이트·매체를 선택하고, 카빌리지와 차맵 KPI를 나란히 비교합니다.</p>
+<p class="text-xs text-slate-500 mt-1">사이트·매체를 선택하고, 주요 성과를 비교합니다.</p>
 </div>
 <div class="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
 <div class="relative z-40 w-full sm:w-48" id="compareKpiMonthFilterWrapper">
@@ -1319,7 +1343,7 @@
 <div class="flex flex-col xl:flex-row xl:items-start justify-between mb-4 gap-3">
 <div>
 <h3 class="text-base font-bold text-brand-900">월별 광고 효율 증감표</h3>
-<p class="text-xs text-slate-400">전월 대비 DB·계약 수량과 CPA·CPS 단가 증감폭을 월별로 확인합니다.</p>
+<p class="text-xs text-slate-400">전월 대비 DB·계약 수량과 CPA·CPS 단가 증감폭을 확인합니다.</p>
 </div>
 <div class="flex flex-col sm:flex-row gap-2 w-full xl:w-auto">
 <div class="relative w-full sm:w-40" id="trendMonthFilterWrapper">
@@ -1366,11 +1390,11 @@
 </div>
 </section>
 <!-- PERFORMANCE DETAILED LIST TABLE -->
-<section class="bg-white rounded-xl border border-[#E2E8F0] shadow-sm overflow-hidden mb-12">
+<section id="performanceListSection" class="bg-white rounded-xl border border-[#E2E8F0] shadow-sm overflow-hidden mb-12">
 <div class="px-6 py-5 border-b border-[#E2E8F0] bg-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
 <div>
 <h3 class="text-base font-bold text-brand-900">소재명(키워드) 매칭별 종합 성과 목록</h3>
-<p class="text-xs text-slate-400">어드민 키워드 ↔ 매체사 보고서 1:1 결합 및 효율 지표 연산 테이블</p>
+<p class="text-xs text-slate-400">어드민 키워드 ↔ 매체사 보고서 1:1 매칭 테이블</p>
 </div>
 <div class="flex items-center gap-2.5 w-full sm:w-auto flex-wrap sm:flex-nowrap">
 <!-- Table Specific Month Filter Dropdown -->
@@ -1856,6 +1880,9 @@
             tableRowsCache: [],
             filteredLeadsCache: [],
             tableRenderFrame: null,
+            applyFilterFrame: null,
+            monthFilterKey: '',
+            tableMonthFilterKey: '',
             performanceChart: null,
             trendChart: null,
             compareChart: null,
@@ -1877,8 +1904,42 @@
             lastUpdatePeriod: '2026년 06월 04일'
         };
 
-        const $ = (id) => document.getElementById(id);
-        const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+        const DOM_CACHE = new Map();
+        const $ = (id) => {
+            if (DOM_CACHE.has(id)) return DOM_CACHE.get(id);
+            const el = document.getElementById(id);
+            if (el) DOM_CACHE.set(id, el);
+            return el;
+        };
+        const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+        const rafThrottle = (key, callback) => {
+            if (state[key]) cancelAnimationFrame(state[key]);
+            state[key] = requestAnimationFrame(() => {
+                state[key] = null;
+                callback();
+            });
+        };
+        const chartAnimation = (duration = 450) => prefersReducedMotion() ? false : { duration, easing: 'easeOutQuart' };
+        const chartTextFont = { family: 'Pretendard' };
+
+        function renderOrUpdateChart(stateKey, canvasId, config, updateMode = 'none') {
+            const ctx = $(canvasId)?.getContext('2d');
+            if (!ctx) return null;
+            const current = state[stateKey];
+            if (!current) {
+                state[stateKey] = new Chart(ctx, config);
+                return state[stateKey];
+            }
+            current.config.type = config.type;
+            current.data = config.data;
+            current.options = config.options || {};
+            current.update(updateMode);
+            return current;
+        }
+
+        function scheduleApplyFilters() {
+            rafThrottle('applyFilterFrame', applyFilters);
+        }
 
         function emptySiteData() {
             return { admin: [], matching: [], meta: [], tiktok: [], google: [] };
@@ -2260,9 +2321,11 @@
         }
 
         window.addEventListener('resize', () => {
-            positionTableMonthDropdown();
-            positionColumnFilterPanel?.();
-        });
+            rafThrottle('resizeFrame', () => {
+                positionTableMonthDropdown();
+                positionColumnFilterPanel?.();
+            });
+        }, { passive: true });
 
         document.addEventListener('click', (event) => {
             const wrapper = $('tableMonthFilterWrapper');
@@ -2301,10 +2364,12 @@
 
         // 스크롤 시 위치가 어긋나므로 패널 닫기
         document.querySelector('main')?.addEventListener('scroll', () => {
-            if (typeof closeColumnFilter === 'function') closeColumnFilter();
-            closeSoftDropdown($('monthDropdown'));
-            closeTableMonthDropdown();
-        });
+            rafThrottle('scrollFrame', () => {
+                if (typeof closeColumnFilter === 'function') closeColumnFilter();
+                closeSoftDropdown($('monthDropdown'));
+                closeTableMonthDropdown();
+            });
+        }, { passive: true });
 
         // ─────────────────────────────────────────────
         // 파일 / 구글시트 읽기
@@ -3017,7 +3082,7 @@
                 state.selectedMonths = [];
             }
             updateMonthFilterLabel();
-            applyFilters();
+            scheduleApplyFilters();
         }
 
         function handleMonthCheck(el) {
@@ -3032,7 +3097,7 @@
                 if (allCb) allCb.checked = true;
             }
             updateMonthFilterLabel();
-            applyFilters();
+            scheduleApplyFilters();
         }
 
         function updateMonthFilterLabel() {
@@ -3052,7 +3117,7 @@
 
         function handleAgencyCheckAll(el) {
             if (el.checked) $$('.agency-filter-cb:not([value="ALL"])').forEach((cb) => { cb.checked = false; });
-            applyFilters();
+            scheduleApplyFilters();
         }
 
         function handleAgencyCheck(el) {
@@ -3064,38 +3129,43 @@
                 const allCb = document.querySelector('.agency-filter-cb[value="ALL"]');
                 if (allCb) allCb.checked = true;
             }
-            applyFilters();
+            scheduleApplyFilters();
         }
 
         function buildMonthFilter() {
             const months = new Set();
-            state.active.admin.forEach((lead) => { const m = lead.month || extractMonth(lead.date); if (m) months.add(m); });
-            ['meta', 'tiktok', 'google'].forEach((key) => {
-                (state.active[key] || []).forEach((row) => { const m = extractMonth(row.date); if (m) months.add(m); });
-            });
+            for (const lead of state.active.admin) {
+                const m = lead.month || extractMonth(lead.date);
+                if (m) months.add(m);
+            }
+            for (const key of ['meta', 'tiktok', 'google']) {
+                for (const row of (state.active[key] || [])) {
+                    const m = extractMonth(row.date);
+                    if (m) months.add(m);
+                }
+            }
 
-            const monthList = [...months].filter(Boolean).sort().reverse();
+            const monthList = [...months].sort().reverse();
             const container = $('monthList');
             if (container) {
-                container.innerHTML = '';
                 if (!state.selectedMonths.includes('ALL')) {
                     const available = new Set(monthList);
                     state.selectedMonths = state.selectedMonths.filter((m) => available.has(m));
                     if (!state.selectedMonths.length) state.selectedMonths = ['ALL'];
                 }
 
+                const key = `${monthList.join('|')}::${state.selectedMonths.join('|')}`;
+                if (state.monthFilterKey !== key) {
+                    state.monthFilterKey = key;
+                    container.innerHTML = monthList.map((month) => {
+                        const checked = !state.selectedMonths.includes('ALL') && state.selectedMonths.includes(month);
+                        return `<label class="flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-[#4B5563] transition-colors"><input type="checkbox" value="${escapeHTML(month)}" class="month-filter-cb accent-[#8B5CF6] w-3.5 h-3.5" ${checked ? 'checked' : ''} onchange="handleMonthCheck(this)"> <span class="text-xs text-slate-200">${fullMonthLabel(month)}</span></label>`;
+                    }).join('');
+                }
+
                 const allCb = document.querySelector('.month-filter-cb[value="ALL"]');
                 if (allCb) allCb.checked = state.selectedMonths.includes('ALL');
-
-                monthList.forEach((month) => {
-                    const checked = !state.selectedMonths.includes('ALL') && state.selectedMonths.includes(month);
-                    const div = document.createElement('label');
-                    div.className = 'flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-[#4B5563] transition-colors';
-                    div.innerHTML = `<input type="checkbox" value="${month}" class="month-filter-cb accent-[#8B5CF6] w-3.5 h-3.5" ${checked ? 'checked' : ''} onchange="handleMonthCheck(this)"> <span class="text-xs text-slate-200">${fullMonthLabel(month)}</span>`;
-                    container.appendChild(div);
-                });
                 updateMonthFilterLabel();
-                lucide.createIcons();
             }
             buildCompareMonthSelectors(monthList);
         }
@@ -3104,7 +3174,6 @@
             const months = [...new Set(dataList.map((row) => row.month).filter(Boolean))].sort().reverse();
             const container = $('tableMonthList');
             if (!container) return;
-            container.innerHTML = '';
 
             if (!state.tableSelectedMonths.includes('ALL')) {
                 const available = new Set(months);
@@ -3112,16 +3181,17 @@
                 if (!state.tableSelectedMonths.length) state.tableSelectedMonths = ['ALL'];
             }
 
+            const key = `${months.join('|')}::${state.tableSelectedMonths.join('|')}`;
+            if (state.tableMonthFilterKey !== key) {
+                state.tableMonthFilterKey = key;
+                container.innerHTML = months.map((month) => {
+                    const checked = state.tableSelectedMonths.includes('ALL') || state.tableSelectedMonths.includes(month);
+                    return `<label class="flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-brand-50 transition-colors"><input type="checkbox" value="${escapeHTML(month)}" class="table-month-cb accent-brand-600 w-3.5 h-3.5" ${checked ? 'checked' : ''} onchange="handleTableMonthCheck(this)"> <span class="text-xs text-slate-700">${fullMonthLabel(month)}</span></label>`;
+                }).join('');
+            }
+
             const allCb = document.querySelector('.table-month-cb[value="ALL"]');
             if (allCb) allCb.checked = state.tableSelectedMonths.includes('ALL');
-
-            months.forEach((month) => {
-                const checked = state.tableSelectedMonths.includes('ALL') || state.tableSelectedMonths.includes(month);
-                const div = document.createElement('label');
-                div.className = 'flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-brand-50 transition-colors';
-                div.innerHTML = `<input type="checkbox" value="${month}" class="table-month-cb accent-brand-600 w-3.5 h-3.5" ${checked ? 'checked' : ''} onchange="handleTableMonthCheck(this)"> <span class="text-xs text-slate-700">${fullMonthLabel(month)}</span>`;
-                container.appendChild(div);
-            });
             updateTableMonthFilterLabel();
         }
 
@@ -3316,7 +3386,18 @@
             const details = [...finalMap.values()].map((row) => {
                 const cpa = row.dbCount > 0 ? Math.round(row.spend / row.dbCount) : 0;
                 const cps = row.contracts > 0 ? Math.round(row.spend / row.contracts) : 0;
-                return { ...row, monthLabel: monthLabel(row.month), cpa, cps };
+                const creativeGroupNorm = normalizeCreativeGroup(row.creativeGroup, row.adName);
+                const monthLabelText = monthLabel(row.month);
+                return {
+                    ...row,
+                    monthLabel: monthLabelText,
+                    cpa,
+                    cps,
+                    _creativeGroupNorm: creativeGroupNorm,
+                    _agencyLabel: agencyKoreanLabel(row.agency),
+                    _searchText: [row.adName, creativeGroupNorm, row.agency, agencyKoreanLabel(row.agency), row.site, monthLabelText]
+                        .map((v) => text(v).toLowerCase()).join(' ')
+                };
             });
 
             return { details, filteredLeads };
@@ -3568,13 +3649,16 @@
             state.tableRowsCache = details;
             state.filteredLeadsCache = filteredLeads;
 
-            const totalSpend = details.reduce((sum, row) => sum + row.spend, 0);
+            let totalSpend = 0;
+            for (const row of details) totalSpend += row.spend || 0;
+
+            let totalContracts = 0;
+            for (const lead of filteredLeads) if (lead.isContractComplete || isContractComplete(lead)) totalContracts += 1;
+
             const totalDB = filteredLeads.length;
-            const totalContracts = filteredLeads.reduce((sum, lead) => sum + (isContractComplete(lead) ? 1 : 0), 0);
             const overallCPA = totalDB > 0 ? Math.round(totalSpend / totalDB) : 0;
             const overallCPS = totalContracts > 0 ? Math.round(totalSpend / totalContracts) : 0;
 
-            // 카운트업 애니메이션으로 숫자 업데이트
             animateCount($('kpiSpend'), totalSpend);
             animateCount($('kpiDB'), totalDB);
             animateCount($('kpiContracts'), totalContracts);
@@ -3585,6 +3669,7 @@
             reconcileColumnFilters();
             renderCurrentTable();
             updateCharts(details, filteredLeads);
+
             const compareKpiScope = getCompareKpiScopeData();
             buildCompareKpiChannelFilter(compareKpiScope.details, compareKpiScope.filteredLeads);
             updateCompareSubKpis(compareKpiScope.details, compareKpiScope.filteredLeads);
@@ -3598,31 +3683,28 @@
         }
 
         function searchTable() {
-            if (state.tableRenderFrame) cancelAnimationFrame(state.tableRenderFrame);
-            state.tableRenderFrame = requestAnimationFrame(() => {
-                state.tableRenderFrame = null;
-                renderCurrentTable();
-            });
+            rafThrottle('tableRenderFrame', renderCurrentTable);
         }
 
         function filteredTableRows() {
             const query = text($('tableSearch')?.value).toLowerCase();
             const allMonths = state.tableSelectedMonths.includes('ALL');
             const cf = state.tableColFilters;
-            const allAgency = cf.agency.includes('ALL');
-            const allSite = cf.site.includes('ALL');
-            const allType = cf.creativeGroup.includes('ALL');
+            const agencySet = cf.agency.includes('ALL') ? null : new Set(cf.agency);
+            const siteSet = cf.site.includes('ALL') ? null : new Set(cf.site);
+            const typeSet = cf.creativeGroup.includes('ALL') ? null : new Set(cf.creativeGroup);
+
             return state.tableRowsCache.filter((row) => {
                 if (!allMonths && !state.tableSelectedMonths.includes(row.month)) return false;
-                if (!allAgency && !cf.agency.includes(row.agency)) return false;
-                if (!allSite && !cf.site.includes(row.site)) return false;
-                if (!allType && !cf.creativeGroup.includes(normalizeCreativeGroup(row.creativeGroup, row.adName))) return false;
-                if (!query) return true;
-                return [row.adName, row.creativeGroup, row.agency, row.site, row.monthLabel].some((v) => text(v).toLowerCase().includes(query));
+                if (agencySet && !agencySet.has(row.agency)) return false;
+                if (siteSet && !siteSet.has(row.site)) return false;
+                if (typeSet && !typeSet.has(row._creativeGroupNorm || normalizeCreativeGroup(row.creativeGroup, row.adName))) return false;
+                return !query || (row._searchText || '').includes(query);
             });
         }
 
         // ─────────────────────────────────────────────
+        // 컬럼 헤더 필터        // ─────────────────────────────────────────────
         // 컬럼 헤더 필터 (광고 매체사 / 사이트 / 타입) - 복수 선택
         // ─────────────────────────────────────────────
         const COL_FILTER_META = {
@@ -3635,7 +3717,7 @@
             const set = new Set();
             (state.tableRowsCache || []).forEach((row) => {
                 const v = field === 'creativeGroup'
-                    ? normalizeCreativeGroup(row.creativeGroup, row.adName)
+                    ? (row._creativeGroupNorm || normalizeCreativeGroup(row.creativeGroup, row.adName))
                     : row[field];
                 if (text(v) !== '') set.add(v);
             });
@@ -3742,7 +3824,7 @@
         function handleColumnFilterCheck(field) {
             const panel = $('columnFilterPanel');
             if (!panel) return;
-            const checked = $$('#columnFilterPanel .col-filter-cb').filter((cb) => cb.checked).map((cb) => cb.value);
+            const checked = $$('.col-filter-cb', panel).filter((cb) => cb.checked).map((cb) => cb.value);
             const total = getColumnFilterOptions(field).length;
             state.tableColFilters[field] = (checked.length === 0 || checked.length === total) ? ['ALL'] : checked;
             // 전체선택 체크박스 동기화
@@ -3769,7 +3851,6 @@
         function renderTable(rows) {
             const tbody = $('performanceTableBody');
             if (!tbody) return;
-            tbody.innerHTML = '';
 
             if (!rows.length) {
                 tbody.innerHTML = `
@@ -3783,34 +3864,31 @@
                 return;
             }
 
-            const frag = document.createDocumentFragment();
-            rows.forEach((row, idx) => {
+            const useRowMotion = rows.length <= 120 && !prefersReducedMotion();
+            tbody.innerHTML = rows.map((row, idx) => {
                 const cpaClass = row.cpa > 45000 ? 'text-rose-600 font-bold' : 'text-slate-800 font-medium';
                 const cpsClass = row.cps > 200000 ? 'text-amber-600 font-bold' : 'text-slate-800 font-medium';
-                const badge = agencyBadge(row.agency);
                 const siteClass = row.site === '카빌리지'
                     ? 'bg-brand-50 text-brand-700 border border-brand-100'
                     : 'bg-blue-50 text-blue-600 border border-blue-100';
+                const motionClass = useRowMotion ? 'row-fade' : '';
+                const delayStyle = useRowMotion ? ` style="animation-delay:${Math.min(idx * 10, 160)}ms"` : '';
+                const creativeGroup = row._creativeGroupNorm || normalizeCreativeGroup(row.creativeGroup, row.adName);
 
-                const tr = document.createElement('tr');
-                tr.className = 'row-fade border-b border-[#E2E8F0]/40';
-                tr.style.animationDelay = `${Math.min(idx * 18, 300)}ms`;
-                tr.innerHTML = `
+                return `<tr class="${motionClass} border-b border-[#E2E8F0]/40"${delayStyle}>
                     <td class="px-6 py-3.5 whitespace-nowrap text-slate-600 font-semibold text-[11px]">${escapeHTML(row.monthLabel)}</td>
-                    <td class="px-6 py-3.5 font-medium whitespace-nowrap">${badge}</td>
+                    <td class="px-6 py-3.5 font-medium whitespace-nowrap">${agencyBadge(row.agency)}</td>
                     <td class="px-6 py-3.5 whitespace-nowrap"><span class="px-1.5 py-0.5 rounded text-[10px] ${siteClass} font-bold">${escapeHTML(row.site)}</span></td>
                     <td class="px-6 py-3.5 max-w-xs truncate font-medium text-slate-800" title="${escapeHTML(row.adName)}">${escapeHTML(row.adName)}</td>
-                    <td class="px-6 py-3.5 whitespace-nowrap"><span class="px-2 py-0.5 rounded text-[10px] bg-brand-50 text-brand-700 border border-brand-100 font-bold">${escapeHTML(normalizeCreativeGroup(row.creativeGroup, row.adName))}</span></td>
+                    <td class="px-6 py-3.5 whitespace-nowrap"><span class="px-2 py-0.5 rounded text-[10px] bg-brand-50 text-brand-700 border border-brand-100 font-bold">${escapeHTML(creativeGroup)}</span></td>
                     <td class="px-6 py-3.5 text-right font-bold text-[#1F2937] whitespace-nowrap">${row.spend.toLocaleString()}원</td>
                     <td class="px-6 py-3.5 text-right text-slate-500">${row.clicks.toLocaleString()}</td>
                     <td class="px-6 py-3.5 text-right text-brand-700 font-semibold">${row.dbCount}</td>
                     <td class="px-6 py-3.5 text-right text-emerald-600 font-semibold">${row.contracts}</td>
                     <td class="px-6 py-3.5 text-right ${cpaClass}">${row.cpa > 0 ? row.cpa.toLocaleString() + '원' : '-'}</td>
-                    <td class="px-6 py-3.5 text-right ${cpsClass}">${row.cps > 0 ? row.cps.toLocaleString() + '원' : '-'}</td>`;
-                frag.appendChild(tr);
-            });
-            tbody.appendChild(frag);
-            lucide.createIcons();
+                    <td class="px-6 py-3.5 text-right ${cpsClass}">${row.cps > 0 ? row.cps.toLocaleString() + '원' : '-'}</td>
+                </tr>`;
+            }).join('');
         }
 
         function agencyBadge(agency) {
@@ -3875,14 +3953,32 @@
             return agencies.map(agencyKoreanLabel).join(', ');
         }
 
+        function compareScopeSiteFromTargetId(targetId) {
+            if (targetId === 'compareSubKpiCavillageScope') return '카빌리지';
+            if (targetId === 'compareSubKpiChamapScope') return '차맵';
+            return '';
+        }
+
+        function selectedAgenciesForCompareScope(siteName) {
+            const selected = state.compareKpiChannels;
+            if (!Array.isArray(selected) || selected.includes('ALL')) return 'ALL';
+            return [...new Set(selected.map((key) => {
+                const [site, agency] = String(key || '').split('::');
+                return site === siteName ? agency : '';
+            }).filter(Boolean))].sort((a, b) => AGENCIES.indexOf(a) - AGENCIES.indexOf(b));
+        }
+
         function renderCompareScopeBadges(targetId) {
             const el = $(targetId);
             if (!el) return;
             const monthText = monthSelectionLabel(state.compareKpiMonths, '조회 연월 전체');
-            const agencies = selectedAgenciesFromChannelSelection(state.compareKpiChannels);
+            const siteName = compareScopeSiteFromTargetId(targetId);
+            const agencies = selectedAgenciesForCompareScope(siteName);
             const agencyBadges = agencies === 'ALL'
                 ? '<span class="compare-agency-badge all">매체 전체</span>'
-                : agencies.map((agency) => `<span class="compare-agency-badge ${agencyBadgeClass(agency)}">${agencyKoreanLabel(agency)}</span>`).join('');
+                : agencies.length
+                    ? agencies.map((agency) => `<span class="compare-agency-badge ${agencyBadgeClass(agency)}">${agencyKoreanLabel(agency)}</span>`).join('')
+                    : '<span class="compare-agency-badge none">선택 없음</span>';
             el.innerHTML = `<span class="compare-scope-month">${escapeHTML(monthText)}</span>${agencyBadges}`;
         }
 
@@ -3921,14 +4017,11 @@
         function buildCheckboxList(containerId, values, stateKey, checkboxClass, handlerName, labelFormatter) {
             const container = $(containerId);
             if (!container) return;
-            container.innerHTML = '';
-            values.forEach((value) => {
-                const checked = !state[stateKey].includes('ALL') && state[stateKey].includes(value);
-                const item = document.createElement('label');
-                item.className = 'flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-brand-50 transition-colors';
-                item.innerHTML = `<input class="${checkboxClass} accent-brand-600 w-3.5 h-3.5" onchange="${handlerName}(this)" type="checkbox" value="${escapeHTML(value)}" ${checked ? 'checked' : ''}/><span class="text-xs font-semibold text-slate-700">${escapeHTML(labelFormatter(value))}</span>`;
-                container.appendChild(item);
-            });
+            const allSelected = state[stateKey].includes('ALL');
+            container.innerHTML = values.map((value) => {
+                const checked = !allSelected && state[stateKey].includes(value);
+                return `<label class="flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-brand-50 transition-colors"><input class="${checkboxClass} accent-brand-600 w-3.5 h-3.5" onchange="${handlerName}(this)" type="checkbox" value="${escapeHTML(value)}" ${checked ? 'checked' : ''}/><span class="text-xs font-semibold text-slate-700">${escapeHTML(labelFormatter(value))}</span></label>`;
+            }).join('');
         }
 
         function setAllCheckboxChecked(selector, checked) {
@@ -4403,22 +4496,10 @@
         function renderCompareTable(rows, orderedMonths) {
             const tbody = $('compareTableBody');
             if (!tbody) return;
-            tbody.innerHTML = '';
 
             if (!rows.length) {
                 tbody.innerHTML = `<tr><td colspan="11" class="px-6 py-10 text-center text-slate-400">선택한 비교 연월에 표시할 데이터가 없습니다.</td></tr>`;
                 return;
-            }
-
-            const frag = document.createDocumentFragment();
-            const uniqueMonths = [...new Set(orderedMonths)].filter(Boolean);
-
-            function agencyBadge(agency) {
-                const label = agencyKoreanLabel(agency);
-                if (agency === 'Meta') return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-blue-50 text-blue-700 border border-blue-100 font-extrabold">${escapeHTML(label)}</span>`;
-                if (agency === 'Tiktok') return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-purple-50 text-purple-700 border border-purple-100 font-extrabold">${escapeHTML(label)}</span>`;
-                if (agency === 'Google') return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-red-50 text-red-600 border border-red-100 font-extrabold">${escapeHTML(label)}</span>`;
-                return `<span class="inline-flex justify-center min-w-[52px] px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600 border border-slate-200 font-extrabold">${escapeHTML(label)}</span>`;
             }
 
             const compareHeaderCells = [
@@ -4435,50 +4516,52 @@
                 { label: '계약전환율', field: 'dbToContract', className: 'px-3 py-2.5 text-right' },
             ];
 
-            function appendRepeatedHeader(month) {
-                const headerRow = document.createElement('tr');
-                headerRow.className = 'compare-repeat-header';
-                headerRow.innerHTML = compareHeaderCells
-                    .map(({ label, field, className }) => {
-                        const sortState = getCompareSortState(month);
-                        const isActive = sortState.column === field;
-                        const icon = isActive ? (sortState.direction === 'asc' ? '▲' : '▼') : '↕';
-                        const justify = className.includes('text-right') ? 'justify-end' : (className.includes('text-center') ? 'justify-center' : 'justify-start');
-                        return `<th class="${className} compare-sort-th ${isActive ? 'text-brand-900' : ''}" onclick='sortCompareTable(${JSON.stringify(month)}, ${JSON.stringify(field)})' title="${escapeHTML(label)} 오름차순/내림차순 정렬"><span class="inline-flex items-center gap-1 w-full ${justify}">${escapeHTML(label)}<span class="compare-sort-icon ${isActive ? 'text-brand-700' : 'text-slate-300'}">${icon}</span></span></th>`;
-                    })
-                    .join('');
-                frag.appendChild(headerRow);
+            const headerHTMLByMonth = new Map();
+            const repeatedHeader = (month) => {
+                if (headerHTMLByMonth.has(month)) return headerHTMLByMonth.get(month);
+                const sortState = getCompareSortState(month);
+                const html = `<tr class="compare-repeat-header">${compareHeaderCells.map(({ label, field, className }) => {
+                    const isActive = sortState.column === field;
+                    const icon = isActive ? (sortState.direction === 'asc' ? '▲' : '▼') : '↕';
+                    const justify = className.includes('text-right') ? 'justify-end' : (className.includes('text-center') ? 'justify-center' : 'justify-start');
+                    return `<th class="${className} compare-sort-th ${isActive ? 'text-brand-900' : ''}" onclick='sortCompareTable(${JSON.stringify(month)}, ${JSON.stringify(field)})' title="${escapeHTML(label)} 오름차순/내림차순 정렬"><span class="inline-flex items-center gap-1 w-full ${justify}">${escapeHTML(label)}<span class="compare-sort-icon ${isActive ? 'text-brand-700' : 'text-slate-300'}">${icon}</span></span></th>`;
+                }).join('')}</tr>`;
+                headerHTMLByMonth.set(month, html);
+                return html;
+            };
+
+            const rowsByMonth = new Map();
+            for (const row of rows) {
+                if (!rowsByMonth.has(row.month)) rowsByMonth.set(row.month, []);
+                rowsByMonth.get(row.month).push(row);
             }
 
-            uniqueMonths.forEach((month) => {
-                const header = document.createElement('tr');
-                header.className = 'sticky-month-header';
-                header.innerHTML = `<td colspan="11" class="px-3 py-2.5 bg-[#EEF2FF] text-brand-900 font-extrabold border-y border-[#E2E8F0]">${fullMonthLabel(month)}</td>`;
-                frag.appendChild(header);
+            const useRowMotion = rows.length <= 160 && !prefersReducedMotion();
+            const html = [];
+            for (const month of [...new Set(orderedMonths)].filter(Boolean)) {
+                html.push(`<tr class="sticky-month-header"><td colspan="11" class="px-3 py-2.5 bg-[#EEF2FF] text-brand-900 font-extrabold border-y border-[#E2E8F0]">${fullMonthLabel(month)}</td></tr>`);
+                html.push(repeatedHeader(month));
 
-                // 모든 월 구간을 동일하게 '날짜 → 헤더 → 데이터' 순서로 표시합니다.
-                appendRepeatedHeader(month);
-
-                sortCompareRowsForMonth(rows.filter((row) => row.month === month), month)
-                    .forEach((row) => {
-                        const tr = document.createElement('tr');
-                        tr.className = 'row-fade hover:bg-brand-50/40 transition-colors';
-                        tr.innerHTML = `
-                            <td class="px-3 py-2 whitespace-nowrap truncate" title="${escapeHTML(row.site)}">${escapeHTML(row.site)}</td>
-                            <td class="px-3 py-2 text-center whitespace-nowrap">${agencyBadge(row.agency)}</td>
-                            <td class="px-2 py-2 text-center whitespace-nowrap"><span class="inline-flex justify-center min-w-[72px] px-1.5 py-0.5 rounded text-[10px] bg-brand-50 text-brand-700 border border-brand-100 font-extrabold">${escapeHTML(normalizeCreativeGroup(row.creativeGroup, row.adName))}</span></td>
-                            <td class="px-3 py-2 text-right font-semibold">${numberDisplay(row.spend, '원')}</td>
-                            <td class="px-3 py-2 text-right">${numberDisplay(row.clicks)}</td>
-                            <td class="px-3 py-2 text-right font-bold text-brand-700">${numberDisplay(row.dbCount)}</td>
-                            <td class="px-3 py-2 text-right font-bold text-emerald-600">${numberDisplay(row.contracts)}</td>
-                            <td class="px-3 py-2 text-right ${row.cpa > 45000 ? 'text-rose-600 font-bold' : 'font-semibold'}">${row.cpa ? numberDisplay(row.cpa, '원') : '-'}</td>
-                            <td class="px-3 py-2 text-right ${row.cps > 200000 ? 'text-amber-600 font-bold' : 'font-semibold'}">${row.cps ? numberDisplay(row.cps, '원') : '-'}</td>
-                            <td class="px-3 py-2 text-right font-semibold text-blue-700">${percentDisplay(row.clickToDb)}</td>
-                            <td class="px-3 py-2 text-right font-semibold text-purple-700">${percentDisplay(row.dbToContract)}</td>`;
-                        frag.appendChild(tr);
-                    });
-            });
-            tbody.appendChild(frag);
+                sortCompareRowsForMonth(rowsByMonth.get(month) || [], month).forEach((row, idx) => {
+                    const motionClass = useRowMotion ? 'row-fade' : '';
+                    const delayStyle = useRowMotion ? ` style="animation-delay:${Math.min(idx * 8, 120)}ms"` : '';
+                    const creativeGroup = row._creativeGroupNorm || normalizeCreativeGroup(row.creativeGroup, row.adName);
+                    html.push(`<tr class="${motionClass} hover:bg-brand-50/40 transition-colors"${delayStyle}>
+                        <td class="px-3 py-2 whitespace-nowrap truncate" title="${escapeHTML(row.site)}">${escapeHTML(row.site)}</td>
+                        <td class="px-3 py-2 text-center whitespace-nowrap">${agencyBadge(row.agency)}</td>
+                        <td class="px-2 py-2 text-center whitespace-nowrap"><span class="inline-flex justify-center min-w-[72px] px-1.5 py-0.5 rounded text-[10px] bg-brand-50 text-brand-700 border border-brand-100 font-extrabold">${escapeHTML(creativeGroup)}</span></td>
+                        <td class="px-3 py-2 text-right font-semibold">${numberDisplay(row.spend, '원')}</td>
+                        <td class="px-3 py-2 text-right">${numberDisplay(row.clicks)}</td>
+                        <td class="px-3 py-2 text-right font-bold text-brand-700">${numberDisplay(row.dbCount)}</td>
+                        <td class="px-3 py-2 text-right font-bold text-emerald-600">${numberDisplay(row.contracts)}</td>
+                        <td class="px-3 py-2 text-right ${row.cpa > 45000 ? 'text-rose-600 font-bold' : 'font-semibold'}">${row.cpa ? numberDisplay(row.cpa, '원') : '-'}</td>
+                        <td class="px-3 py-2 text-right ${row.cps > 200000 ? 'text-amber-600 font-bold' : 'font-semibold'}">${row.cps ? numberDisplay(row.cps, '원') : '-'}</td>
+                        <td class="px-3 py-2 text-right font-semibold text-blue-700">${percentDisplay(row.clickToDb)}</td>
+                        <td class="px-3 py-2 text-right font-semibold text-purple-700">${percentDisplay(row.dbToContract)}</td>
+                    </tr>`);
+                });
+            }
+            tbody.innerHTML = html.join('');
         }
 
         function updateCompareSummaries(rows, monthA, monthB) {
@@ -4558,9 +4641,7 @@
         }
 
         function updateCompareChart(rows, orderedMonths) {
-            const ctx = $('compareChart')?.getContext('2d');
-            if (!ctx) return;
-            if (state.compareChart) { state.compareChart.destroy(); state.compareChart = null; }
+            if (!$('compareChart')) return;
             fadeInCanvas('compareChart');
 
             const metric = state.compareMetric || 'dbCount';
@@ -4611,12 +4692,12 @@
                 maxBarThickness: 34
             }));
 
-            state.compareChart = new Chart(ctx, {
+            renderOrUpdateChart('compareChart', 'compareChart', {
                 type: 'bar',
                 data: { labels, datasets },
                 options: {
                     indexAxis: 'y',
-                    animation: { duration: 900, easing: 'easeOutQuart' },
+                    animation: chartAnimation(420),
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
@@ -4662,9 +4743,7 @@
         }
 
         function updateCompareAgencyChart(rows, orderedMonths) {
-            const ctx = $('compareAgencyChart')?.getContext('2d');
-            if (!ctx) return;
-            if (state.compareAgencyChart) { state.compareAgencyChart.destroy(); state.compareAgencyChart = null; }
+            if (!$('compareAgencyChart')) return;
             fadeInCanvas('compareAgencyChart');
 
             const metric = state.compareMetric || 'dbCount';
@@ -4704,12 +4783,12 @@
                 maxBarThickness: 38
             }));
 
-            state.compareAgencyChart = new Chart(ctx, {
+            renderOrUpdateChart('compareAgencyChart', 'compareAgencyChart', {
                 type: 'bar',
                 data: { labels, datasets },
                 options: {
                     indexAxis: 'y',
-                    animation: { duration: 900, easing: 'easeOutQuart' },
+                    animation: chartAnimation(420),
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
@@ -4777,8 +4856,6 @@
         }
 
         function updateCharts(data, filteredLeads) {
-            if (state.performanceChart) { state.performanceChart.destroy(); state.performanceChart = null; }
-            if (state.trendChart) { state.trendChart.destroy(); state.trendChart = null; }
             requestAnimationFrame(() => {
                 updatePerformanceChart(data);
                 fadeInCanvas('performanceChart');
@@ -4811,11 +4888,9 @@
                 return acps - bcps;
             }).slice(0, 5);
 
-            const ctx = $('performanceChart')?.getContext('2d');
-            if (!ctx) return;
-            if (state.performanceChart) state.performanceChart.destroy();
+            if (!$('performanceChart')) return;
 
-            state.performanceChart = new Chart(ctx, {
+            renderOrUpdateChart('performanceChart', 'performanceChart', {
                 type: 'bar',
                 data: {
                     labels: top5.map((row) => splitLabelToLines(row.agency, row.adName)),
@@ -4841,7 +4916,7 @@
                     ]
                 },
                 options: {
-                    animation: { duration: 950, easing: 'easeOutQuart' },
+                    animation: chartAnimation(420),
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {

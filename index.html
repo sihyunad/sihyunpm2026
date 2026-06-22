@@ -208,7 +208,8 @@
             padding: 14px;
             background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
             color: #ffffff;
-            border: none;
+            border: 0;
+            outline: none;
             border-radius: 10px;
             font-size: 14px;
             font-weight: 800;
@@ -216,6 +217,14 @@
             cursor: pointer;
             letter-spacing: 0.02em;
             transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.28);
+            -webkit-tap-highlight-color: transparent;
+            appearance: none;
+        }
+        .login-btn:focus,
+        .login-btn:focus-visible {
+            outline: none;
+            border: 0;
             box-shadow: 0 4px 20px rgba(79, 70, 229, 0.28);
         }
 
@@ -251,6 +260,48 @@
 
         .login-error-msg.show {
             display: flex;
+        }
+
+
+        .login-remember-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin: -4px 0 14px;
+            padding: 10px 12px;
+            border: 1px solid rgba(167, 139, 250, 0.12);
+            border-radius: 10px;
+            background: rgba(17, 24, 39, 0.34);
+        }
+        .login-remember-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .login-remember-label input {
+            width: 14px;
+            height: 14px;
+            accent-color: #8B5CF6;
+            flex: 0 0 auto;
+            margin-top: 1px;
+        }
+        .login-remember-main {
+            display: block;
+            font-size: 12px;
+            font-weight: 800;
+            color: rgba(255,255,255,0.88);
+            line-height: 1.25;
+        }
+        .login-remember-note {
+            display: block;
+            margin-top: 3px;
+            font-size: 10px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.38);
+            line-height: 1.35;
         }
 
         .login-footer {
@@ -681,6 +732,63 @@
             transform: none !important;
             box-shadow: none !important;
         }
+
+
+        /* 사이트·매체 성과 비교 선택 조건 뱃지 */
+        .compare-scope-wrap {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            min-width: 0;
+        }
+        .compare-scope-month {
+            display: inline-flex;
+            align-items: center;
+            height: 24px;
+            padding: 0 9px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.72);
+            border: 1px solid rgba(199,210,254,0.92);
+            color: #4338CA;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+        .compare-agency-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            padding: 0 10px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            font-size: 11px;
+            font-weight: 900;
+            line-height: 1;
+            white-space: nowrap;
+            letter-spacing: -0.01em;
+        }
+        .compare-agency-badge.meta {
+            background: rgba(37,99,235,0.10);
+            border-color: rgba(37,99,235,0.16);
+            color: #2563EB;
+        }
+        .compare-agency-badge.tiktok {
+            background: rgba(168,85,247,0.10);
+            border-color: rgba(168,85,247,0.17);
+            color: #9333EA;
+        }
+        .compare-agency-badge.google {
+            background: rgba(239,68,68,0.09);
+            border-color: rgba(239,68,68,0.15);
+            color: #DC2626;
+        }
+        .compare-agency-badge.all {
+            background: rgba(100,116,139,0.09);
+            border-color: rgba(100,116,139,0.14);
+            color: #475569;
+        }
     </style>
 </head>
 <body class="h-full flex flex-col overflow-hidden text-slate-800">
@@ -710,6 +818,15 @@
 <svg fill="none" id="eyeIconOff" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="display:none;" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" x2="23" y1="1" y2="23"></line></svg>
 </button>
 </div>
+</div>
+<div class="login-remember-row">
+<label class="login-remember-label" for="rememberLogin">
+<input id="rememberLogin" type="checkbox"/>
+<span>
+<span class="login-remember-main">아이디·비밀번호 저장 후 자동입력</span>
+<span class="login-remember-note">다음 방문 시 입력칸만 자동으로 채워집니다. 로그인은 사용자가 직접 눌러야 합니다.</span>
+</span>
+</label>
 </div>
 <button class="login-btn" id="loginBtn" onclick="doLogin()">로그인</button>
 <div class="login-error-msg" id="loginError">
@@ -772,7 +889,7 @@
 </button>
 <button class="nav-menu-btn w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-semibold rounded-lg transition-all text-slate-300 hover:bg-[#374151]" data-page="performance" id="navBtn_performance" onclick="switchPage('performance')" type="button">
 <i class="w-4 h-4 shrink-0" data-lucide="list-checks"></i>
-<span>종합성과목록</span>
+<span>상세성과목록</span>
 </button>
 </nav>
 </div>
@@ -801,15 +918,6 @@
 </div>
 </div>
 </div>
-<!-- Site Filter -->
-<div>
-<label class="block text-xs font-semibold text-[#C4B5FD] mb-1.5">운영 사이트</label>
-<select class="w-full bg-[#374151] border border-[#4B5563] text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#818CF8] focus:ring-1 focus:ring-[#818CF8] transition-colors" id="filterSite" onchange="applyFilters()">
-<option selected="" value="ALL">전체 사이트 (카빌리지 + 차맵)</option>
-<option value="카빌리지">카빌리지</option>
-<option value="차맵">차맵</option>
-</select>
-</div>
 <!-- Agency Filter (멀티셀렉트) -->
 <div>
 <label class="block text-xs font-semibold text-[#C4B5FD] mb-1.5">광고 매체사 <span class="text-[10px] text-slate-400 font-normal">(복수 선택 가능)</span></label>
@@ -827,6 +935,15 @@
 <input class="agency-filter-cb accent-[#8B5CF6] w-3 h-3" onchange="handleAgencyCheck(this)" type="checkbox" value="Google"/> <span class="text-sm text-slate-300">Google</span>
 </label>
 </div>
+</div>
+<!-- Site Filter -->
+<div>
+<label class="block text-xs font-semibold text-[#C4B5FD] mb-1.5">운영 사이트</label>
+<select class="w-full bg-[#374151] border border-[#4B5563] text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#818CF8] focus:ring-1 focus:ring-[#818CF8] transition-colors" id="filterSite" onchange="applyFilters()">
+<option selected="" value="ALL">전체 사이트 (카빌리지 + 차맵)</option>
+<option value="카빌리지">카빌리지</option>
+<option value="차맵">차맵</option>
+</select>
 </div>
 <!-- Compare Month Menu -->
 <div class="pt-5 mt-5 border-t border-[#4B5563]">
@@ -984,7 +1101,7 @@
 <div>
 <div class="flex items-center gap-2 mb-2">
 <span class="px-2 py-1 rounded-lg bg-brand-700 text-white text-[11px] font-extrabold">카빌리지</span>
-<span class="text-[11px] text-slate-400 font-semibold">선택한 연월·매체 기준</span>
+<div class="compare-scope-wrap" id="compareSubKpiCavillageScope"></div>
 </div>
 <section class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
 <div class="bg-[#EEF2FF] p-3 rounded-lg border border-brand-100 shadow-sm flex flex-col justify-between relative overflow-hidden group min-h-[92px]">
@@ -1037,7 +1154,7 @@
 <div>
 <div class="flex items-center gap-2 mb-2">
 <span class="px-2 py-1 rounded-lg bg-blue-600 text-white text-[11px] font-extrabold">차맵</span>
-<span class="text-[11px] text-slate-400 font-semibold">선택한 연월·매체 기준</span>
+<div class="compare-scope-wrap" id="compareSubKpiChamapScope"></div>
 </div>
 <section class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3">
 <div class="bg-[#EEF2FF] p-3 rounded-lg border border-brand-100 shadow-sm flex flex-col justify-between relative overflow-hidden group min-h-[92px]">
@@ -1180,7 +1297,7 @@
 </div>
 </section>
 </div>
-<!-- ══════════════ PAGE 2: 종합성과목록 ══════════════ -->
+<!-- ══════════════ PAGE 2: 상세성과목록 ══════════════ -->
 <div class="page-view space-y-8 hidden" id="page-performance">
 <!-- CHARTS SECTION GRID -->
 <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -1556,14 +1673,45 @@
             id: 'sihyunpm',
             pw: 'sihyunpm2026'
         };
+        const LOGIN_SAVE_KEY = 'sihyun_dashboard_saved_login_v1';
 
-        function doLogin() {
-            const id = document.getElementById('loginId').value.trim();
-            const pw = document.getElementById('loginPw').value;
-            const btn = document.getElementById('loginBtn');
-            const errEl = document.getElementById('loginError');
+        function getSavedLogin() {
+            try {
+                return JSON.parse(localStorage.getItem(LOGIN_SAVE_KEY) || 'null');
+            } catch (error) {
+                localStorage.removeItem(LOGIN_SAVE_KEY);
+                return null;
+            }
+        }
+
+        function saveLogin(id, pw) {
+            try {
+                localStorage.setItem(LOGIN_SAVE_KEY, JSON.stringify({ id, pw, savedAt: Date.now() }));
+            } catch (error) {
+                console.warn('로그인 정보 저장 실패:', error);
+            }
+        }
+
+        function clearSavedLogin() {
+            try { localStorage.removeItem(LOGIN_SAVE_KEY); } catch (error) {}
+        }
+
+        function closeLoginOverlay() {
+            const overlay = document.getElementById('loginOverlay');
+            if (!overlay) return;
+            overlay.classList.add('hidden');
+            overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
+            window.setTimeout(() => overlay.remove?.(), 700);
+        }
+
+        function doLogin(isAuto = false) {
             const idEl = document.getElementById('loginId');
             const pwEl = document.getElementById('loginPw');
+            const rememberEl = document.getElementById('rememberLogin');
+            const btn = document.getElementById('loginBtn');
+            const errEl = document.getElementById('loginError');
+            const id = idEl.value.trim();
+            const pw = pwEl.value;
 
             // Reset states
             idEl.classList.remove('error');
@@ -1579,25 +1727,37 @@
             btn.disabled = true;
             btn.textContent = '확인 중...';
 
-            // Slight delay for UX feedback
             setTimeout(() => {
                 if (id === AUTH.id && pw === AUTH.pw) {
-                    // SUCCESS → fade out overlay
-                    const overlay = document.getElementById('loginOverlay');
-                    overlay.classList.add('hidden');
-                    // Remove from DOM after transition ends
-                    overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
+                    if (rememberEl?.checked) saveLogin(id, pw);
+                    else clearSavedLogin();
+                    closeLoginOverlay();
                 } else {
+                    if (isAuto) clearSavedLogin();
                     idEl.classList.add('error');
                     pwEl.classList.add('error');
                     errEl.classList.add('show');
                     btn.disabled = false;
                     btn.textContent = '로그인';
-                    // Clear pw field on failure
                     pwEl.value = '';
+                    rememberEl.checked = false;
                     pwEl.focus();
                 }
-            }, 400);
+            }, isAuto ? 120 : 400);
+        }
+
+        function hydrateSavedLogin() {
+            const saved = getSavedLogin();
+            if (!saved?.id || !saved?.pw) return;
+            const idEl = document.getElementById('loginId');
+            const pwEl = document.getElementById('loginPw');
+            const rememberEl = document.getElementById('rememberLogin');
+            const btn = document.getElementById('loginBtn');
+            if (!idEl || !pwEl || !rememberEl) return;
+            idEl.value = saved.id;
+            pwEl.value = saved.pw;
+            rememberEl.checked = true;
+            btn?.focus();
         }
 
         function togglePw() {
@@ -1614,6 +1774,8 @@
                 off.style.display = 'none';
             }
         }
+
+        document.addEventListener('DOMContentLoaded', hydrateSavedLogin);
     </script>
 <!-- JAVASCRIPT: DATA PROCESSING AND VISUALIZATION -->
 <script>
@@ -1624,6 +1786,27 @@
 
         const SITES = ['카빌리지', '차맵'];
         const AGENCIES = ['Meta', 'Tiktok', 'Google'];
+        const AGENCY_COLORS = {
+            Meta: { rgb: '0, 56, 255', background: 'rgba(0, 56, 255, 0.78)', border: '#0038FF', text: '#0038FF', badgeClass: 'meta' },
+            Tiktok: { rgb: '128, 0, 255', background: 'rgba(128, 0, 255, 0.78)', border: '#8000FF', text: '#8000FF', badgeClass: 'tiktok' },
+            Google: { rgb: '220, 0, 0', background: 'rgba(220, 0, 0, 0.72)', border: '#DC0000', text: '#DC0000', badgeClass: 'google' }
+        };
+        const AGENCY_COMPARE_CHART_COLORS = {
+            Meta: { rgb: '45, 95, 210', border: '#2D5FD2' },
+            Tiktok: { rgb: '130, 78, 190', border: '#824EBE' },
+            Google: { rgb: '205, 74, 74', border: '#CD4A4A' }
+        };
+        function agencyColor(agency, alpha = 0.78) {
+            const color = AGENCY_COLORS[agency] || { rgb: '99, 102, 241', border: '#6366F1', text: '#6366F1', badgeClass: 'all' };
+            return { ...color, background: `rgba(${color.rgb}, ${alpha})` };
+        }
+        function agencyBadgeClass(agency) {
+            return agencyColor(agency).badgeClass || 'all';
+        }
+        function agencyCompareChartColor(agency, alpha = 0.78) {
+            const color = AGENCY_COMPARE_CHART_COLORS[agency] || { rgb: '99, 102, 241', border: '#6366F1' };
+            return { ...color, background: `rgba(${color.rgb}, ${alpha})` };
+        }
         const DATA_KEYS = ['admin', 'matching', 'meta', 'tiktok', 'google'];
         const VALID_DB_ADMIN_SOURCES = new Set(['admin_meta', 'admin_tiktok', 'admin_google', 'admin_crm']);
         const CREATIVE_GROUPS = ['브라이언', 'AI기타채널', '신규포맷', '유튜브', '미분류'];
@@ -3320,7 +3503,7 @@
         }
 
         // ─────────────────────────────────────────────
-        // 페이지 전환 (대시보드 / 종합성과목록)
+        // 페이지 전환 (대시보드 / 상세성과목록)
         // ─────────────────────────────────────────────
         function switchPage(page) {
             const target = $(`page-${page}`);
@@ -3680,10 +3863,27 @@
             return `${selected.length}개 연월 선택됨`;
         }
 
+        function selectedAgenciesFromChannelSelection(selected) {
+            if (!Array.isArray(selected) || selected.includes('ALL')) return 'ALL';
+            const agencies = [...new Set(selected.map((key) => String(key || '').split('::')[1]).filter(Boolean))];
+            return agencies.length ? agencies.sort((a, b) => AGENCIES.indexOf(a) - AGENCIES.indexOf(b)) : 'ALL';
+        }
+
         function channelSelectionLabel(selected, allLabel) {
-            if (!Array.isArray(selected) || selected.includes('ALL')) return allLabel;
-            if (selected.length === 1) return compareKpiChannelLabelFromKey(selected[0]);
-            return `${selected.length}개 사이트·매체 선택됨`;
+            const agencies = selectedAgenciesFromChannelSelection(selected);
+            if (agencies === 'ALL') return allLabel;
+            return agencies.map(agencyKoreanLabel).join(', ');
+        }
+
+        function renderCompareScopeBadges(targetId) {
+            const el = $(targetId);
+            if (!el) return;
+            const monthText = monthSelectionLabel(state.compareKpiMonths, '조회 연월 전체');
+            const agencies = selectedAgenciesFromChannelSelection(state.compareKpiChannels);
+            const agencyBadges = agencies === 'ALL'
+                ? '<span class="compare-agency-badge all">매체 전체</span>'
+                : agencies.map((agency) => `<span class="compare-agency-badge ${agencyBadgeClass(agency)}">${agencyKoreanLabel(agency)}</span>`).join('');
+            el.innerHTML = `<span class="compare-scope-month">${escapeHTML(monthText)}</span>${agencyBadges}`;
         }
 
         function matchesMonthSelection(month, selected) {
@@ -3764,6 +3964,7 @@
         function updateCompareKpiMonthLabel() {
             const label = $('compareKpiMonthLabel');
             if (label) label.textContent = monthSelectionLabel(state.compareKpiMonths, '조회 연월 전체');
+            updateCompareSubKpiScopeLabels();
         }
 
         function handleCompareKpiMonthCheckAll(el) {
@@ -3932,8 +4133,15 @@
             if (!label) return;
             const selected = getCompareKpiSelectedChannels();
             if (selected === 'ALL') label.textContent = '사이트·매체 전체';
-            else if (selected.length === 1) label.textContent = compareKpiChannelLabelFromKey(selected[0]);
-            else label.textContent = `${selected.length}개 사이트·매체 선택됨`;
+            else {
+                const agencies = selectedAgenciesFromChannelSelection(selected);
+                label.textContent = agencies === 'ALL' ? '사이트·매체 전체' : agencies.map(agencyKoreanLabel).join(', ');
+            }
+            updateCompareSubKpiScopeLabels();
+        }
+
+        function updateCompareSubKpiScopeLabels() {
+            ['compareSubKpiCavillageScope', 'compareSubKpiChamapScope'].forEach(renderCompareScopeBadges);
         }
 
         function closeCompareKpiChannelDropdown() {
@@ -4395,8 +4603,8 @@
                     const divisor = metric === 'cps' ? bucket.contracts : bucket.dbCount;
                     return divisor > 0 ? Math.round(bucket.spend / divisor) : 0;
                 }),
-                backgroundColor: idx === 0 ? 'rgba(3, 4, 94, 0.88)' : 'rgba(94, 96, 206, 0.84)',
-                borderColor: idx === 0 ? '#03045E' : '#5E60CE',
+                backgroundColor: groupLabels.map((_, groupIdx) => `rgba(99, 102, 241, ${idx === 0 ? 0.78 : 0.54})`),
+                borderColor: groupLabels.map(() => '#6366F1'),
                 borderWidth: 1.5,
                 borderRadius: 8,
                 borderSkipped: false,
@@ -4461,7 +4669,8 @@
 
             const metric = state.compareMetric || 'dbCount';
             const agencyLabels = AGENCIES.filter((agency) => rows.some((row) => row.agency === agency));
-            const labels = (agencyLabels.length ? agencyLabels : AGENCIES).map(agencyKoreanLabel);
+            const activeAgencies = agencyLabels.length ? agencyLabels : AGENCIES;
+            const labels = activeAgencies.map(agencyKoreanLabel);
             const months = [...new Set(orderedMonths)].filter(Boolean);
             const metricMap = new Map();
             const metricKey = (month, agency) => `${month}::${agency}`;
@@ -4478,7 +4687,7 @@
 
             const datasets = months.map((month, idx) => ({
                 label: fullMonthLabel(month),
-                data: (agencyLabels.length ? agencyLabels : AGENCIES).map((agency) => {
+                data: activeAgencies.map((agency) => {
                     const bucket = metricMap.get(metricKey(month, agency));
                     if (!bucket) return 0;
                     if (metric === 'dbCount' || metric === 'contracts') return bucket[metric] || 0;
@@ -4487,8 +4696,8 @@
                     const divisor = metric === 'cps' ? bucket.contracts : bucket.dbCount;
                     return divisor > 0 ? Math.round(bucket.spend / divisor) : 0;
                 }),
-                backgroundColor: idx === 0 ? 'rgba(3, 4, 94, 0.88)' : 'rgba(94, 96, 206, 0.84)',
-                borderColor: idx === 0 ? '#03045E' : '#5E60CE',
+                backgroundColor: activeAgencies.map((agency) => agencyCompareChartColor(agency, idx === 0 ? 0.82 : 0.56).background),
+                borderColor: activeAgencies.map((agency) => agencyCompareChartColor(agency).border),
                 borderWidth: 1.5,
                 borderRadius: 8,
                 borderSkipped: false,
@@ -4611,8 +4820,24 @@
                 data: {
                     labels: top5.map((row) => splitLabelToLines(row.agency, row.adName)),
                     datasets: [
-                        { label: '유효 DB 수량', data: top5.map((row) => row.dbCount), backgroundColor: 'rgba(3, 4, 94, 0.88)', borderColor: '#03045E', borderWidth: 1.5, borderRadius: 8, borderSkipped: false },
-                        { label: '계약 완료 수량', data: top5.map((row) => row.contracts), backgroundColor: 'rgba(94, 96, 206, 0.84)', borderColor: '#5E60CE', borderWidth: 1.5, borderRadius: 8, borderSkipped: false }
+                        {
+                            label: '유효 DB 수량',
+                            data: top5.map((row) => row.dbCount),
+                            backgroundColor: top5.map((row) => agencyCompareChartColor(row.agency, 0.82).background),
+                            borderColor: top5.map((row) => agencyCompareChartColor(row.agency).border),
+                            borderWidth: 1.5,
+                            borderRadius: 8,
+                            borderSkipped: false
+                        },
+                        {
+                            label: '계약 완료 수량',
+                            data: top5.map((row) => row.contracts),
+                            backgroundColor: top5.map((row) => agencyCompareChartColor(row.agency, 0.56).background),
+                            borderColor: top5.map((row) => agencyCompareChartColor(row.agency).border),
+                            borderWidth: 1.5,
+                            borderRadius: 8,
+                            borderSkipped: false
+                        }
                     ]
                 },
                 options: {
@@ -4765,7 +4990,7 @@
             ]);
             writeTableWorkbook(
                 `소재명_키워드_매칭별_종합성과_${new Date().toISOString().slice(0, 10)}.xlsx`,
-                '종합성과목록',
+                '상세성과목록',
                 headers,
                 excelRows
             );

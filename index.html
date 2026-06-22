@@ -1922,6 +1922,76 @@
         const chartAnimation = (duration = 450) => prefersReducedMotion() ? false : { duration, easing: 'easeOutQuart' };
         const chartTextFont = { family: 'Pretendard' };
 
+        function compactChartLabel(value, metric = '') {
+            const n = Number(value || 0);
+            if (!Number.isFinite(n)) return '';
+            if (metric === 'clickToDb' || metric === 'dbToContract') return `${n.toFixed(1)}%`;
+            if (metric === 'cpa' || metric === 'cps') {
+                if (n >= 10000) return `${Math.round(n / 10000).toLocaleString()}만`;
+                return `${Math.round(n).toLocaleString()}원`;
+            }
+            return Math.round(n).toLocaleString();
+        }
+
+        const simpleValueLabelsPlugin = {
+            id: 'simpleValueLabels',
+            afterDatasetsDraw(chart, args, pluginOptions) {
+                if (!pluginOptions || pluginOptions.enabled === false) return;
+                const { ctx, chartArea } = chart;
+                if (!ctx || !chartArea) return;
+
+                const fontSize = pluginOptions.fontSize || 10;
+                const formatter = typeof pluginOptions.formatter === 'function'
+                    ? pluginOptions.formatter
+                    : (value) => compactChartLabel(value);
+
+                ctx.save();
+                ctx.font = `${pluginOptions.fontWeight || 700} ${fontSize}px Pretendard, sans-serif`;
+                ctx.textBaseline = 'middle';
+
+                chart.data.datasets.forEach((dataset, datasetIndex) => {
+                    if (!chart.isDatasetVisible(datasetIndex)) return;
+                    const meta = chart.getDatasetMeta(datasetIndex);
+                    meta.data.forEach((bar, dataIndex) => {
+                        const raw = Array.isArray(dataset.data) ? dataset.data[dataIndex] : 0;
+                        const value = typeof raw === 'object' && raw !== null ? raw.y ?? raw.x ?? 0 : Number(raw || 0);
+                        if (!Number.isFinite(value) || (value === 0 && pluginOptions.displayZero === false)) return;
+
+                        const label = formatter(value, { dataset, datasetIndex, dataIndex, chart });
+                        if (!label) return;
+                        const textWidth = ctx.measureText(label).width;
+                        const props = bar.getProps(['x', 'y', 'base'], true);
+                        const isHorizontal = chart.options.indexAxis === 'y';
+
+                        ctx.fillStyle = pluginOptions.color || '#475569';
+                        if (isHorizontal) {
+                            const barEnd = props.x;
+                            const base = props.base ?? chart.scales.x.getPixelForValue(0);
+                            const barWidth = Math.abs(barEnd - base);
+                            let x = barEnd + 5;
+                            ctx.textAlign = 'left';
+                            if (x + textWidth > chartArea.right - 2 && barWidth > textWidth + 12) {
+                                x = barEnd - 6;
+                                ctx.textAlign = 'right';
+                                ctx.fillStyle = pluginOptions.insideColor || '#ffffff';
+                            }
+                            x = Math.min(Math.max(x, chartArea.left + 2), chartArea.right - 2);
+                            ctx.fillText(label, x, props.y);
+                        } else {
+                            let y = Math.max(chartArea.top + fontSize / 2, props.y - 8);
+                            let x = Math.min(Math.max(props.x, chartArea.left + textWidth / 2), chartArea.right - textWidth / 2);
+                            ctx.textAlign = 'center';
+                            ctx.fillText(label, x, y);
+                        }
+                    });
+                });
+                ctx.restore();
+            }
+        };
+        if (window.Chart) {
+            try { Chart.register(simpleValueLabelsPlugin); } catch (error) {}
+        }
+
         function renderOrUpdateChart(stateKey, canvasId, config, updateMode = 'none') {
             const ctx = $(canvasId)?.getContext('2d');
             if (!ctx) return null;
@@ -4685,8 +4755,8 @@
                     return divisor > 0 ? Math.round(bucket.spend / divisor) : 0;
                 }),
                 backgroundColor: groupLabels.map((_, groupIdx) => `rgba(99, 102, 241, ${idx === 0 ? 0.78 : 0.54})`),
-                borderColor: groupLabels.map(() => '#6366F1'),
-                borderWidth: 1.5,
+                borderColor: groupLabels.map(() => 'transparent'),
+                borderWidth: 0,
                 borderRadius: 8,
                 borderSkipped: false,
                 maxBarThickness: 34
@@ -4702,6 +4772,7 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { labels: { color: '#1F2937', font: { family: 'Pretendard', size: 10, weight: '600' } } },
+                        simpleValueLabels: { enabled: true, displayZero: false, fontSize: 10, formatter: (value) => compactChartLabel(value, metric) },
                         tooltip: {
                             callbacks: {
                                 title: (items) => groupLabels[items?.[0]?.dataIndex] || '',
@@ -4776,8 +4847,8 @@
                     return divisor > 0 ? Math.round(bucket.spend / divisor) : 0;
                 }),
                 backgroundColor: activeAgencies.map((agency) => agencyCompareChartColor(agency, idx === 0 ? 0.82 : 0.56).background),
-                borderColor: activeAgencies.map((agency) => agencyCompareChartColor(agency).border),
-                borderWidth: 1.5,
+                borderColor: activeAgencies.map(() => 'transparent'),
+                borderWidth: 0,
                 borderRadius: 8,
                 borderSkipped: false,
                 maxBarThickness: 38
@@ -4793,6 +4864,7 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { labels: { color: '#1F2937', font: { family: 'Pretendard', size: 10, weight: '600' } } },
+                        simpleValueLabels: { enabled: true, displayZero: false, fontSize: 10, formatter: (value) => compactChartLabel(value, metric) },
                         tooltip: {
                             callbacks: {
                                 title: (items) => labels[items?.[0]?.dataIndex] || '',
@@ -4899,8 +4971,8 @@
                             label: '유효 DB 수량',
                             data: top5.map((row) => row.dbCount),
                             backgroundColor: top5.map((row) => agencyCompareChartColor(row.agency, 0.82).background),
-                            borderColor: top5.map((row) => agencyCompareChartColor(row.agency).border),
-                            borderWidth: 1.5,
+                            borderColor: top5.map(() => 'transparent'),
+                            borderWidth: 0,
                             borderRadius: 8,
                             borderSkipped: false
                         },
@@ -4908,8 +4980,8 @@
                             label: '계약 완료 수량',
                             data: top5.map((row) => row.contracts),
                             backgroundColor: top5.map((row) => agencyCompareChartColor(row.agency, 0.56).background),
-                            borderColor: top5.map((row) => agencyCompareChartColor(row.agency).border),
-                            borderWidth: 1.5,
+                            borderColor: top5.map(() => 'transparent'),
+                            borderWidth: 0,
                             borderRadius: 8,
                             borderSkipped: false
                         }
@@ -4921,6 +4993,7 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { labels: { color: '#1F2937', font: { family: 'Pretendard', size: 11, weight: '600' } }, position: 'top' },
+                        simpleValueLabels: { enabled: true, displayZero: false, fontSize: 10, formatter: (value) => compactChartLabel(value) },
                         tooltip: { callbacks: { title: (items) => { const row = top5[items[0].dataIndex]; return `[${row.site}/${row.agency}] ${row.adName}`; } } }
                     },
                     scales: {
